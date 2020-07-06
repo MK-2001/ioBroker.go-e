@@ -1,0 +1,79 @@
+{
+    "common": {
+        "name": "go-echarger",
+        "version": "0.0.1",
+        "news": {
+            "0.0.1": {
+                "en": "initial release",
+                "de": "Erstveröffentlichung",
+                "ru": "Начальная версия",
+                "pt": "lançamento inicial",
+                "nl": "Eerste uitgave",
+                "fr": "Première version",
+                "it": "Versione iniziale",
+                "es": "Versión inicial",
+                "pl": "Pierwsze wydanie",
+                "zh-cn": "首次出版"
+            }
+        },
+        "title": "go-eCharger",
+        "titleLang": {
+            "en": "go-eCharger",
+            "de": "go-eCharger",
+            "ru": "гоу-eCharger",
+            "pt": "go-eCharger",
+            "nl": "go-eCharger",
+            "fr": "go-eCharger",
+            "it": "go-eCharger",
+            "es": "go-eCharger",
+            "pl": "go-eCharger",
+            "zh-cn": "电子充电器"
+        },
+        "desc": {
+            "en": "go-e ist die Aufforderung, sich elektrisch zu bewegen. e-Mobilität ist unser Antrieb, wobei unsere Kernkompetenz die Ladetechnik für Elektroautos ist. Von der einzelnen Ladestation für e-Autos über Photovoltaik-Anbindung bis hin zum Lastmanagement von ganzen Gebäuden, sind wir Anbieter gesamtheitlicher Systemlösungen für sämtliche Anforderungen der modernen e-Mobilität.",
+            "de": "go-e ist die Aufforderung, sich elektrisch zu bewegen. ",
+            "ru": "Go-E Ist Die Aufforderung, Sich Elektrisch ZU Bewegen. ",
+            "pt": "go-e ist die Aufforderung, sich elektrisch zu bewegen. ",
+            "nl": "go-e ist die Aufforderung, sich elektrisch zu bewegen. ",
+            "fr": "go-e ist die Aufforderung, sich elektrisch zu bewegen. ",
+            "it": "go-e ist die Aufforderung, sich elektrisch zu bewegen. ",
+            "es": "go-e ist die Aufforderung, sich elektrisch zu bewegen. ",
+            "pl": "go-e ist die Aufforderung, sich elektrisch zu bewegen. ",
+            "zh-cn": "Gouffist，Aufforderung，sich elektrisch zu bewegen。 "
+        },
+        "authors": [
+            "MK-2001 <go-e@itinsi.de>"
+        ],
+        "keywords": [
+            "wallbox",
+            "ladestation",
+            "go-eCharger",
+            "go-e"
+        ],
+        "license": "Apache-2.0",
+        "platform": "Javascript/Node.js",
+        "main": "main.js",
+        "icon": "go-echarger.png",
+        "enabled": true,
+        "extIcon": "https://raw.githubusercontent.com/MK-2001/ioBroker.go-echarger/master/admin/go-echarger.png",
+        "readme": "https://github.com/MK-2001/ioBroker.go-echarger/blob/master/README.md",
+        "loglevel": "info",
+        "mode": "daemon",
+        "type": "vehicle",
+        "compact": true,
+        "connectionType": "local",
+        "dataSource": "poll",
+        "materialize": true,
+        "dependencies": [
+            {
+                "js-controller": ">=1.4.2"
+            }
+        ]
+    },
+    "native": {
+        "option1": true,
+        "option2": "42"
+    },
+    "objects": [],
+    "instanceObjects": []
+}

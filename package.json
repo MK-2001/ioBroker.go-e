@@ -1,0 +1,57 @@
+{
+  "name": "iobroker.go-echarger",
+  "version": "0.0.1",
+  "description": "go-e ist die Aufforderung, sich elektrisch zu bewegen. e-Mobilität ist unser Antrieb, wobei unsere Kernkompetenz die Ladetechnik für Elektroautos ist. Von der einzelnen Ladestation für e-Autos über Photovoltaik-Anbindung bis hin zum Lastmanagement von ganzen Gebäuden, sind wir Anbieter gesamtheitlicher Systemlösungen für sämtliche Anforderungen der modernen e-Mobilität.",
+  "author": {
+    "name": "MK-2001",
+    "email": "go-e@itinsi.de"
+  },
+  "homepage": "https://github.com/MK-2001/ioBroker.go-echarger",
+  "license": "Apache-2.0",
+  "keywords": [
+    "wallbox",
+    "ladestation",
+    "go-eCharger",
+    "go-e"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/MK-2001/ioBroker.go-echarger"
+  },
+  "dependencies": {
+    "@iobroker/adapter-core": "^2.4.0"
+  },
+  "devDependencies": {
+    "@iobroker/testing": "^2.2.0",
+    "@types/chai": "^4.2.11",
+    "@types/chai-as-promised": "^7.1.2",
+    "@types/gulp": "^4.0.6",
+    "@types/mocha": "^7.0.2",
+    "@types/node": "^14.0.14",
+    "@types/proxyquire": "^1.3.28",
+    "@types/sinon": "^9.0.4",
+    "@types/sinon-chai": "^3.2.4",
+    "axios": "^0.19.2",
+    "chai": "^4.2.0",
+    "chai-as-promised": "^7.1.1",
+    "eslint": "^7.4.0",
+    "gulp": "^4.0.2",
+    "mocha": "^8.0.1",
+    "proxyquire": "^2.1.3",
+    "sinon": "^9.0.2",
+    "sinon-chai": "^3.5.0"
+  },
+  "main": "main.js",
+  "scripts": {
+    "test:js": "mocha --opts test/mocha.custom.opts",
+    "test:package": "mocha test/package --exit",
+    "test:unit": "mocha test/unit --exit",
+    "test:integration": "mocha test/integration --exit",
+    "test": "npm run test:js && npm run test:package",
+    "lint": "eslint"
+  },
+  "bugs": {
+    "url": "https://github.com/MK-2001/ioBroker.go-echarger/issues"
+  },
+  "readmeFilename": "README.md"
+}
