@@ -22,10 +22,10 @@ class GoEcharger extends utils.Adapter {
             name: "go-echarger",
         });
         this.on("ready", this.onReady.bind(this));
-        this.on("stateChange", this.onStateChange.bind(this));
+        //this.on("stateChange", this.onStateChange.bind(this));
         // this.on("objectChange", this.onObjectChange.bind(this));
         // this.on("message", this.onMessage.bind(this));
-        this.on("unload", this.onUnload.bind(this));
+        //this.on("unload", this.onUnload.bind(this));
     }
 
     /**
@@ -36,8 +36,8 @@ class GoEcharger extends utils.Adapter {
 
         // The adapters config (in the instance object everything under the attribute "native") is accessible via
         // this.config:
-        this.log.info("config option1: " + this.config.option1);
-        this.log.info("config option2: " + this.config.option2);
+        this.log.info("Server: " + this.config.serverName);
+        this.log.info("Intervall: " + this.config.serverIntervall);
 
         /*
         For every state in the system there has to be also an object of type state
@@ -77,12 +77,10 @@ class GoEcharger extends utils.Adapter {
         // same thing, but the state is deleted after 30s (getState will return null afterwards)
         await this.setStateAsync("testVariable", { val: true, ack: true, expire: 30 });
 
-        // examples for the checkPassword/checkGroup functions
-        let result = await this.checkPasswordAsync("admin", "iobroker");
-        this.log.info("check user admin pw iobroker: " + result);
-
-        result = await this.checkGroupAsync("admin", "admin");
-        this.log.info("check group user admin group admin: " + result);
+        // Start the Adapter to sync in the interval
+        this.interval = setInterval(() => {
+            this.log.info("Intervalis now");
+        }, this.config.serverInterval * 1000);
     }
 
     /**

@@ -71,8 +71,8 @@
         ]
     },
     "native": {
-        "option1": true,
-        "option2": "42"
+        "serverName": "go-eCharger",
+        "serverInterval": 30
     },
     "objects": [],
     "instanceObjects": []
