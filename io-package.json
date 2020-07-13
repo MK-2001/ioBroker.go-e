@@ -75,5 +75,1296 @@
         "serverInterval": 30
     },
     "objects": [],
-    "instanceObjects": []
-}
+    "instanceObjects": [
+        {
+            "_id": "encryption",
+            "type": "state",
+            "common": {
+                "name": "Encryption enabled (version)",
+                "type": "boolean",
+                "read":  true,
+                "write": false
+            }
+        },{
+            "_id": "synctime",
+            "type": "state",
+            "common": {
+                "name": "timestamp of last sync (tme)",
+                "type": "string",
+                "read":  true,
+                "write": false
+            }
+        },{
+            "_id": "reboot_counter",
+            "type": "state",
+            "common": {
+                "name": "reboot_counter (rbc)",
+                "type": "number",
+                "read":  true,
+                "write": false
+            }
+        },{
+            "_id": "reboot_timer",
+            "type": "state",
+            "common": {
+                "name": "reboot_timer (rbtz)",
+                "type": "number",
+                "read":  true,
+                "write": false
+            }
+        },{
+            "_id": "car",
+            "type": "state",
+            "common": {
+                "name": "PWM Signalisierung (car)",
+                "type": "number",
+                "read":  true,
+                "write": false
+            }
+        },{
+            "_id": "ampere",
+            "type": "state",
+            "common": {
+                "name": "Ampere for PWM (amp)",
+                "type": "number",
+                "read":  true,
+                "write": true
+            }
+        },{
+            "_id": "error",
+            "type": "state",
+            "common": {
+                "name": "Error Object (err)",
+                "type": "number",
+                "read":  true,
+                "write": false,
+                "states": {
+                    "1": "RCCB",
+                    "3": "PHASE",
+                    "8": "NO_GROUND",
+                    "10": "INTERNAL"
+                }
+            }
+        },{
+            "_id": "access_state",
+            "type": "state",
+            "common": {
+                "name": "Access State (ast)",
+                "type": "number",
+                "read":  true,
+                "write": false,
+                "states": {
+                    "0": "open",
+                    "1": "key required"
+                }
+            }
+        },{
+            "_id": "allow_charging",
+            "type": "state",
+            "common": {
+                "name": "Allow Charging (alw)",
+                "type": "number",
+                "read":  true,
+                "write": false,
+                "states": {
+                    "0": "NO",
+                    "1": "YES"
+                }
+            }
+        },{
+            "_id": "stop_state",
+            "type": "state",
+            "common": {
+                "name": "stop_state: ​Automatische Abschaltung (stp)",
+                "type": "number",
+                "read":  true,
+                "write": false,
+                "states": {
+                    "0": "deactivated",
+                    "1": "stop after x kWh"
+                }
+            }
+        },{
+            "_id": "cable_ampere_code",
+            "type": "state",
+            "common": {
+                "name": "Kabel Ampere codierung (cbl)",
+                "type": "number",
+                "read":  true,
+                "write": false,
+                "states": {
+                    "0": "no cable",
+                    "16": "16 Ampere",
+                    "32": "32 Ampere"
+                }
+            }
+        },{
+            "_id": "phases",
+            "type": "state",
+            "common": {
+                "name": "Phases (pha)",
+                "type": "number",
+                "read":  true,
+                "write": false
+            }
+        },{
+            "_id": "tempereature",
+            "type": "state",
+            "common": {
+                "name": "Controller temperature (tmp)",
+                "type": "number",
+                "read":  true,
+                "write": false
+            }
+        },{
+            "_id": "tempereatureArray",
+            "type": "state",
+            "common": {
+                "name": "all temperatures (tma)",
+                "type": "array",
+                "read":  true,
+                "write": false
+            }
+        },{
+            "_id": "avail_ampere",
+            "type": "state",
+            "common": {
+                "name": "Available Amperes (amt)",
+                "type": "number",
+                "read":  true,
+                "write": false
+            }
+        },{
+            "_id": "loaded_energy",
+            "type": "state",
+            "common": {
+                "name": "loaded energy (dws)",
+                "type": "number",
+                "read":  true,
+                "write": false
+            }
+        },{
+            "_id": "max_load",
+            "type": "state",
+            "common": {
+                "name": "stop after max load of energy in x^10 kWh (dwo)",
+                "type": "number",
+                "read":  true,
+                "write": false
+            }
+        },{
+            "_id": "adapter_in",
+            "type": "state",
+            "common": {
+                "name": "found adapter (adi)",
+                "type": "number",
+                "read":  true,
+                "write": false,
+                "states": {
+                    "0": "NO_ADAPTER",
+                    "1": "16A ADAPTER"
+                }
+            }
+        },{
+            "_id": "unlocked_by",
+            "type": "state",
+            "common": {
+                "name": "Unblocked by RFID-ID (uby)",
+                "type": "number",
+                "read":  true,
+                "write": false
+            }
+        },{
+            "_id": "energy_total",
+            "type": "state",
+            "common": {
+                "name": "Gesamt geladene Energiemenge in 0.1kWh (eto)",
+                "type": "number",
+                "read":  true,
+                "write": false
+            }
+        },{
+            "_id":"wifi",
+            "type":"channel",
+            "common": {
+                "name":"WIFI Settings",
+                "role": "",
+                "icon": "",
+                "desc": "Channel to provide information of the wifi settings"
+            }
+        },{
+            "_id": "wifi.state",
+            "type": "state",
+            "common": {
+                "name": "WLAN Verbindungsstatus (wst)",
+                "type": "number",
+                "read":  true,
+                "write": false,
+                "states": {
+                    "0":"NO_CONNECTION",
+                    "3":"WIFI_ESTABLISHED"
+                }
+            }
+        },{
+            "_id": "txi",
+            "type": "state",
+            "common": {
+                "name": "? (txi)",
+                "type": "number",
+                "read":  true,
+                "write": false
+            }
+        },{
+            "_id": "energy",
+            "type": "channel",
+            "common": {
+                "name": "Energy",
+                "role": "",
+                "icon": "",
+                "desc": "Channel to provide information of the energy in all phases"
+            }
+        },{
+            "_id": "energy.phase1",
+            "type": "channel",
+            "common": {
+                "name": "Energy of phase 1",
+                "role": "",
+                "icon": "",
+                "desc": "Channel to provide information of the energy in phase one"
+            }
+        },{
+            "_id": "energy.phase2",
+            "type": "channel",
+            "common": {
+                "name": "Energy of phase 2",
+                "role": "",
+                "icon": "",
+                "desc": "Channel to provide information of the energy in phase two"
+            }
+        },{
+            "_id": "energy.phase3",
+            "type": "channel",
+            "common": {
+                "name": "Energy of phase 3",
+                "role": "",
+                "icon": "",
+                "desc": "Channel to provide information of the energy in phase three"
+            }
+        },{
+            "_id": "energy.neutral",
+            "type": "channel",
+            "common": {
+                "name": "Energy of neutral conductor",
+                "role": "",
+                "icon": "",
+                "desc": "Channel to provide information of the energy in neutral conductor"
+            }
+        },{
+            "_id": "energy.phase1.voltage",
+            "type": "state",
+            "common": {
+                "name": "Spannung auf L1 in Volt (nrg[0])",
+                "type": "number",
+                "read":  true,
+                "write": false
+            }
+        },{
+            "_id": "energy.phase2.voltage",
+            "type": "state",
+            "common": {
+                "name": "Spannung auf L2 in Volt (nrg[1])",
+                "type": "number",
+                "read":  true,
+                "write": false
+            }
+        },{
+            "_id": "energy.phase3.voltage",
+            "type": "state",
+            "common": {
+                "name": "Spannung auf L3 in Volt (nrg[2])",
+                "type": "number",
+                "read":  true,
+                "write": false
+            }
+        },{
+            "_id": "energy.neutral.voltage",
+            "type": "state",
+            "common": {
+                "name": "Spannung auf N in Volt (nrg[3])",
+                "type": "number",
+                "read":  true,
+                "write": false
+            }
+        },{
+            "_id": "energy.phase1.ampere",
+            "type": "state",
+            "common": {
+                "name": "Ampere auf L1 in 0.1A ​(123 entspricht 12,3A) (nrg[4])",
+                "type": "number",
+                "read":  true,
+                "write": false
+            }
+        },{
+            "_id": "energy.phase2.ampere",
+            "type": "state",
+            "common": {
+                "name": "Ampere auf L2 in 0.1A ​(123 entspricht 12,3A) (nrg[5])",
+                "type": "number",
+                "read":  true,
+                "write": false
+            }
+        },{
+            "_id": "energy.phase3.ampere",
+            "type": "state",
+            "common": {
+                "name": "Ampere auf L3 in 0.1A ​(123 entspricht 12,3A) (nrg[6])",
+                "type": "number",
+                "read":  true,
+                "write": false
+            }
+        },{
+            "_id": "energy.phase1.power",
+            "type": "state",
+            "common": {
+                "name": "Leistung auf L1 in 0.1kW ​(36 entspricht 3,6kW) (nrg[7])",
+                "type": "number",
+                "read":  true,
+                "write": false
+            }
+        },{
+            "_id": "energy.phase2.power",
+            "type": "state",
+            "common": {
+                "name": "Leistung auf L2 in 0.1kW ​(36 entspricht 3,6kW) (nrg[8])",
+                "type": "number",
+                "read":  true,
+                "write": false
+            }
+        },{
+            "_id": "energy.phase3.power",
+            "type": "state",
+            "common": {
+                "name": "Leistung auf L3 in 0.1kW ​(36 entspricht 3,6kW) (nrg[9])",
+                "type": "number",
+                "read":  true,
+                "write": false
+            }
+        },{
+            "_id": "energy.neutral.power",
+            "type": "state",
+            "common": {
+                "name": "Leistung auf N in 0.1kW ​(36 entspricht 3,6kW) (nrg[10])",
+                "type": "number",
+                "read":  true,
+                "write": false
+            }
+        },{
+            "_id": "energy.power",
+            "type": "state",
+            "common": {
+                "name": "Leistung gesamt in 0.01kW ​(360 entspricht 3,6kW) (nrg[11])",
+                "type": "number",
+                "read":  true,
+                "write": false
+            }
+        },{
+            "_id": "energy.phase1.power_coefficient",
+            "type": "state",
+            "common": {
+                "name": "Leistungsfaktor auf L1 in % (nrg[12])",
+                "type": "number",
+                "read":  true,
+                "write": false
+            }
+        },{
+            "_id": "energy.phase2.power_coefficient",
+            "type": "state",
+            "common": {
+                "name": "Leistungsfaktor auf L2 in % (nrg[13])",
+                "type": "number",
+                "read":  true,
+                "write": false
+            }
+        },{
+            "_id": "energy.phase3.power_coefficient",
+            "type": "state",
+            "common": {
+                "name": "Leistungsfaktor auf L3 in % (nrg[14])",
+                "type": "number",
+                "read":  true,
+                "write": false
+            }
+        },{
+            "_id": "energy.neutral.power_coefficient",
+            "type": "state",
+            "common": {
+                "name": "Leistungsfaktor auf N in % (nrg[15])",
+                "type": "number",
+                "read":  true,
+                "write": false
+            }
+        },{
+            "_id": "firmware_version",
+            "type": "state",
+            "common": {
+                "name": "Firmware Version (fwv)",
+                "type": "number",
+                "read":  true,
+                "write": false
+            }
+        },{
+            "_id": "serial_number",
+            "type": "state",
+            "common": {
+                "name": "Seriennummer (sse)",
+                "type": "number",
+                "read":  true,
+                "write": false
+            }
+        },{
+            "_id": "wifi.ssid",
+            "type": "state",
+            "common": {
+                "name": "WLAN SSID (wss)",
+                "type": "string",
+                "read":  true,
+                "write": false
+            }
+        },{
+            "_id": "wifi.key",
+            "type": "state",
+            "common": {
+                "name": "Seriennummer (wke)",
+                "type": "string",
+                "read":  true,
+                "write": false
+            }
+        },{
+            "_id": "wifi.enabled",
+            "type": "state",
+            "common": {
+                "name": "wlan aktiviert (wen)",
+                "type": "number",
+                "read":  true,
+                "write": false,
+                "states": {
+                    "0":"DEAKTIVATED",
+                    "1":"ACTIVATED"
+                }
+            }
+        },{
+            "_id": "cloud_disabled",
+            "type": "state",
+            "common": {
+                "name": "Cloud deaktiviert (cdi)",
+                "type": "number",
+                "read":  true,
+                "write": false,
+                "states": {
+                    "0":"cloud enabled",
+                    "1":"cloud disabled"
+                }
+            }
+        },{
+            "_id": "time_offset",
+            "type": "state",
+            "common": {
+                "name": "Zeitzone in Stunden für interne batteriegestützte Uhr +100 (tof)",
+                "type": "number",
+                "read":  true,
+                "write": false
+            }
+        },{
+            "_id": "time_daylight_saving",
+            "type": "state",
+            "common": {
+                "name": "Daylight saving time offset​ (Sommerzeit) in Stunden (tds)",
+                "type": "number",
+                "read":  true,
+                "write": false
+            }
+        },{
+            "_id": "led_brightness",
+            "type": "state",
+            "common": {
+                "name": "LED Helligkeit​ von 0-255 (lbr)",
+                "type": "number",
+                "read":  true,
+                "write": false
+            }
+        },{
+            "_id":"electricity_exchange",
+            "type": "channel",
+            "common": {
+                "name": "Strombörse",
+                "role": "",
+                "icon": "",
+                "desc": "Channel to provide information of the electricity exchange settings"
+            }
+        },{
+            "_id": "electricity_exchange.min_hours",
+            "type": "state",
+            "common": {
+                "name": "Minimale ​Anzahl v​ on Stunden in der mit 'Strompreis - automatisch' geladen werden muss (aho)",
+                "type": "number",
+                "read":  true,
+                "write": false
+            }
+        },{
+            "_id": "electricity_exchange.finish_hour",
+            "type": "state",
+            "common": {
+                "name": "Stunde (​Uhrzeit​) in der mit 'Strompreis - automatisch' die Ladung mindestens ​aho ​Stunden gedauert haben muss. (afi)",
+                "type": "number",
+                "read":  true,
+                "write": false
+            }
+        },{
+            "_id": "electricity_exchange.price_zone",
+            "type": "state",
+            "common": {
+                "name": "Awattar Preiszone (azo)",
+                "type": "number",
+                "read":  true,
+                "write": false,
+                "states":{
+                    "0":"Austria",
+                    "1":"Germany"
+                }
+            }
+        },{
+            "_id": "max_ampere",
+            "type": "state",
+            "common": {
+                "name": "Absolute max. Ampere: Maximalwert für Ampere Einstellung (ama)",
+                "type": "number",
+                "read":  true,
+                "write": false
+            }
+        },{
+            "_id": "ampere_level1",
+            "type": "state",
+            "common": {
+                "name": "Ampere Level 1 für Druckknopf am Gerät. (al1)",
+                "type": "number",
+                "read":  true,
+                "write": false
+            }
+        },{
+            "_id": "ampere_level2",
+            "type": "state",
+            "common": {
+                "name": "Ampere Level 2 für Druckknopf am Gerät. (al2)",
+                "type": "number",
+                "read":  true,
+                "write": false
+            }
+        },{
+            "_id": "ampere_level3",
+            "type": "state",
+            "common": {
+                "name": "Ampere Level 3 für Druckknopf am Gerät. (al3)",
+                "type": "number",
+                "read":  true,
+                "write": false
+            }
+        },{
+            "_id": "ampere_level4",
+            "type": "state",
+            "common": {
+                "name": "Ampere Level 4 für Druckknopf am Gerät. (al4)",
+                "type": "number",
+                "read":  true,
+                "write": false
+            }
+        },{
+            "_id": "ampere_level5",
+            "type": "state",
+            "common": {
+                "name": "Ampere Level 5 für Druckknopf am Gerät. (al5)",
+                "type": "number",
+                "read":  true,
+                "write": false
+            }
+        },{
+            "_id":"color",
+            "type":"channel",
+            "common": {
+                "name":"Color Settings",
+                "role": "",
+                "icon": "",
+                "desc": "Channel to provide information of the colors settings"
+            }
+        },{
+            "_id": "color.idle",
+            "type": "state",
+            "common": {
+                "name": "Color idle:​ Farbwert für Standby​ (kein Auto angesteckt) als Zahl (cid)",
+                "type": "string",
+                "read":  true,
+                "write": true
+            }
+        },{
+            "_id": "color.charging",
+            "type": "state",
+            "common": {
+                "name": "Color charging:​ Farbwert für Ladevorgang aktiv​, als Zahl (cch)",
+                "type": "string",
+                "read":  true,
+                "write": true
+            }
+        },{
+            "_id": "color.finish",
+            "type": "state",
+            "common": {
+                "name": "Color idle:​ Farbwert für Ladevorgang abgeschlossen​, als Zahl (cfi)",
+                "type": "string",
+                "read":  true,
+                "write": true
+            }
+        },{
+            "_id": "led_save_energy",
+            "type": "state",
+            "common": {
+                "name": "led_save_energy​: LED automatisch nach 10 Sekunden abschalten (lse)",
+                "type": "number",
+                "read":  true,
+                "write": true,
+                "states":{
+                    "0":"deakctivated",
+                    "1":"activated"
+                }
+            }
+        },{
+            "_id": "unlock_state",
+            "type": "state",
+            "common": {
+                "name": "unlock_state​: Kabelverriegelung Einstellung (ust)",
+                "type": "number",
+                "read":  true,
+                "write": false,
+                "states":{
+                    "0":"locked with car",
+                    "1":"unlock after finish",
+                    "2":"never unlock"
+                }
+            }
+        },{
+            "_id": "wifi.hotspot_key",
+            "type": "state",
+            "common": {
+                "name": "WLAN ​Hotspot Password (wak)",
+                "type": "string",
+                "read":  true,
+                "write": false
+            }
+        },{
+            "_id": "http_flags",
+            "type": "state",
+            "common": {
+                "name": "Flags (r1x)",
+                "type": "number",
+                "read":  true,
+                "write": false,
+                "states": {
+                    "0":"HTTTP & Encyption deactiviated",
+                    "1":"Encryption enabled",
+                    "2":"HTTP enabled",
+                    "3":"HTTP & Encryption enabled"
+                }
+            }
+        },{
+            "_id": "electricity_exchange.balance_time",
+            "type": "state",
+            "common": {
+                "name": "Restzeit​ in Millisekunden verbleibend auf Aktivierung durch Strompreise (dto)",
+                "type": "number",
+                "read":  true,
+                "write": false
+            }
+        },{
+            "_id": "energy.norway_mode",
+            "type": "state",
+            "common": {
+                "name": "Norwegen-Modus​ aktiviert (nmo)",
+                "type": "number",
+                "read":  true,
+                "write": false,
+                "states":{
+                    "0":"DEACTIVATED",
+                    "1":"ENABLED"
+                }
+            }
+        },{
+            "_id":"scheduler_settings",
+            "type":"state",
+            "common": {
+                "name": "Scheduler Einstellungen base64 encoded (sch)",
+                "type": "string",
+                "read": true,
+                "write": false
+            }
+        },{
+            "_id":"scheduler_double_press",
+            "type":"state",
+            "common": {
+                "name": "Scheduler double press (sch)",
+                "type": "number",
+                "read": true,
+                "write": false
+            }
+        },{
+            "_id":"rfid",
+            "type": "channel",
+            "common": {
+                "name": "RFID Settings",
+                "role": "",
+                "icon": "",
+                "desc": "Channel to provide information of the RFID settings and badgets"
+            }
+        },{
+            "_id":"rfid.badges",
+            "type": "channel",
+            "common": {
+                "name": "RFID Badgets",
+                "role": "",
+                "icon": "",
+                "desc": "Channel to provide information of the RFID badgets"
+            }
+        },{
+            "_id":"rfid.badges.1",
+            "type": "channel",
+            "common": {
+                "name": "RFID Badget 01",
+                "role": "",
+                "icon": "",
+                "desc": "Channel to provide information of the RFID badgets"
+            }
+        },{
+            "_id":"rfid.badges.2",
+            "type": "channel",
+            "common": {
+                "name": "RFID Badget 02",
+                "role": "",
+                "icon": "",
+                "desc": "Channel to provide information of the RFID badgets"
+            }
+        },{
+            "_id":"rfid.badges.3",
+            "type": "channel",
+            "common": {
+                "name": "RFID Badget 03",
+                "role": "",
+                "icon": "",
+                "desc": "Channel to provide information of the RFID badgets"
+            }
+        },{
+            "_id":"rfid.badges.4",
+            "type": "channel",
+            "common": {
+                "name": "RFID Badget 04",
+                "role": "",
+                "icon": "",
+                "desc": "Channel to provide information of the RFID badgets"
+            }
+        },{
+            "_id":"rfid.badges.5",
+            "type": "channel",
+            "common": {
+                "name": "RFID Badget 05",
+                "role": "",
+                "icon": "",
+                "desc": "Channel to provide information of the RFID badgets"
+            }
+        },{
+            "_id":"rfid.badges.6",
+            "type": "channel",
+            "common": {
+                "name": "RFID Badget 06",
+                "role": "",
+                "icon": "",
+                "desc": "Channel to provide information of the RFID badgets"
+            }
+        },{
+            "_id":"rfid.badges.7",
+            "type": "channel",
+            "common": {
+                "name": "RFID Badget 07",
+                "role": "",
+                "icon": "",
+                "desc": "Channel to provide information of the RFID badgets"
+            }
+        },{
+            "_id":"rfid.badges.8",
+            "type": "channel",
+            "common": {
+                "name": "RFID Badget 08",
+                "role": "",
+                "icon": "",
+                "desc": "Channel to provide information of the RFID badgets"
+            }
+        },{
+            "_id":"rfid.badges.9",
+            "type": "channel",
+            "common": {
+                "name": "RFID Badget 09",
+                "role": "",
+                "icon": "",
+                "desc": "Channel to provide information of the RFID badgets"
+            }
+        },{
+            "_id":"rfid.badges.10",
+            "type": "channel",
+            "common": {
+                "name": "RFID Badget 10",
+                "role": "",
+                "icon": "",
+                "desc": "Channel to provide information of the RFID badgets"
+            }
+        },{
+            "_id": "rfid.badges.1.consumption",
+            "type": "state",
+            "common": {
+                "name": "Geladene ​Energiemenge pro RFID Karte​ in kWh (eca)",
+                "type": "number",
+                "read":  true,
+                "write": false
+            }
+        },{
+            "_id": "rfid.badges.2.consumption",
+            "type": "state",
+            "common": {
+                "name": "Geladene ​Energiemenge pro RFID Karte​ in kWh (ecr)",
+                "type": "number",
+                "read":  true,
+                "write": false
+            }
+        },{
+            "_id": "rfid.badges.3.consumption",
+            "type": "state",
+            "common": {
+                "name": "Geladene ​Energiemenge pro RFID Karte​ in kWh (ecd)",
+                "type": "number",
+                "read":  true,
+                "write": false
+            }
+        },{
+            "_id": "rfid.badges.4.consumption",
+            "type": "state",
+            "common": {
+                "name": "Geladene ​Energiemenge pro RFID Karte​ in kWh (ec4)",
+                "type": "number",
+                "read":  true,
+                "write": false
+            }
+        },{
+            "_id": "rfid.badges.5.consumption",
+            "type": "state",
+            "common": {
+                "name": "Geladene ​Energiemenge pro RFID Karte​ in kWh (ec5)",
+                "type": "number",
+                "read":  true,
+                "write": false
+            }
+        },{
+            "_id": "rfid.badges.6.consumption",
+            "type": "state",
+            "common": {
+                "name": "Geladene ​Energiemenge pro RFID Karte​ in kWh (ec6)",
+                "type": "number",
+                "read":  true,
+                "write": false
+            }
+        },{
+            "_id": "rfid.badges.7.consumption",
+            "type": "state",
+            "common": {
+                "name": "Geladene ​Energiemenge pro RFID Karte​ in kWh (ec7)",
+                "type": "number",
+                "read":  true,
+                "write": false
+            }
+        },{
+            "_id": "rfid.badges.8.consumption",
+            "type": "state",
+            "common": {
+                "name": "Geladene ​Energiemenge pro RFID Karte​ in kWh (ec8)",
+                "type": "number",
+                "read":  true,
+                "write": false
+            }
+        },{
+            "_id": "rfid.badges.9.consumption",
+            "type": "state",
+            "common": {
+                "name": "Geladene ​Energiemenge pro RFID Karte​ in kWh (ec9)",
+                "type": "number",
+                "read":  true,
+                "write": false
+            }
+        },{
+            "_id": "rfid.badges.10.consumption",
+            "type": "state",
+            "common": {
+                "name": "Geladene ​Energiemenge pro RFID Karte​ in kWh (ec1)",
+                "type": "number",
+                "read":  true,
+                "write": false
+            }
+        },{
+            "_id": "rfid.badges.1.id",
+            "type": "state",
+            "common": {
+                "name": "RFID Karte ID​ (rca)",
+                "type": "string",
+                "read":  true,
+                "write": false
+            }
+        },{
+            "_id": "rfid.badges.2.id",
+            "type": "state",
+            "common": {
+                "name": "RFID Karte ID​ (rcr)",
+                "type": "string",
+                "read":  true,
+                "write": false
+            }
+        },{
+            "_id": "rfid.badges.3.id",
+            "type": "state",
+            "common": {
+                "name": "RFID Karte ID​ (rcd)",
+                "type": "string",
+                "read":  true,
+                "write": false
+            }
+        },{
+            "_id": "rfid.badges.4.id",
+            "type": "state",
+            "common": {
+                "name": "RFID Karte ID​ (rc4)",
+                "type": "string",
+                "read":  true,
+                "write": false
+            }
+        },{
+            "_id": "rfid.badges.5.id",
+            "type": "state",
+            "common": {
+                "name": "RFID Karte ID​ (rc5)",
+                "type": "string",
+                "read":  true,
+                "write": false
+            }
+        },{
+            "_id": "rfid.badges.6.id",
+            "type": "state",
+            "common": {
+                "name": "RFID Karte ID​ (rc6)",
+                "type": "string",
+                "read":  true,
+                "write": false
+            }
+        },{
+            "_id": "rfid.badges.7.id",
+            "type": "state",
+            "common": {
+                "name": "RFID Karte ID​ (rc7)",
+                "type": "string",
+                "read":  true,
+                "write": false
+            }
+        },{
+            "_id": "rfid.badges.8.id",
+            "type": "state",
+            "common": {
+                "name": "RFID Karte ID​ (rc8)",
+                "type": "string",
+                "read":  true,
+                "write": false
+            }
+        },{
+            "_id": "rfid.badges.9.id",
+            "type": "state",
+            "common": {
+                "name": "RFID Karte ID​ (rc9)",
+                "type": "string",
+                "read":  true,
+                "write": false
+            }
+        },{
+            "_id": "rfid.badges.10.id",
+            "type": "state",
+            "common": {
+                "name": "RFID Karte ID​ (rc1)",
+                "type": "string",
+                "read":  true,
+                "write": false
+            }
+        },{
+            "_id": "rfid.badges.1.name",
+            "type": "state",
+            "common": {
+                "name": "RFID Karte Name (rna)",
+                "type": "string",
+                "read":  true,
+                "write": false
+            }
+        },{
+            "_id": "rfid.badges.2.name",
+            "type": "state",
+            "common": {
+                "name": "RFID Karte Name (rnm)",
+                "type": "string",
+                "read":  true,
+                "write": false
+            }
+        },{
+            "_id": "rfid.badges.3.name",
+            "type": "state",
+            "common": {
+                "name": "RFID Karte Name (rne)",
+                "type": "string",
+                "read":  true,
+                "write": false
+            }
+        },{
+            "_id": "rfid.badges.4.name",
+            "type": "state",
+            "common": {
+                "name": "RFID Karte Name (rn4)",
+                "type": "string",
+                "read":  true,
+                "write": false
+            }
+        },{
+            "_id": "rfid.badges.5.name",
+            "type": "state",
+            "common": {
+                "name": "RFID Karte Name (rn5)",
+                "type": "string",
+                "read":  true,
+                "write": false
+            }
+        },{
+            "_id": "rfid.badges.6.name",
+            "type": "state",
+            "common": {
+                "name": "RFID Karte Name (rn6)",
+                "type": "string",
+                "read":  true,
+                "write": false
+            }
+        },{
+            "_id": "rfid.badges.7.name",
+            "type": "state",
+            "common": {
+                "name": "RFID Karte Name (rn7)",
+                "type": "string",
+                "read":  true,
+                "write": false
+            }
+        },{
+            "_id": "rfid.badges.8.name",
+            "type": "state",
+            "common": {
+                "name": "RFID Karte Name (rn8)",
+                "type": "string",
+                "read":  true,
+                "write": false
+            }
+        },{
+            "_id": "rfid.badges.9.name",
+            "type": "state",
+            "common": {
+                "name": "RFID Karte Name (rn9)",
+                "type": "string",
+                "read":  true,
+                "write": false
+            }
+        },{
+            "_id": "rfid.badges.10.name",
+            "type": "state",
+            "common": {
+                "name": "RFID Karte Name (rn1)",
+                "type": "string",
+                "read":  true,
+                "write": false
+            }
+        },{
+            "_id": "rfid.badges.10.name",
+            "type": "state",
+            "common": {
+                "name": "RFID Karte Name (rn1)",
+                "type": "string",
+                "read":  true,
+                "write": false
+            }
+        },{
+            "_id":"power_management",
+            "type": "channel",
+            "common": {
+                "name": "Lastmanagement",
+                "role": "",
+                "icon": "",
+                "desc": "Channel to provide information of the power management"
+            }
+        },{
+            "_id": "power_management.enabled",
+            "type": "state",
+            "common": {
+                "name": "Lastmanagement enabled (loe)",
+                "type": "number",
+                "read":  true,
+                "write": false,
+                "states": {
+                    "0": "DEACTIVATED",
+                    "1": "ENABLED"
+                }
+            }
+        },{
+            "_id": "power_management.group_ampere",
+            "type": "state",
+            "common": {
+                "name": "Lastmanagement Gruppe Total Ampere (lot)",
+                "type": "number",
+                "read":  true,
+                "write": false
+            }
+        },{
+            "_id": "power_management.min_ampere",
+            "type": "state",
+            "common": {
+                "name": "Lastmanagement minimale Amperezahl (lom)",
+                "type": "number",
+                "read":  true,
+                "write": false
+            }
+        },{
+            "_id": "power_management.priority",
+            "type": "state",
+            "common": {
+                "name": "Lastmanagement Priorität (lop)",
+                "type": "number",
+                "read":  true,
+                "write": false
+            }
+        },{
+            "_id": "power_management.group_id",
+            "type": "state",
+            "common": {
+                "name": "Lastmanagement Gruppen ID (log)",
+                "type": "string",
+                "read":  true,
+                "write": false
+            }
+        },{
+            "_id": "power_management.amount_wallboxes",
+            "type": "state",
+            "common": {
+                "name": "Lastmanagement: erwartete Anzahl von Ladestationen (lon)",
+                "type": "number",
+                "read":  true,
+                "write": false
+            }
+        },{
+            "_id": "power_management.fallback_ampere",
+            "type": "state",
+            "common": {
+                "name": "Lastmanagement Fallback Amperezahl (lof)",
+                "type": "number",
+                "read":  true,
+                "write": false
+            }
+        },{
+            "_id": "power_management.ampere",
+            "type": "state",
+            "common": {
+                "name": "Lastmanagement Ampere​ (derzeitiger erlaubter Ladestrom) (loa)",
+                "type": "number",
+                "read":  true,
+                "write": false
+            }
+        },{
+            "_id": "power_management.finish_idle_sec",
+            "type": "state",
+            "common": {
+                "name": "Lastmanagement: Sekunden seit letzten Stromfluss bei noch angestecktem Auto (lch)",
+                "type": "number",
+                "read":  true,
+                "write": false
+            }
+        },{
+            "_id":"mqtt",
+            "type": "channel",
+            "common": {
+                "name": "Custom MQTT",
+                "role": "",
+                "icon": "",
+                "desc": "Channel to provide information of the custom mqtt"
+            }
+        },{
+            "_id": "mqtt.enabled",
+            "type": "state",
+            "common": {
+                "name": "MQTT custom enabled (mce)",
+                "type": "number",
+                "read":  true,
+                "write": false,
+                "states": {
+                    "0":"DEACTIVATED",
+                    "1":"ENABLED"
+                }
+            }
+        },{
+            "_id": "mqtt.server",
+            "type": "state",
+            "common": {
+                "name": "MQTT server (mcs)",
+                "type": "string",
+                "read":  true,
+                "write": false
+            }
+        },{
+            "_id": "mqtt.port",
+            "type": "state",
+            "common": {
+                "name": "MQTT port (mcp)",
+                "type": "number",
+                "read":  true,
+                "write": false
+            }
+        },{
+            "_id": "mqtt.user",
+            "type": "state",
+            "common": {
+                "name": "MQTT user (mcu)",
+                "type": "string",
+                "read":  true,
+                "write": false
+            }
+        },{
+            "_id": "mqtt.key",
+            "type": "state",
+            "common": {
+                "name": "MQTT key (mck)",
+                "type": "string",
+                "read":  true,
+                "write": false
+            }
+        },{
+            "_id": "mqtt.connection",
+            "type": "state",
+            "common": {
+                "name": "MQTT Connection state (mcc)",
+                "type": "number",
+                "read":  true,
+                "write": false,
+                "states": {
+                    "0":"DISCONNECTED",
+                    "1":"CONNECTED"
+                }
+            }
+        } 
+    ]
+} 
