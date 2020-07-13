@@ -10,19 +10,32 @@
 
 [![NPM](https://nodei.co/npm/iobroker.go-echarger.png?downloads=true)](https://nodei.co/npm/iobroker.go-echarger/)
 
-## go-echarger adapter for ioBroker
+# The go-eCharger Wallbox
+![Product Image](admin/go-eCharger-HOME-Wallbox.png)
+For more details please visit https://go-e.co/ 
 
+## go-eCharger adapter for ioBroker
+**EN**
+go-e is an invitation to move electrically. E-mobility is our drive, whereby our core competence is the charging technology for electric cars. From the individual charging station for e-cars to photovoltaic connections to load management of entire buildings, we are providers of holistic system solutions for all requirements of modern e-mobility.
+
+**DE**
 go-e ist die Aufforderung, sich elektrisch zu bewegen. e-Mobilität ist unser Antrieb, wobei unsere Kernkompetenz die Ladetechnik für Elektroautos ist. Von der einzelnen Ladestation für e-Autos über Photovoltaik-Anbindung bis hin zum Lastmanagement von ganzen Gebäuden, sind wir Anbieter gesamtheitlicher Systemlösungen für sämtliche Anforderungen der modernen e-Mobilität.
 
 ## Developer manual
-This section is intended for the developer. It can be deleted later
+
 Official API Documentation:
 https://github.com/goecharger/go-eCharger-API-v1 
+
+Official Product Support:
+https://go-e.co/support/
 
 ## Changelog
 
 ### 0.0.1
 * (MK-2001) initial release
+
+### 0.0.2
+* (MK-2001) added requirements to publish the adapter
 
 ## License
                                  Apache License

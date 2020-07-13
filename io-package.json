@@ -14,32 +14,44 @@
                 "es": "Versión inicial",
                 "pl": "Pierwsze wydanie",
                 "zh-cn": "首次出版"
+            },
+            "0.0.2": {
+                "en": "added requirements to publish the adapter",
+                "de": "Anforderungen zum Veröffentlichen des Adapters hinzugefügt",
+                "ru": "добавлены требования для публикации адаптера",
+                "pt": "requisitos adicionados para publicar o adaptador",
+                "nl": "toegevoegde vereisten om de adapter te publiceren",
+                "fr": "exigences supplémentaires pour publier l'adaptateur",
+                "it": "aggiunti requisiti per pubblicare l'adattatore",
+                "es": "requisitos adicionales para publicar el adaptador",
+                "pl": "dodano wymagania do opublikowania adaptera",
+                "zh-cn": "首次出版"
             }
         },
-        "title": "go-eCharger",
+        "title": "go-eCharger wallbox integration",
         "titleLang": {
-            "en": "go-eCharger",
-            "de": "go-eCharger",
-            "ru": "гоу-eCharger",
-            "pt": "go-eCharger",
-            "nl": "go-eCharger",
-            "fr": "go-eCharger",
-            "it": "go-eCharger",
-            "es": "go-eCharger",
-            "pl": "go-eCharger",
-            "zh-cn": "电子充电器"
+            "en": "go-eCharger wallbox integration",
+            "de": "go-eCharger Wallbox integration",
+            "ru": "go-eCharger Wallbox integration",
+            "pt": "go-eCharger Wallbox integration",
+            "nl": "go-eCharger Wallbox integration",
+            "fr": "go-eCharger Wallbox integration",
+            "it": "go-eCharger Wallbox integration",
+            "es": "go-eCharger Wallbox integration",
+            "pl": "go-eCharger Wallbox integration",
+            "zh-cn": "go-eCharger Wallbox integration"
         },
         "desc": {
-            "en": "go-e ist die Aufforderung, sich elektrisch zu bewegen. e-Mobilität ist unser Antrieb, wobei unsere Kernkompetenz die Ladetechnik für Elektroautos ist. Von der einzelnen Ladestation für e-Autos über Photovoltaik-Anbindung bis hin zum Lastmanagement von ganzen Gebäuden, sind wir Anbieter gesamtheitlicher Systemlösungen für sämtliche Anforderungen der modernen e-Mobilität.",
-            "de": "go-e ist die Aufforderung, sich elektrisch zu bewegen. ",
-            "ru": "Go-E Ist Die Aufforderung, Sich Elektrisch ZU Bewegen. ",
-            "pt": "go-e ist die Aufforderung, sich elektrisch zu bewegen. ",
-            "nl": "go-e ist die Aufforderung, sich elektrisch zu bewegen. ",
-            "fr": "go-e ist die Aufforderung, sich elektrisch zu bewegen. ",
-            "it": "go-e ist die Aufforderung, sich elektrisch zu bewegen. ",
-            "es": "go-e ist die Aufforderung, sich elektrisch zu bewegen. ",
-            "pl": "go-e ist die Aufforderung, sich elektrisch zu bewegen. ",
-            "zh-cn": "Gouffist，Aufforderung，sich elektrisch zu bewegen。 "
+            "en": "go-e is an invitation to move electrically. E-mobility is our drive, whereby our core competence is the charging technology for electric cars. From the individual charging station for e-cars to photovoltaic connections to load management of entire buildings, we are providers of holistic system solutions for all requirements of modern e-mobility.",
+            "de": "go-e ist die Aufforderung, sich elektrisch zu bewegen. e-Mobilität ist unser Antrieb, wobei unsere Kernkompetenz die Ladetechnik für Elektroautos ist. Von der einzelnen Ladestation für e-Autos über Photovoltaik-Anbindung bis hin zum Lastmanagement von ganzen Gebäuden, sind wir Anbieter gesamtheitlicher Systemlösungen für sämtliche Anforderungen der modernen e-Mobilität.",
+            "ru": "go-e - это приглашение двигаться электрически. Электронная мобильность - это наш двигатель, поэтому нашей основной компетенцией является технология зарядки электромобилей. От индивидуальной зарядной станции для электронных автомобилей до фотоэлектрических подключений и управления нагрузкой на целые здания, мы являемся поставщиками комплексных системных решений для всех требований современной электронной мобильности.",
+            "pt": "go-e é um convite para mudar eletricamente. A mobilidade eletrônica é a nossa motivação, por meio da qual nossa principal competência é a tecnologia de carregamento de carros elétricos. Desde a estação de carregamento individual de carros elétricos, as conexões fotovoltaicas e o gerenciamento de carga de edifícios inteiros, somos fornecedores de soluções holísticas de sistema para todos os requisitos da moderna mobilidade eletrônica.",
+            "nl": "go-e is een uitnodiging om elektrisch te bewegen. E-mobiliteit is onze drijfveer, waarbij onze kerncompetentie de oplaadtechnologie voor elektrische auto's is. Van het individuele laadstation voor e-auto's tot fotovoltaïsche verbindingen tot laadbeheer van hele gebouwen, wij zijn leveranciers van holistische systeemoplossingen voor alle vereisten van moderne e-mobiliteit.",
+            "fr": "go-e est une invitation à se déplacer électriquement. La mobilité électrique est notre moteur, notre compétence principale étant la technologie de charge pour les voitures électriques. De la borne de recharge individuelle pour voitures électriques aux connexions photovoltaïques en passant par la gestion de la charge de bâtiments entiers, nous sommes des fournisseurs de solutions de systèmes holistiques pour toutes les exigences de la mobilité électrique moderne.",
+            "it": "go-e è un invito a muoversi elettricamente. La mobilità elettrica è la nostra spinta, per cui la nostra competenza principale è la tecnologia di ricarica per le auto elettriche. Dalla singola stazione di ricarica per auto elettriche alle connessioni fotovoltaiche alla gestione del carico di interi edifici, siamo fornitori di soluzioni di sistema olistiche per tutti i requisiti della moderna mobilità elettrica.",
+            "es": "go-e es una invitación para moverse eléctricamente. La movilidad eléctrica es nuestro motor, por lo que nuestra competencia principal es la tecnología de carga para automóviles eléctricos. Desde la estación de carga individual para automóviles electrónicos hasta conexiones fotovoltaicas y la gestión de carga de edificios completos, somos proveedores de soluciones de sistemas holísticos para todos los requisitos de la movilidad eléctrica moderna.",
+            "pl": "go-e to zaproszenie do poruszania się elektrycznie. E-mobilność jest naszą siłą napędową, a naszą podstawową kompetencją jest technologia ładowania samochodów elektrycznych. Od indywidualnej stacji ładowania samochodów elektrycznych po połączenia fotowoltaiczne i zarządzanie obciążeniem całych budynków - jesteśmy dostawcami kompleksowych rozwiązań systemowych dla wszystkich wymagań nowoczesnej e-mobilności.",
+            "zh-cn": "go-e是電動移動的邀請。 電動汽車是我們的動力，而我們的核心競爭力是電動汽車的充電技術。 從用於電動汽車的單個充電站到光伏連接，再到整個建築物的負載管理，我們都是滿足現代電動汽車所有要求的整體系統解決方案提供商。"
         },
         "authors": [
             "MK-2001 <go-e@itinsi.de>"
@@ -82,7 +94,8 @@
             "common": {
                 "name": "Encryption enabled (version)",
                 "type": "boolean",
-                "read":  true,
+                "role": "info.status",
+                "read": true,
                 "write": false
             }
         },{
@@ -91,7 +104,8 @@
             "common": {
                 "name": "timestamp of last sync (tme)",
                 "type": "string",
-                "read":  true,
+                "role": "date",
+                "read": true,
                 "write": false
             }
         },{
@@ -100,7 +114,8 @@
             "common": {
                 "name": "reboot_counter (rbc)",
                 "type": "number",
-                "read":  true,
+                "role": "value.default",
+                "read": true,
                 "write": false
             }
         },{
@@ -109,7 +124,8 @@
             "common": {
                 "name": "reboot_timer (rbtz)",
                 "type": "number",
-                "read":  true,
+                "role": "value.interval",
+                "read": true,
                 "write": false
             }
         },{
@@ -118,7 +134,8 @@
             "common": {
                 "name": "PWM Signalisierung (car)",
                 "type": "number",
-                "read":  true,
+                "role": "indicator.working",
+                "read": true,
                 "write": false
             }
         },{
@@ -127,7 +144,8 @@
             "common": {
                 "name": "Ampere for PWM (amp)",
                 "type": "number",
-                "read":  true,
+                "role": "level.current",
+                "read": true,
                 "write": true
             }
         },{
@@ -136,7 +154,8 @@
             "common": {
                 "name": "Error Object (err)",
                 "type": "number",
-                "read":  true,
+                "role": "indicator.maintenance",
+                "read": true,
                 "write": false,
                 "states": {
                     "1": "RCCB",
@@ -151,7 +170,8 @@
             "common": {
                 "name": "Access State (ast)",
                 "type": "number",
-                "read":  true,
+                "role": "switch.lock",
+                "read": true,
                 "write": false,
                 "states": {
                     "0": "open",
@@ -164,7 +184,8 @@
             "common": {
                 "name": "Allow Charging (alw)",
                 "type": "number",
-                "read":  true,
+                "role": "switch.lock",
+                "read": true,
                 "write": false,
                 "states": {
                     "0": "NO",
@@ -177,7 +198,8 @@
             "common": {
                 "name": "stop_state: ​Automatische Abschaltung (stp)",
                 "type": "number",
-                "read":  true,
+                "role": "level.timer.sleep",
+                "read": true,
                 "write": false,
                 "states": {
                     "0": "deactivated",
@@ -190,7 +212,8 @@
             "common": {
                 "name": "Kabel Ampere codierung (cbl)",
                 "type": "number",
-                "read":  true,
+                "role": "level.volume",
+                "read": true,
                 "write": false,
                 "states": {
                     "0": "no cable",
@@ -204,7 +227,8 @@
             "common": {
                 "name": "Phases (pha)",
                 "type": "number",
-                "read":  true,
+                "role": "value.power",
+                "read": true,
                 "write": false
             }
         },{
@@ -213,7 +237,8 @@
             "common": {
                 "name": "Controller temperature (tmp)",
                 "type": "number",
-                "read":  true,
+                "role": "value.temperature",
+                "read": true,
                 "write": false
             }
         },{
@@ -222,7 +247,8 @@
             "common": {
                 "name": "all temperatures (tma)",
                 "type": "array",
-                "read":  true,
+                "role": "value.temperature",
+                "read": true,
                 "write": false
             }
         },{
@@ -231,7 +257,8 @@
             "common": {
                 "name": "Available Amperes (amt)",
                 "type": "number",
-                "read":  true,
+                "role": "value.current",
+                "read": true,
                 "write": false
             }
         },{
@@ -240,7 +267,8 @@
             "common": {
                 "name": "loaded energy (dws)",
                 "type": "number",
-                "read":  true,
+                "role": "value.power.consumption",
+                "read": true,
                 "write": false
             }
         },{
@@ -249,7 +277,8 @@
             "common": {
                 "name": "stop after max load of energy in x^10 kWh (dwo)",
                 "type": "number",
-                "read":  true,
+                "role": "level.timer.sleep",
+                "read": true,
                 "write": false
             }
         },{
@@ -258,7 +287,8 @@
             "common": {
                 "name": "found adapter (adi)",
                 "type": "number",
-                "read":  true,
+                "role": "indicator",
+                "read": true,
                 "write": false,
                 "states": {
                     "0": "NO_ADAPTER",
@@ -271,7 +301,8 @@
             "common": {
                 "name": "Unblocked by RFID-ID (uby)",
                 "type": "number",
-                "read":  true,
+                "role": "indicator",
+                "read": true,
                 "write": false
             }
         },{
@@ -280,7 +311,8 @@
             "common": {
                 "name": "Gesamt geladene Energiemenge in 0.1kWh (eto)",
                 "type": "number",
-                "read":  true,
+                "role": "value.power.consumption",
+                "read": true,
                 "write": false
             }
         },{
@@ -288,7 +320,6 @@
             "type":"channel",
             "common": {
                 "name":"WIFI Settings",
-                "role": "",
                 "icon": "",
                 "desc": "Channel to provide information of the wifi settings"
             }
@@ -298,6 +329,7 @@
             "common": {
                 "name": "WLAN Verbindungsstatus (wst)",
                 "type": "number",
+                "role": "info.status",
                 "read":  true,
                 "write": false,
                 "states": {
@@ -311,6 +343,7 @@
             "common": {
                 "name": "? (txi)",
                 "type": "number",
+                "role": "",
                 "read":  true,
                 "write": false
             }
@@ -365,6 +398,7 @@
             "common": {
                 "name": "Spannung auf L1 in Volt (nrg[0])",
                 "type": "number",
+                "role": "value.voltage",
                 "read":  true,
                 "write": false
             }
@@ -374,6 +408,7 @@
             "common": {
                 "name": "Spannung auf L2 in Volt (nrg[1])",
                 "type": "number",
+                "role": "value.voltage",
                 "read":  true,
                 "write": false
             }
@@ -383,6 +418,7 @@
             "common": {
                 "name": "Spannung auf L3 in Volt (nrg[2])",
                 "type": "number",
+                "role": "value.voltage",
                 "read":  true,
                 "write": false
             }
@@ -392,6 +428,7 @@
             "common": {
                 "name": "Spannung auf N in Volt (nrg[3])",
                 "type": "number",
+                "role": "value.voltage",
                 "read":  true,
                 "write": false
             }
@@ -399,8 +436,9 @@
             "_id": "energy.phase1.ampere",
             "type": "state",
             "common": {
-                "name": "Ampere auf L1 in 0.1A ​(123 entspricht 12,3A) (nrg[4])",
+                "name": "Ampere auf L1 in Ampere ​ (nrg[4])",
                 "type": "number",
+                "role": "value.current",
                 "read":  true,
                 "write": false
             }
@@ -408,8 +446,9 @@
             "_id": "energy.phase2.ampere",
             "type": "state",
             "common": {
-                "name": "Ampere auf L2 in 0.1A ​(123 entspricht 12,3A) (nrg[5])",
+                "name": "Ampere auf L2 in Ampere (nrg[5])",
                 "type": "number",
+                "role": "value.current",
                 "read":  true,
                 "write": false
             }
@@ -417,8 +456,9 @@
             "_id": "energy.phase3.ampere",
             "type": "state",
             "common": {
-                "name": "Ampere auf L3 in 0.1A ​(123 entspricht 12,3A) (nrg[6])",
+                "name": "Ampere auf L3 in Ampere (nrg[6])",
                 "type": "number",
+                "role": "value.current",
                 "read":  true,
                 "write": false
             }
@@ -426,8 +466,9 @@
             "_id": "energy.phase1.power",
             "type": "state",
             "common": {
-                "name": "Leistung auf L1 in 0.1kW ​(36 entspricht 3,6kW) (nrg[7])",
+                "name": "Leistung auf L1 in kW (nrg[7])",
                 "type": "number",
+                "role": "value.power.consumption",
                 "read":  true,
                 "write": false
             }
@@ -435,8 +476,9 @@
             "_id": "energy.phase2.power",
             "type": "state",
             "common": {
-                "name": "Leistung auf L2 in 0.1kW ​(36 entspricht 3,6kW) (nrg[8])",
+                "name": "Leistung auf L2 in kW ​(nrg[8])",
                 "type": "number",
+                "role": "value.power.consumption",
                 "read":  true,
                 "write": false
             }
@@ -444,8 +486,9 @@
             "_id": "energy.phase3.power",
             "type": "state",
             "common": {
-                "name": "Leistung auf L3 in 0.1kW ​(36 entspricht 3,6kW) (nrg[9])",
+                "name": "Leistung auf L3 in kW ​(nrg[9])",
                 "type": "number",
+                "role": "value.power.consumption",
                 "read":  true,
                 "write": false
             }
@@ -453,8 +496,9 @@
             "_id": "energy.neutral.power",
             "type": "state",
             "common": {
-                "name": "Leistung auf N in 0.1kW ​(36 entspricht 3,6kW) (nrg[10])",
+                "name": "Leistung auf N in kW (nrg[10])",
                 "type": "number",
+                "role": "value.power.consumption",
                 "read":  true,
                 "write": false
             }
@@ -462,8 +506,9 @@
             "_id": "energy.power",
             "type": "state",
             "common": {
-                "name": "Leistung gesamt in 0.01kW ​(360 entspricht 3,6kW) (nrg[11])",
+                "name": "Leistung gesamt in kW (nrg[11])",
                 "type": "number",
+                "role": "value.power.consumption",
                 "read":  true,
                 "write": false
             }
@@ -473,6 +518,7 @@
             "common": {
                 "name": "Leistungsfaktor auf L1 in % (nrg[12])",
                 "type": "number",
+                "role": "value",
                 "read":  true,
                 "write": false
             }
@@ -482,6 +528,7 @@
             "common": {
                 "name": "Leistungsfaktor auf L2 in % (nrg[13])",
                 "type": "number",
+                "role": "value",
                 "read":  true,
                 "write": false
             }
@@ -491,6 +538,7 @@
             "common": {
                 "name": "Leistungsfaktor auf L3 in % (nrg[14])",
                 "type": "number",
+                "role": "value",
                 "read":  true,
                 "write": false
             }
@@ -500,6 +548,7 @@
             "common": {
                 "name": "Leistungsfaktor auf N in % (nrg[15])",
                 "type": "number",
+                "role": "value",
                 "read":  true,
                 "write": false
             }
@@ -509,6 +558,7 @@
             "common": {
                 "name": "Firmware Version (fwv)",
                 "type": "number",
+                "role": "info.name",
                 "read":  true,
                 "write": false
             }
@@ -518,6 +568,7 @@
             "common": {
                 "name": "Seriennummer (sse)",
                 "type": "number",
+                "role": "info.name",
                 "read":  true,
                 "write": false
             }
@@ -527,6 +578,7 @@
             "common": {
                 "name": "WLAN SSID (wss)",
                 "type": "string",
+                "role": "info.name",
                 "read":  true,
                 "write": false
             }
@@ -536,6 +588,7 @@
             "common": {
                 "name": "Seriennummer (wke)",
                 "type": "string",
+                "role": "",
                 "read":  true,
                 "write": false
             }
@@ -545,6 +598,7 @@
             "common": {
                 "name": "wlan aktiviert (wen)",
                 "type": "number",
+                "role": "info.status",
                 "read":  true,
                 "write": false,
                 "states": {
@@ -558,6 +612,7 @@
             "common": {
                 "name": "Cloud deaktiviert (cdi)",
                 "type": "number",
+                "role": "info.status",
                 "read":  true,
                 "write": false,
                 "states": {
@@ -571,6 +626,7 @@
             "common": {
                 "name": "Zeitzone in Stunden für interne batteriegestützte Uhr +100 (tof)",
                 "type": "number",
+                "role": "value",
                 "read":  true,
                 "write": false
             }
@@ -580,6 +636,7 @@
             "common": {
                 "name": "Daylight saving time offset​ (Sommerzeit) in Stunden (tds)",
                 "type": "number",
+                "role": "value",
                 "read":  true,
                 "write": false
             }
@@ -589,6 +646,7 @@
             "common": {
                 "name": "LED Helligkeit​ von 0-255 (lbr)",
                 "type": "number",
+                "role": "value.brightness",
                 "read":  true,
                 "write": false
             }
@@ -607,6 +665,7 @@
             "common": {
                 "name": "Minimale ​Anzahl v​ on Stunden in der mit 'Strompreis - automatisch' geladen werden muss (aho)",
                 "type": "number",
+                "role": "level",
                 "read":  true,
                 "write": false
             }
@@ -616,6 +675,7 @@
             "common": {
                 "name": "Stunde (​Uhrzeit​) in der mit 'Strompreis - automatisch' die Ladung mindestens ​aho ​Stunden gedauert haben muss. (afi)",
                 "type": "number",
+                "role": "level",
                 "read":  true,
                 "write": false
             }
@@ -625,6 +685,7 @@
             "common": {
                 "name": "Awattar Preiszone (azo)",
                 "type": "number",
+                "role": "level",
                 "read":  true,
                 "write": false,
                 "states":{
@@ -638,6 +699,7 @@
             "common": {
                 "name": "Absolute max. Ampere: Maximalwert für Ampere Einstellung (ama)",
                 "type": "number",
+                "role": "level.current",
                 "read":  true,
                 "write": false
             }
@@ -647,6 +709,7 @@
             "common": {
                 "name": "Ampere Level 1 für Druckknopf am Gerät. (al1)",
                 "type": "number",
+                "role": "level.current",
                 "read":  true,
                 "write": false
             }
@@ -656,6 +719,7 @@
             "common": {
                 "name": "Ampere Level 2 für Druckknopf am Gerät. (al2)",
                 "type": "number",
+                "role": "level.current",
                 "read":  true,
                 "write": false
             }
@@ -665,6 +729,7 @@
             "common": {
                 "name": "Ampere Level 3 für Druckknopf am Gerät. (al3)",
                 "type": "number",
+                "role": "level.current",
                 "read":  true,
                 "write": false
             }
@@ -674,6 +739,7 @@
             "common": {
                 "name": "Ampere Level 4 für Druckknopf am Gerät. (al4)",
                 "type": "number",
+                "role": "level.current",
                 "read":  true,
                 "write": false
             }
@@ -683,6 +749,7 @@
             "common": {
                 "name": "Ampere Level 5 für Druckknopf am Gerät. (al5)",
                 "type": "number",
+                "role": "level.current",
                 "read":  true,
                 "write": false
             }
@@ -701,6 +768,7 @@
             "common": {
                 "name": "Color idle:​ Farbwert für Standby​ (kein Auto angesteckt) als Zahl (cid)",
                 "type": "string",
+                "role": "level.color.rgb",
                 "read":  true,
                 "write": true
             }
@@ -710,6 +778,7 @@
             "common": {
                 "name": "Color charging:​ Farbwert für Ladevorgang aktiv​, als Zahl (cch)",
                 "type": "string",
+                "role": "level.color.rgb",
                 "read":  true,
                 "write": true
             }
@@ -719,6 +788,7 @@
             "common": {
                 "name": "Color idle:​ Farbwert für Ladevorgang abgeschlossen​, als Zahl (cfi)",
                 "type": "string",
+                "role": "level.color.rgb",
                 "read":  true,
                 "write": true
             }
@@ -728,6 +798,7 @@
             "common": {
                 "name": "led_save_energy​: LED automatisch nach 10 Sekunden abschalten (lse)",
                 "type": "number",
+                "role": "level",
                 "read":  true,
                 "write": true,
                 "states":{
@@ -741,6 +812,7 @@
             "common": {
                 "name": "unlock_state​: Kabelverriegelung Einstellung (ust)",
                 "type": "number",
+                "role": "level",
                 "read":  true,
                 "write": false,
                 "states":{
@@ -755,6 +827,7 @@
             "common": {
                 "name": "WLAN ​Hotspot Password (wak)",
                 "type": "string",
+                "role": "text",
                 "read":  true,
                 "write": false
             }
@@ -764,6 +837,7 @@
             "common": {
                 "name": "Flags (r1x)",
                 "type": "number",
+                "role": "text",
                 "read":  true,
                 "write": false,
                 "states": {
@@ -779,6 +853,7 @@
             "common": {
                 "name": "Restzeit​ in Millisekunden verbleibend auf Aktivierung durch Strompreise (dto)",
                 "type": "number",
+                "role": "level",
                 "read":  true,
                 "write": false
             }
@@ -788,6 +863,7 @@
             "common": {
                 "name": "Norwegen-Modus​ aktiviert (nmo)",
                 "type": "number",
+                "role": "level",
                 "read":  true,
                 "write": false,
                 "states":{
@@ -801,6 +877,7 @@
             "common": {
                 "name": "Scheduler Einstellungen base64 encoded (sch)",
                 "type": "string",
+                "role": "state",
                 "read": true,
                 "write": false
             }
@@ -810,6 +887,7 @@
             "common": {
                 "name": "Scheduler double press (sch)",
                 "type": "number",
+                "role": "state",
                 "read": true,
                 "write": false
             }
@@ -927,6 +1005,7 @@
             "common": {
                 "name": "Geladene ​Energiemenge pro RFID Karte​ in kWh (eca)",
                 "type": "number",
+                "role": "",
                 "read":  true,
                 "write": false
             }
@@ -936,6 +1015,7 @@
             "common": {
                 "name": "Geladene ​Energiemenge pro RFID Karte​ in kWh (ecr)",
                 "type": "number",
+                "role": "value.power.consumption",
                 "read":  true,
                 "write": false
             }
@@ -945,6 +1025,7 @@
             "common": {
                 "name": "Geladene ​Energiemenge pro RFID Karte​ in kWh (ecd)",
                 "type": "number",
+                "role": "value.power.consumption",
                 "read":  true,
                 "write": false
             }
@@ -954,6 +1035,7 @@
             "common": {
                 "name": "Geladene ​Energiemenge pro RFID Karte​ in kWh (ec4)",
                 "type": "number",
+                "role": "value.power.consumption",
                 "read":  true,
                 "write": false
             }
@@ -963,6 +1045,7 @@
             "common": {
                 "name": "Geladene ​Energiemenge pro RFID Karte​ in kWh (ec5)",
                 "type": "number",
+                "role": "value.power.consumption",
                 "read":  true,
                 "write": false
             }
@@ -972,6 +1055,7 @@
             "common": {
                 "name": "Geladene ​Energiemenge pro RFID Karte​ in kWh (ec6)",
                 "type": "number",
+                "role": "value.power.consumption",
                 "read":  true,
                 "write": false
             }
@@ -981,6 +1065,7 @@
             "common": {
                 "name": "Geladene ​Energiemenge pro RFID Karte​ in kWh (ec7)",
                 "type": "number",
+                "role": "value.power.consumption",
                 "read":  true,
                 "write": false
             }
@@ -990,6 +1075,7 @@
             "common": {
                 "name": "Geladene ​Energiemenge pro RFID Karte​ in kWh (ec8)",
                 "type": "number",
+                "role": "value.power.consumption",
                 "read":  true,
                 "write": false
             }
@@ -999,6 +1085,7 @@
             "common": {
                 "name": "Geladene ​Energiemenge pro RFID Karte​ in kWh (ec9)",
                 "type": "number",
+                "role": "value.power.consumption",
                 "read":  true,
                 "write": false
             }
@@ -1008,6 +1095,7 @@
             "common": {
                 "name": "Geladene ​Energiemenge pro RFID Karte​ in kWh (ec1)",
                 "type": "number",
+                "role": "value.power.consumption",
                 "read":  true,
                 "write": false
             }
@@ -1017,6 +1105,7 @@
             "common": {
                 "name": "RFID Karte ID​ (rca)",
                 "type": "string",
+                "role": "value",
                 "read":  true,
                 "write": false
             }
@@ -1026,6 +1115,7 @@
             "common": {
                 "name": "RFID Karte ID​ (rcr)",
                 "type": "string",
+                "role": "value",
                 "read":  true,
                 "write": false
             }
@@ -1035,6 +1125,7 @@
             "common": {
                 "name": "RFID Karte ID​ (rcd)",
                 "type": "string",
+                "role": "value",
                 "read":  true,
                 "write": false
             }
@@ -1044,6 +1135,7 @@
             "common": {
                 "name": "RFID Karte ID​ (rc4)",
                 "type": "string",
+                "role": "value",
                 "read":  true,
                 "write": false
             }
@@ -1053,6 +1145,7 @@
             "common": {
                 "name": "RFID Karte ID​ (rc5)",
                 "type": "string",
+                "role": "value",
                 "read":  true,
                 "write": false
             }
@@ -1062,6 +1155,7 @@
             "common": {
                 "name": "RFID Karte ID​ (rc6)",
                 "type": "string",
+                "role": "value",
                 "read":  true,
                 "write": false
             }
@@ -1071,6 +1165,7 @@
             "common": {
                 "name": "RFID Karte ID​ (rc7)",
                 "type": "string",
+                "role": "value",
                 "read":  true,
                 "write": false
             }
@@ -1080,6 +1175,7 @@
             "common": {
                 "name": "RFID Karte ID​ (rc8)",
                 "type": "string",
+                "role": "value",
                 "read":  true,
                 "write": false
             }
@@ -1089,6 +1185,7 @@
             "common": {
                 "name": "RFID Karte ID​ (rc9)",
                 "type": "string",
+                "role": "value",
                 "read":  true,
                 "write": false
             }
@@ -1098,6 +1195,7 @@
             "common": {
                 "name": "RFID Karte ID​ (rc1)",
                 "type": "string",
+                "role": "value",
                 "read":  true,
                 "write": false
             }
@@ -1107,6 +1205,7 @@
             "common": {
                 "name": "RFID Karte Name (rna)",
                 "type": "string",
+                "role": "text",
                 "read":  true,
                 "write": false
             }
@@ -1116,6 +1215,7 @@
             "common": {
                 "name": "RFID Karte Name (rnm)",
                 "type": "string",
+                "role": "text",
                 "read":  true,
                 "write": false
             }
@@ -1125,6 +1225,7 @@
             "common": {
                 "name": "RFID Karte Name (rne)",
                 "type": "string",
+                "role": "text",
                 "read":  true,
                 "write": false
             }
@@ -1134,6 +1235,7 @@
             "common": {
                 "name": "RFID Karte Name (rn4)",
                 "type": "string",
+                "role": "text",
                 "read":  true,
                 "write": false
             }
@@ -1143,6 +1245,7 @@
             "common": {
                 "name": "RFID Karte Name (rn5)",
                 "type": "string",
+                "role": "text",
                 "read":  true,
                 "write": false
             }
@@ -1152,6 +1255,7 @@
             "common": {
                 "name": "RFID Karte Name (rn6)",
                 "type": "string",
+                "role": "text",
                 "read":  true,
                 "write": false
             }
@@ -1161,6 +1265,7 @@
             "common": {
                 "name": "RFID Karte Name (rn7)",
                 "type": "string",
+                "role": "text",
                 "read":  true,
                 "write": false
             }
@@ -1170,6 +1275,7 @@
             "common": {
                 "name": "RFID Karte Name (rn8)",
                 "type": "string",
+                "role": "text",
                 "read":  true,
                 "write": false
             }
@@ -1179,6 +1285,7 @@
             "common": {
                 "name": "RFID Karte Name (rn9)",
                 "type": "string",
+                "role": "text",
                 "read":  true,
                 "write": false
             }
@@ -1188,6 +1295,7 @@
             "common": {
                 "name": "RFID Karte Name (rn1)",
                 "type": "string",
+                "role": "text",
                 "read":  true,
                 "write": false
             }
@@ -1197,6 +1305,7 @@
             "common": {
                 "name": "RFID Karte Name (rn1)",
                 "type": "string",
+                "role": "text",
                 "read":  true,
                 "write": false
             }
@@ -1215,6 +1324,7 @@
             "common": {
                 "name": "Lastmanagement enabled (loe)",
                 "type": "number",
+                "role": "value",
                 "read":  true,
                 "write": false,
                 "states": {
@@ -1228,6 +1338,7 @@
             "common": {
                 "name": "Lastmanagement Gruppe Total Ampere (lot)",
                 "type": "number",
+                "role": "value",
                 "read":  true,
                 "write": false
             }
@@ -1237,6 +1348,7 @@
             "common": {
                 "name": "Lastmanagement minimale Amperezahl (lom)",
                 "type": "number",
+                "role": "value",
                 "read":  true,
                 "write": false
             }
@@ -1246,6 +1358,7 @@
             "common": {
                 "name": "Lastmanagement Priorität (lop)",
                 "type": "number",
+                "role": "value",
                 "read":  true,
                 "write": false
             }
@@ -1255,6 +1368,7 @@
             "common": {
                 "name": "Lastmanagement Gruppen ID (log)",
                 "type": "string",
+                "role": "value",
                 "read":  true,
                 "write": false
             }
@@ -1264,6 +1378,7 @@
             "common": {
                 "name": "Lastmanagement: erwartete Anzahl von Ladestationen (lon)",
                 "type": "number",
+                "role": "value",
                 "read":  true,
                 "write": false
             }
@@ -1273,6 +1388,7 @@
             "common": {
                 "name": "Lastmanagement Fallback Amperezahl (lof)",
                 "type": "number",
+                "role": "value",
                 "read":  true,
                 "write": false
             }
@@ -1282,6 +1398,7 @@
             "common": {
                 "name": "Lastmanagement Ampere​ (derzeitiger erlaubter Ladestrom) (loa)",
                 "type": "number",
+                "role": "value",
                 "read":  true,
                 "write": false
             }
@@ -1291,6 +1408,7 @@
             "common": {
                 "name": "Lastmanagement: Sekunden seit letzten Stromfluss bei noch angestecktem Auto (lch)",
                 "type": "number",
+                "role": "value",
                 "read":  true,
                 "write": false
             }
@@ -1309,6 +1427,7 @@
             "common": {
                 "name": "MQTT custom enabled (mce)",
                 "type": "number",
+                "role": "value",
                 "read":  true,
                 "write": false,
                 "states": {
@@ -1322,6 +1441,7 @@
             "common": {
                 "name": "MQTT server (mcs)",
                 "type": "string",
+                "role": "value",
                 "read":  true,
                 "write": false
             }
@@ -1331,6 +1451,7 @@
             "common": {
                 "name": "MQTT port (mcp)",
                 "type": "number",
+                "role": "value",
                 "read":  true,
                 "write": false
             }
@@ -1340,6 +1461,7 @@
             "common": {
                 "name": "MQTT user (mcu)",
                 "type": "string",
+                "role": "value",
                 "read":  true,
                 "write": false
             }
@@ -1349,6 +1471,7 @@
             "common": {
                 "name": "MQTT key (mck)",
                 "type": "string",
+                "role": "value",
                 "read":  true,
                 "write": false
             }
@@ -1358,6 +1481,7 @@
             "common": {
                 "name": "MQTT Connection state (mcc)",
                 "type": "number",
+                "role": "value",
                 "read":  true,
                 "write": false,
                 "states": {

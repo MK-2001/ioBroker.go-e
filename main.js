@@ -180,21 +180,21 @@ class GoEcharger extends utils.Adapter {
         this.setState("max_load",                           { val: o.dwo, ack: true }); // write
         this.setState("adapter_in",                         { val: o.adi, ack: true }); // read
         this.setState("unlocked_by",                        { val: o.uby, ack: true }); // read
-        this.setState("energy_total",                       { val: o.eto, ack: true }); // read
+        this.setState("energy_total",                       { val: (o.eto / 10), ack: true }); // read
         this.setState("wifi.state",                         { val: o.wst, ack: true }); // read
         this.setState("txi",                                { val: o.txi, ack: true });
         this.setState("energy.phase1.voltage",              { val: o.nrg[0], ack: true }); // read
         this.setState("energy.phase2.voltage",              { val: o.nrg[1], ack: true }); // read
         this.setState("energy.phase3.voltage",              { val: o.nrg[2], ack: true }); // read
         this.setState("energy.neutral.voltage",             { val: o.nrg[3], ack: true }); // read
-        this.setState("energy.phase1.ampere",               { val: o.nrg[4], ack: true }); // read
-        this.setState("energy.phase2.ampere",               { val: o.nrg[5], ack: true }); // read
-        this.setState("energy.phase3.ampere",               { val: o.nrg[6], ack: true }); // read
-        this.setState("energy.phase1.power",                { val: o.nrg[7], ack: true }); // read
-        this.setState("energy.phase2.power",                { val: o.nrg[8], ack: true }); // read
-        this.setState("energy.phase3.power",                { val: o.nrg[9], ack: true }); // read
-        this.setState("energy.neutral.power",               { val: o.nrg[10], ack: true }); // read
-        this.setState("energy.power",                       { val: o.nrg[11], ack: true }); // read
+        this.setState("energy.phase1.ampere",               { val: (o.nrg[4] / 10), ack: true }); // read
+        this.setState("energy.phase2.ampere",               { val: (o.nrg[5] / 10), ack: true }); // read
+        this.setState("energy.phase3.ampere",               { val: (o.nrg[6] / 10), ack: true }); // read
+        this.setState("energy.phase1.power",                { val: (o.nrg[7] / 10), ack: true }); // read
+        this.setState("energy.phase2.power",                { val: (o.nrg[8] / 10), ack: true }); // read
+        this.setState("energy.phase3.power",                { val: (o.nrg[9] / 10), ack: true }); // read
+        this.setState("energy.neutral.power",               { val: (o.nrg[10] / 10), ack: true }); // read
+        this.setState("energy.power",                       { val: (o.nrg[11] / 100), ack: true }); // read
         this.setState("energy.phase1.power_coefficient",    { val: o.nrg[12], ack: true }); // read
         this.setState("energy.phase2.power_coefficient",    { val: o.nrg[13], ack: true }); // read
         this.setState("energy.phase3.power_coefficient",    { val: o.nrg[14], ack: true }); // read
