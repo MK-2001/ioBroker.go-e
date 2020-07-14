@@ -1,5 +1,6 @@
 before_script:
   - npm install -g axios
+  - npm ls
 language: node_js
 node_js:
   - lts/*
