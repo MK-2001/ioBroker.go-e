@@ -29,6 +29,8 @@ https://github.com/goecharger/go-eCharger-API-v1
 Official Product Support:
 https://go-e.co/support/
 
+
+
 ## Changelog
 
 ### 0.0.1
@@ -239,3 +241,6 @@ https://go-e.co/support/
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.
+
+## Copyright
+Copyright (c) 2020 MK-2001 go-e@itinsi.de
