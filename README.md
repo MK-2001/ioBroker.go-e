@@ -1,14 +1,14 @@
 ![Logo](admin/go-echarger.png)
 # ioBroker.go-echarger
 
-[![NPM version](http://img.shields.io/npm/v/@mk2001/iobroker.go-echarger.svg)](https://www.npmjs.com/package/@mk2001/iobroker.go-echarger)
-[![Downloads](https://img.shields.io/npm/dm/@mk2001/iobroker.go-echarger.svg)](https://www.npmjs.com/package/@mk2001/iobroker.go-echarger)
+[![NPM version](http://img.shields.io/npm/v/iobroker.go-e.svg)](https://www.npmjs.com/package/@mk2001/iobroker.go-echarger)
+[![Downloads](https://img.shields.io/npm/dm/iobroker.go-e.svg)](https://www.npmjs.com/package/@mk2001/iobroker.go-echarger)
 ![Number of Installations (latest)](http://iobroker.live/badges/go-echarger-installed.svg)
 ![Number of Installations (stable)](http://iobroker.live/badges/go-echarger-stable.svg)
 [![Dependency Status](https://img.shields.io/david/MK-2001/iobroker.go-echarger.svg)](https://david-dm.org/MK-2001/iobroker.go-echarger)
 [![Known Vulnerabilities](https://snyk.io/test/github/MK-2001/ioBroker.go-echarger/badge.svg)](https://snyk.io/test/github/MK-2001/ioBroker.go-echarger)
 
-[![NPM](https://nodei.co/npm/@mk2001/iobroker.go-echarger.png?downloads=true)](https://nodei.co/npm/@mk2001/iobroker.go-echarger/)
+[![NPM](https://nodei.co/npm/iobroker.go-e.png?downloads=true)](https://nodei.co/npm/@mk2001/iobroker.go-echarger/)
 
 # The go-eCharger Wallbox
 ![Product Image](admin/go-eCharger-HOME-Wallbox.png)
