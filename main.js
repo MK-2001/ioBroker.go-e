@@ -9,8 +9,7 @@
 const utils = require("@iobroker/adapter-core");
 // Load your modules here, e.g.:
 // const fs = require("fs");
-const { default: axios } = require("axios");
-
+const axios = require("axios");
 class GoEcharger extends utils.Adapter {
 
     /**

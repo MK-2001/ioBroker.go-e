@@ -43,7 +43,7 @@
   },
   "main": "main.js",
   "scripts": {
-    "test:js": "mocha --config test/.mocharc.yml",
+    "test:js": "mocha --exit",
     "test:package": "mocha test/package --exit",
     "test:unit": "mocha test/unit --exit",
     "test:integration": "mocha test/integration --exit",
