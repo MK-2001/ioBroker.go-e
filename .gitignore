@@ -5,6 +5,7 @@ node_modules/
 nbproject
 ownReadme.md
 todo.md
+statusObject.json
 
 # npm package files
 iobroker.*.tgz
