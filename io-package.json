@@ -1,7 +1,7 @@
 {
     "common": {
         "name": "go-e",
-        "version": "0.0.2",
+        "version": "0.0.3",
         "news": {
             "0.0.1": {
                 "en": "initial release",
@@ -16,6 +16,18 @@
                 "zh-cn": "首次出版"
             },
             "0.0.2": {
+                "en": "added requirements to publish the adapter",
+                "de": "Anforderungen zum Veröffentlichen des Adapters hinzugefügt",
+                "ru": "добавлены требования для публикации адаптера",
+                "pt": "requisitos adicionados para publicar o adaptador",
+                "nl": "toegevoegde vereisten om de adapter te publiceren",
+                "fr": "exigences supplémentaires pour publier l'adaptateur",
+                "it": "aggiunti requisiti per pubblicare l'adattatore",
+                "es": "requisitos adicionales para publicar el adaptador",
+                "pl": "dodano wymagania do opublikowania adaptera",
+                "zh-cn": "首次出版"
+            },
+            "0.0.3": {
                 "en": "added requirements to publish the adapter",
                 "de": "Anforderungen zum Veröffentlichen des Adapters hinzugefügt",
                 "ru": "добавлены требования для публикации адаптера",
