@@ -190,7 +190,7 @@
                 "type": "number",
                 "role": "switch.lock",
                 "read": true,
-                "write": false,
+                "write": true,
                 "states": {
                     "0": "open",
                     "1": "key required"
@@ -204,7 +204,7 @@
                 "type": "number",
                 "role": "switch.lock",
                 "read": true,
-                "write": false,
+                "write": true,
                 "states": {
                     "0": "NO",
                     "1": "YES"
@@ -218,7 +218,7 @@
                 "type": "number",
                 "role": "level.timer.sleep",
                 "read": true,
-                "write": false,
+                "write": true,
                 "states": {
                     "0": "deactivated",
                     "1": "stop after x kWh"
@@ -293,11 +293,11 @@
             "_id": "max_load",
             "type": "state",
             "common": {
-                "name": "stop after max load of energy in x^10 kWh (dwo)",
+                "name": "stop after max load of energy in kWh (dwo)",
                 "type": "number",
                 "role": "level.timer.sleep",
                 "read": true,
-                "write": false
+                "write": true
             }
         },{
             "_id": "adapter_in",

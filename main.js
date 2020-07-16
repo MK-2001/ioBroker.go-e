@@ -43,6 +43,9 @@ class GoEcharger extends utils.Adapter {
         this.subscribeStates("ampere");
         this.subscribeStates("color.*");
         this.subscribeStates("led_save_energy");
+        this.subscribeStates("access_state");
+        this.subscribeStates("allow_charging");
+        this.subscribeStates("max_load");
         
         // Start the Adapter to sync in the interval
         this.interval = setInterval(async () => {
@@ -121,6 +124,30 @@ class GoEcharger extends utils.Adapter {
                     case this.namespace + ".led_save_energy":
                         this.setValue("lse", parseInt(state.val.toString()));
                         break;
+                    case this.namespace + ".access_state":
+                        if(parseInt(state.val.toString()) == 0 || parseInt(state.val.toString()) == 1 ) {
+                            this.setValue("ast", parseInt(state.val.toString()));
+                        } else {
+                            this.log.warn("Could not set value " + state.val.toString() + " in " + id);
+                        }
+                        break;
+                    case this.namespace + ".allow_charging":
+                        if(parseInt(state.val.toString()) == 0 || parseInt(state.val.toString()) == 1 ) {
+                            this.setValue("alw", parseInt(state.val.toString()));
+                        } else {
+                            this.log.warn("Could not set value " + state.val.toString() + " in " + id);
+                        }
+                        break;
+                    case this.namespace + ".stop_state":
+                        if(parseInt(state.val.toString()) == 0 || parseInt(state.val.toString()) == 2 ) {
+                            this.setValue("stp", parseInt(state.val.toString()));
+                        } else {
+                            this.log.warn("Could not set value " + state.val.toString() + " in " + id);
+                        }
+                        break;
+                    case this.namespace + ".max_load":
+                        this.setValue("dwo", parseInt(state.val.toString()) * 10);
+                        break;
                     default:
                         this.log.error("Not deveoped function to write " + id + " with state " + state);
                 }
@@ -185,7 +212,7 @@ class GoEcharger extends utils.Adapter {
         this.setState("tempereatureArray",                  { val: o.tma, ack: true });
         this.setState("avail_ampere",                       { val: o.amt, ack: true });
         this.setState("loaded_energy",                      { val: o.dws, ack: true }); // read
-        this.setState("max_load",                           { val: o.dwo, ack: true }); // write
+        this.setState("max_load",                           { val: (o.dwo / 10), ack: true }); // write
         this.setState("adapter_in",                         { val: o.adi, ack: true }); // read
         this.setState("unlocked_by",                        { val: o.uby, ack: true }); // read
         this.setState("energy_total",                       { val: (o.eto / 10), ack: true }); // read
