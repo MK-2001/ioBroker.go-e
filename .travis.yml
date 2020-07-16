@@ -4,3 +4,12 @@ before_script:
 language: node_js
 node_js:
   - lts/*
+os:
+  - linux
+  - osx
+  - windows
+script:
+  - npm run test:package
+  - npm run test:unit
+  - export DEBUG=testing:*
+  - npm run test:integration
