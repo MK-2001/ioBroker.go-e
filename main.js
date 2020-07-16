@@ -9,7 +9,7 @@
 const utils = require("@iobroker/adapter-core");
 // Load your modules here, e.g.:
 // const fs = require("fs");
-const axios = require("axios");
+const axios = require("axios").default;
 class GoEcharger extends utils.Adapter {
 
     /**
@@ -61,6 +61,7 @@ class GoEcharger extends utils.Adapter {
             // clearTimeout(timeout2);
             // ...
             // clearInterval(interval1);
+            // @ts-ignore
             clearInterval(this.interval);
             callback();
         } catch (e) {
@@ -96,21 +97,29 @@ class GoEcharger extends utils.Adapter {
             this.log.debug(`state ${id} changed: ${state.val} (ack = ${state.ack}) namespace: ` + this.namespace);
             if (!state.ack) {
                 // If it is already acknoladged, we dont have to send it to the go-eCharger device.
+                // Handle null values with the rejection 
+                if(state.val === null) {
+                    this.log.warn("Not able to handle null Values in " + id);
+                    return;
+                }
                 switch (id) {
                     case this.namespace + ".ampere":
-                        this.setValue("amp", state.val);
+                        this.setValue("amp", state.val.toString());
                         break;
                     case this.namespace + ".color.idle":
-                        this.setValue("cid", parseInt(/^#?([a-f\d]{6})$/i.exec(state.val)[1], 16));
+                        // @ts-ignore // Check off null is done
+                        this.setValue("cid", /^#?([a-f\d]{6})$/i.exec(state.val.toString()) !== null ? parseInt(/^#?([a-f\d]{6})$/i.exec(state.val.toString())[1], 16) : 0);
                         break;
                     case this.namespace + ".color.charging":
-                        this.setValue("cid", parseInt(/^#?([a-f\d]{6})$/i.exec(state.val)[1], 16));
+                        // @ts-ignore // Check off null is done
+                        this.setValue("cid", /^#?([a-f\d]{6})$/i.exec(state.val.toString()) !== null ? parseInt(/^#?([a-f\d]{6})$/i.exec(state.val.toString())[1], 16) : 0);
                         break;
                     case this.namespace + ".color.finish":
-                        this.setValue("cid", parseInt(/^#?([a-f\d]{6})$/i.exec(state.val)[1], 16));
+                        // @ts-ignore // Check off null is done
+                        this.setValue("cid", /^#?([a-f\d]{6})$/i.exec(state.val.toString()) !== null ? parseInt(/^#?([a-f\d]{6})$/i.exec(state.val.toString())[1], 16) : 0);
                         break;
                     case this.namespace + ".led_save_energy":
-                        this.setValue("lse", state.val);
+                        this.setValue("lse", parseInt(state.val.toString()));
                         break;
                     default:
                         this.log.error("Not deveoped function to write " + id + " with state " + state);
