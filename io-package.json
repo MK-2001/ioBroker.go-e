@@ -136,7 +136,13 @@
                 "type": "number",
                 "role": "indicator.working",
                 "read": true,
-                "write": false
+                "write": false,
+                "states":{
+                    "1": "Standby",
+                    "2": "Loading",
+                    "3": "Wait for car",
+                    "4": "Finish, car connected"
+                }
             }
         },{
             "_id": "ampere",
