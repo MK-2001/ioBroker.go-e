@@ -6,7 +6,7 @@
     "name": "MK-2001",
     "email": "go-e@itinsi.de"
   },
-  "homepage": "https://github.com/MK-2001/ioBroker.go-echarger",
+  "homepage": "https://github.com/MK-2001/ioBroker.go-e",
   "license": "Apache-2.0",
   "keywords": [
     "wallbox",
@@ -16,7 +16,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/MK-2001/ioBroker.go-echarger"
+    "url": "https://github.com/MK-2001/ioBroker.go-e"
   },
   "dependencies": {
     "@iobroker/adapter-core": "^2.4.0"
@@ -51,7 +51,7 @@
     "lint": "eslint"
   },
   "bugs": {
-    "url": "https://github.com/MK-2001/ioBroker.go-echarger/issues"
+    "url": "https://github.com/MK-2001/ioBroker.go-e/issues"
   },
   "readmeFilename": "README.md"
 }
