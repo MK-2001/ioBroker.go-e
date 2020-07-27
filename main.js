@@ -46,6 +46,7 @@ class GoEcharger extends utils.Adapter {
         this.subscribeStates("access_state");
         this.subscribeStates("allow_charging");
         this.subscribeStates("max_load");
+        this.subscribeStates("stop_state");
         
         // Start the Adapter to sync in the interval
         this.interval = setInterval(async () => {

@@ -39,6 +39,9 @@ https://go-e.co/support/
 ### 0.0.2
 * (MK-2001) added requirements to publish the adapter
 
+### 0.0.3
+* (MK-2001) added requirements to publish the adapter again, enabled new writeable interfaces: Access State (ast), Allow Charging (alw), stop_state: ​Automatische Abschaltung (stp), max_load
+
 ## License
                                  Apache License
                            Version 2.0, January 2004
