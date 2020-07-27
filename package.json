@@ -1,6 +1,6 @@
 {
   "name": "iobroker.go-e",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "go-e ist die Aufforderung, sich elektrisch zu bewegen. e-Mobilität ist unser Antrieb, wobei unsere Kernkompetenz die Ladetechnik für Elektroautos ist. Von der einzelnen Ladestation für e-Autos über Photovoltaik-Anbindung bis hin zum Lastmanagement von ganzen Gebäuden, sind wir Anbieter gesamtheitlicher Systemlösungen für sämtliche Anforderungen der modernen e-Mobilität.",
   "author": {
     "name": "MK-2001",
@@ -19,7 +19,8 @@
     "url": "https://github.com/MK-2001/ioBroker.go-e"
   },
   "dependencies": {
-    "@iobroker/adapter-core": "^2.4.0"
+    "@iobroker/adapter-core": "^2.4.0",
+    "axios": "^0.19.2"
   },
   "devDependencies": {
     "@iobroker/testing": "^2.2.0",

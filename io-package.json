@@ -50,6 +50,18 @@
                 "es": "solved bug with different names.",
                 "pl": "solved bug with different names.",
                 "zh-cn": "solved bug with different names."
+            },
+            "0.0.5": {
+                "en": "Activated Tests again;",
+                "de": "solved bug with different names.",
+                "ru": "solved bug with different names.",
+                "pt": "solved bug with different names.",
+                "nl": "solved bug with different names.",
+                "fr": "solved bug with different names.",
+                "it": "solved bug with different names.",
+                "es": "solved bug with different names.",
+                "pl": "solved bug with different names.",
+                "zh-cn": "solved bug with different names."
             }
         },
         "title": "go-eCharger wallbox integration",
