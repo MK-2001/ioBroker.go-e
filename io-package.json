@@ -1,7 +1,7 @@
 {
     "common": {
         "name": "go-e",
-        "version": "0.0.3",
+        "version": "0.0.4",
         "news": {
             "0.0.1": {
                 "en": "initial release",
@@ -38,6 +38,18 @@
                 "es": "requisitos adicionales para publicar el adaptador",
                 "pl": "dodano wymagania do opublikowania adaptera",
                 "zh-cn": "首次出版"
+            },
+            "0.0.4": {
+                "en": "solved bug with different names.",
+                "de": "solved bug with different names.",
+                "ru": "solved bug with different names.",
+                "pt": "solved bug with different names.",
+                "nl": "solved bug with different names.",
+                "fr": "solved bug with different names.",
+                "it": "solved bug with different names.",
+                "es": "solved bug with different names.",
+                "pl": "solved bug with different names.",
+                "zh-cn": "solved bug with different names."
             }
         },
         "title": "go-eCharger wallbox integration",

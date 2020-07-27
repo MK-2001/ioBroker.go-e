@@ -10,7 +10,7 @@ const utils = require("@iobroker/adapter-core");
 // Load your modules here, e.g.:
 // const fs = require("fs");
 const axios = require("axios").default;
-class GoEcharger extends utils.Adapter {
+class GoE extends utils.Adapter {
 
     /**
      * @param {Partial<utils.AdapterOptions>} [options={}]
@@ -18,7 +18,7 @@ class GoEcharger extends utils.Adapter {
     constructor(options) {
         super({
             ...options,
-            name: "go-echarger",
+            name: "go-e",
         });
         this.on("ready", this.onReady.bind(this));
         this.on("stateChange", this.onStateChange.bind(this));
@@ -335,8 +335,8 @@ if (module.parent) {
     /**
      * @param {Partial<utils.AdapterOptions>} [options={}]
      */
-    module.exports = (options) => new GoEcharger(options);
+    module.exports = (options) => new GoE(options);
 } else {
     // otherwise start the instance directly
-    new GoEcharger();
+    new GoE();
 }
