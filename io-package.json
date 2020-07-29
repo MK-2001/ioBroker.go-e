@@ -120,7 +120,8 @@
     },
     "native": {
         "serverName": "go-eCharger",
-        "serverInterval": 30
+        "serverInterval": 30,
+        "ampUpdateInterval": 30
     },
     "objects": [],
     "instanceObjects": [
@@ -1530,6 +1531,16 @@
                     "0":"DISCONNECTED",
                     "1":"CONNECTED"
                 }
+            }
+        },{
+            "_id": "electricity_exchange.max_watts",
+            "type": "state",
+            "common": {
+                "name": "Maximum Watts for loading process",
+                "type": "number",
+                "role": "value",
+                "read": "true",
+                "write": "true"
             }
         } 
     ]

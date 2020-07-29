@@ -11,7 +11,6 @@ const utils = require("@iobroker/adapter-core");
 // const fs = require("fs");
 const axios = require("axios").default;
 class GoE extends utils.Adapter {
-
     /**
      * @param {Partial<utils.AdapterOptions>} [options={}]
      */
@@ -25,8 +24,11 @@ class GoE extends utils.Adapter {
         // this.on("objectChange", this.onObjectChange.bind(this));
         // this.on("message", this.onMessage.bind(this));
         this.on("unload", this.onUnload.bind(this));
-    }
 
+        // Timer Object for the update interval for ampere to the adapter
+        this.ampTimer = null;
+    }
+    
     /**
      * Is called when databases are connected and adapter received configuration.
      */
@@ -47,7 +49,8 @@ class GoE extends utils.Adapter {
         this.subscribeStates("allow_charging");
         this.subscribeStates("max_load");
         this.subscribeStates("stop_state");
-        
+        this.subscribeStates("electricity_exchange.max_watts");
+
         // Start the Adapter to sync in the interval
         this.interval = setInterval(async () => {
             await this.getStateFromDevice();
@@ -148,6 +151,9 @@ class GoE extends utils.Adapter {
                         break;
                     case this.namespace + ".max_load":
                         this.setValue("dwo", parseInt(state.val.toString()) * 10);
+                        break;
+                    case this.namespace + ".electricity_exchange.max_watts":
+                        
                         break;
                     default:
                         this.log.error("Not deveoped function to write " + id + " with state " + state);
@@ -326,7 +332,33 @@ class GoE extends utils.Adapter {
                 this.log.error(err.message + " at " + id + " / " + value);
             });
     }
+    /**
+     * Set the maximum ampere level to the device. But not Updates it more than x seconds. Setting ampUpdateInterval
+     * @param {number} watts
+     */
+    async updateAmpLevel(watts) {
+        if (!this.ampTimer) {
+            this.ampTimer = setTimeout(() => {
+                this.ampTimer = null;
+            }, this.config.ampUpdateInterval * 1000);
+            try {
+                const avgVoltage1 = await this.getStateAsync("energy.phase1.voltage");
+                const avgVoltage2 = await this.getStateAsync("energy.phase2.voltage");
+                const avgVoltage3 = await this.getStateAsync("energy.phase3.voltage");
 
+                const maxAmp = (avgVoltage1?.val + avgVoltage2.val + avgVoltage3.val )/watts;
+                
+            } catch (e) {
+                this.log.info("1");
+                throw e;
+            }
+
+            this.setValue("amp", 6);
+            
+            
+        }
+    }
+    
 }
 
 // @ts-ignore parent is a valid property on module
