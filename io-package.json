@@ -441,10 +441,10 @@
                 }
             }
         },{
-            "_id": "txi",
+            "_id": "transmit_interface",
             "type": "state",
             "common": {
-                "name": "? (txi)",
+                "name": "transmit interface (txi)",
                 "type": "number",
                 "role": "",
                 "read":  true,

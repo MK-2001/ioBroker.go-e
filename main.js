@@ -240,7 +240,7 @@ class GoE extends utils.Adapter {
         this.setState("unlocked_by",                        { val: o.uby, ack: true }); // read
         this.setState("energy_total",                       { val: (o.eto / 10), ack: true }); // read
         this.setState("wifi.state",                         { val: o.wst, ack: true }); // read
-        this.setState("txi",                                { val: o.txi, ack: true });
+        this.setState("transmit_interface",                 { val: o.txi, ack: true });
         this.setState("energy.phase1.voltage",              { val: o.nrg[0], ack: true }); // read
         this.setState("energy.phase2.voltage",              { val: o.nrg[1], ack: true }); // read
         this.setState("energy.phase3.voltage",              { val: o.nrg[2], ack: true }); // read
