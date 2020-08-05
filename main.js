@@ -203,6 +203,15 @@ class GoE extends utils.Adapter {
      * @param {object} o 
      */
     processStatusObject(o) {
+        // Const for variable pha
+        const myString = "56";
+        const postContactorPhase1 = 1;
+        const postContactorPhase2 = 2;
+        const postContactorPhase3 = 4;
+        const preContactorPhase1 = 8;
+        const preContactorPhase2 = 16;
+        const preContactorPhase3 = 32;
+
         this.setState("encryption",                         { val: o.version == "C" ? true : false, ack: true }); // read
         this.setState("synctime",                           { val: o.tme, ack: true }); 
         this.setState("reboot_counter",                     { val: o.rbc, ack: true }); // read
@@ -215,6 +224,13 @@ class GoE extends utils.Adapter {
         this.setState("stop_state",                         { val: o.stp, ack: true }); // write
         this.setState("cable_ampere_code",                  { val: o.cbl, ack: true }); // read
         this.setState("phases",                             { val: o.pha, ack: true }); // read
+        // Split phases in single states
+        this.setState("energy.phase1.preContactorActive",   { val: ((parseInt(o.pha) & preContactorPhase1) == preContactorPhase1)}); //read
+        this.setState("energy.phase1.postContactorActive",   { val: ((parseInt(o.pha) & preContactorPhase1) == preContactorPhase1)}); //read
+        this.setState("energy.phase2.preContactorActive",   { val: ((parseInt(o.pha) & preContactorPhase2) == preContactorPhase2)}); //read
+        this.setState("energy.phase2.postContactorActive",   { val: ((parseInt(o.pha) & preContactorPhase2) == preContactorPhase2)}); //read
+        this.setState("energy.phase3.preContactorActive",   { val: ((parseInt(o.pha) & preContactorPhase3) == preContactorPhase3)}); //read
+        this.setState("energy.phase3.postContactorActive",   { val: ((parseInt(o.pha) & preContactorPhase3) == preContactorPhase3)}); //read
         this.setState("tempereature",                       { val: o.tmp, ack: true }); // read
         this.setState("tempereatureArray",                  { val: o.tma, ack: true });
         this.setState("avail_ampere",                       { val: o.amt, ack: true });
@@ -342,11 +358,26 @@ class GoE extends utils.Adapter {
                 this.ampTimer = null;
             }, this.config.ampUpdateInterval * 1000);
             try {
+                // San for active phases on Adapter
+                const prePhase1 = await this.getStateAsync("energy.phase1.preContactorActive");
+                const prePhase2 = await this.getStateAsync("energy.phase2.preContactorActive");
+                const prePhase3 = await this.getStateAsync("energy.phase3.preContactorActive");
                 const avgVoltage1 = await this.getStateAsync("energy.phase1.voltage");
                 const avgVoltage2 = await this.getStateAsync("energy.phase2.voltage");
                 const avgVoltage3 = await this.getStateAsync("energy.phase3.voltage");
 
-                const maxAmp = (avgVoltage1?.val + avgVoltage2.val + avgVoltage3.val )/watts;
+                if(prePhase1 === null || prePhase1 === undefined || prePhase1.val === null ||  
+                    prePhase2 === null || prePhase2 === undefined || prePhase2.val === null ||  
+                    prePhase3 === null || prePhase3 === undefined || prePhase3.val === null ||  
+                    avgVoltage1 === null || avgVoltage1 === undefined || avgVoltage1.val === null ||
+                    avgVoltage2 === null || avgVoltage2 === undefined || avgVoltage2.val === null ||
+                    avgVoltage3 === null || avgVoltage3 === undefined || avgVoltage3.val === null) {
+                    return;
+                }
+
+                const maxAmp = ((prePhase1.val === true ? parseInt(avgVoltage1.val.toString()) : 0 ) + 
+                                (prePhase2.val === true ? parseInt(avgVoltage2.val.toString()) : 0 ) + 
+                                (prePhase3.val === true ? parseInt(avgVoltage3.val.toString()) : 0 ) )/watts;
                 
             } catch (e) {
                 this.log.info("1");

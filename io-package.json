@@ -275,6 +275,66 @@
                 "write": false
             }
         },{
+            "_id": "energy.phase1.preContactorActive",
+            "type": "state",
+            "common": {
+                "name": "Pre Line Contactor active Phase 1 (part of pha)",
+                "type": "boolean",
+                "role": "value",
+                "read": true,
+                "write": false
+            }
+        },{
+            "_id": "energy.phase1.postContactorActive",
+            "type": "state",
+            "common": {
+                "name": "Post Line Contactor active Phase 1 (part of pha)",
+                "type": "boolean",
+                "role": "value",
+                "read": true,
+                "write": false
+            }
+        },{
+            "_id": "energy.phase2.preContactorActive",
+            "type": "state",
+            "common": {
+                "name": "Pre Line Contactor active Phase 2 (part of pha)",
+                "type": "boolean",
+                "role": "value",
+                "read": true,
+                "write": false
+            }
+        },{
+            "_id": "energy.phase2.postContactorActive",
+            "type": "state",
+            "common": {
+                "name": "Post Line Contactor active Phase 2 (part of pha)",
+                "type": "boolean",
+                "role": "value",
+                "read": true,
+                "write": false
+            }
+        },{
+            "_id": "energy.phase3.preContactorActive",
+            "type": "state",
+            "common": {
+                "name": "Pre Line Contactor active Phase 3 (part of pha)",
+                "type": "boolean",
+                "role": "value",
+                "read": true,
+                "write": false
+            }
+        },{
+            "_id": "energy.phase3.postContactorActive",
+            "type": "state",
+            "common": {
+                "name": "Post Line Contactor active Phase 3 (part of pha)",
+                "type": "boolean",
+                "role": "value",
+                "read": true,
+                "write": false
+            }
+        },{
             "_id": "tempereature",
             "type": "state",
             "common": {
