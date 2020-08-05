@@ -1599,8 +1599,8 @@
                 "name": "Maximum Watts for loading process",
                 "type": "number",
                 "role": "value",
-                "read": "true",
-                "write": "true"
+                "read": true,
+                "write": true
             }
         } 
     ]
