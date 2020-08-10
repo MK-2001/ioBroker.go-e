@@ -1,7 +1,7 @@
 {
     "common": {
         "name": "go-e",
-        "version": "0.0.4",
+        "version": "0.0.5",
         "news": {
             "0.0.1": {
                 "en": "initial release",
@@ -120,7 +120,8 @@
     },
     "native": {
         "serverName": "go-eCharger",
-        "serverInterval": 30
+        "serverInterval": 30,
+        "ampUpdateInterval": 30
     },
     "objects": [],
     "instanceObjects": [
@@ -274,6 +275,66 @@
                 "write": false
             }
         },{
+            "_id": "energy.phase1.preContactorActive",
+            "type": "state",
+            "common": {
+                "name": "Pre Line Contactor active Phase 1 (part of pha)",
+                "type": "boolean",
+                "role": "value",
+                "read": true,
+                "write": false
+            }
+        },{
+            "_id": "energy.phase1.postContactorActive",
+            "type": "state",
+            "common": {
+                "name": "Post Line Contactor active Phase 1 (part of pha)",
+                "type": "boolean",
+                "role": "value",
+                "read": true,
+                "write": false
+            }
+        },{
+            "_id": "energy.phase2.preContactorActive",
+            "type": "state",
+            "common": {
+                "name": "Pre Line Contactor active Phase 2 (part of pha)",
+                "type": "boolean",
+                "role": "value",
+                "read": true,
+                "write": false
+            }
+        },{
+            "_id": "energy.phase2.postContactorActive",
+            "type": "state",
+            "common": {
+                "name": "Post Line Contactor active Phase 2 (part of pha)",
+                "type": "boolean",
+                "role": "value",
+                "read": true,
+                "write": false
+            }
+        },{
+            "_id": "energy.phase3.preContactorActive",
+            "type": "state",
+            "common": {
+                "name": "Pre Line Contactor active Phase 3 (part of pha)",
+                "type": "boolean",
+                "role": "value",
+                "read": true,
+                "write": false
+            }
+        },{
+            "_id": "energy.phase3.postContactorActive",
+            "type": "state",
+            "common": {
+                "name": "Post Line Contactor active Phase 3 (part of pha)",
+                "type": "boolean",
+                "role": "value",
+                "read": true,
+                "write": false
+            }
+        },{
             "_id": "tempereature",
             "type": "state",
             "common": {
@@ -380,10 +441,10 @@
                 }
             }
         },{
-            "_id": "txi",
+            "_id": "transmit_interface",
             "type": "state",
             "common": {
-                "name": "? (txi)",
+                "name": "transmit interface (txi)",
                 "type": "number",
                 "role": "",
                 "read":  true,
@@ -1530,6 +1591,16 @@
                     "0":"DISCONNECTED",
                     "1":"CONNECTED"
                 }
+            }
+        },{
+            "_id": "electricity_exchange.max_watts",
+            "type": "state",
+            "common": {
+                "name": "Maximum Watts for loading process",
+                "type": "number",
+                "role": "value",
+                "read": true,
+                "write": true
             }
         } 
     ]

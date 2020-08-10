@@ -6,8 +6,8 @@ node_js:
   - lts/*
 os:
   - linux
-  - osx
-  - windows
+  # - osx
+  # - windows
 script:
   - npm run test:package
   - npm run test:unit
