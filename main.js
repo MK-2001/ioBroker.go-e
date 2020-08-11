@@ -153,7 +153,7 @@ class GoE extends utils.Adapter {
                         this.setValue("dwo", parseInt(state.val.toString()) * 10);
                         break;
                     case this.namespace + ".electricity_exchange.max_watts":
-                        
+                        this.updateAmpLevel(parseInt(state.val.toString()));
                         break;
                     default:
                         this.log.error("Not deveoped function to write " + id + " with state " + state);
