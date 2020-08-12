@@ -33,17 +33,7 @@ https://go-e.co/support/
 
 ## Changelog
 
-### 0.0.1
-* (MK-2001) initial release
-
-### 0.0.2
-* (MK-2001) added requirements to publish the adapter
-
-### 0.0.3
-* (MK-2001) added requirements to publish the adapter again, enabled new writeable interfaces: Access State (ast), Allow Charging (alw), stop_state: ​Automatische Abschaltung (stp), max_load
-
-### 0.0.4
-* (MK-2001, Trunks1982) solved bug with different names.
+[moved here](./docs/CHANGELOG.md)
 
 ## License
                                  Apache License

@@ -1,7 +1,7 @@
 {
     "common": {
         "name": "go-e",
-        "version": "0.0.5",
+        "version": "0.0.6",
         "news": {
             "0.0.1": {
                 "en": "initial release",
@@ -52,7 +52,7 @@
                 "zh-cn": "solved bug with different names."
             },
             "0.0.5": {
-                "en": "Activated Tests again;",
+                "en": "Added feature ",
                 "de": "solved bug with different names.",
                 "ru": "solved bug with different names.",
                 "pt": "solved bug with different names.",
@@ -62,6 +62,9 @@
                 "es": "solved bug with different names.",
                 "pl": "solved bug with different names.",
                 "zh-cn": "solved bug with different names."
+            },
+            "0.0.6": {
+                "en": "Activated Feature MaxWatts; Stopped paralell updates of more than 100 states."
             }
         },
         "title": "go-eCharger wallbox integration",
