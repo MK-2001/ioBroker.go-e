@@ -154,6 +154,7 @@ class GoE extends utils.Adapter {
                         break;
                     case this.namespace + ".electricity_exchange.max_watts":
                         this.updateAmpLevel(parseInt(state.val.toString()));
+                        this.setState("electricity_exchange.max_watts",    { val: parseInt(state.val.toString()), ack: true }); 
                         break;
                     default:
                         this.log.error("Not deveoped function to write " + id + " with state " + state);
