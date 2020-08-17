@@ -64,7 +64,16 @@
                 "zh-cn": "solved bug with different names."
             },
             "0.0.6": {
-                "en": "Activated Feature MaxWatts; Stopped paralell updates of more than 100 states."
+                "en": "* (MK-2001) Activated the max Watts Feature; Added some documentation and NPM Documentations; Activated gulb for translation to different languages",
+                "de": "* (MK-2001) Aktiviert die Max-Watt-Funktion; Einige Dokumentationen und NPM-Dokumentationen hinzugefügt; Aktivierte Gulb zur Übersetzung in verschiedene Sprachen",
+                "ru": "* (MK-2001) Активирована функция максимальной мощности; Добавлена некоторая документация и документация NPM; Активирован гульб для перевода на разные языки",
+                "pt": "* (MK-2001) Ativado o recurso de watts máximos; Adicionada alguma documentação e Documentações NPM; Gulb ativado para tradução para diferentes idiomas",
+                "nl": "* (MK-2001) De max. Watt-functie geactiveerd; Wat documentatie en NPM-documentatie toegevoegd; Geactiveerde gulb voor vertaling naar verschillende talen",
+                "fr": "* (MK-2001) Activation de la fonction Max Watts; Ajout de la documentation et des documentations NPM; Gulb activé pour la traduction dans différentes langues",
+                "it": "* (MK-2001) Attivata la funzione max Watts; Aggiunta documentazione e documentazione NPM; Gulb attivato per la traduzione in diverse lingue",
+                "es": "* (MK-2001) Activó la función de vatios máximos; Se agregó algo de documentación y documentación de NPM; Gulb activado para traducción a diferentes idiomas",
+                "pl": "* (MK-2001) Aktywowano funkcję maksymalnych watów; Dodano trochę dokumentacji i dokumentacji NPM; Aktywowany gulb do tłumaczenia na różne języki",
+                "zh-cn": "*（MK-2001）激活了最大瓦特功能；添加了一些文档和NPM文档；激活的gulb可以翻译成不同的语言"
             }
         },
         "title": "go-eCharger wallbox integration",
