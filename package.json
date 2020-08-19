@@ -20,7 +20,8 @@
   },
   "dependencies": {
     "@iobroker/adapter-core": "^2.4.0",
-    "axios": "^0.19.2"
+    "axios": "^0.19.2",
+    "p-queue": "^6.6.1"
   },
   "devDependencies": {
     "@iobroker/testing": "^2.2.0",
