@@ -132,7 +132,7 @@
     },
     "native": {
         "serverName": "go-eCharger",
-        "serverInterval": 30,
+        "serverInterval": 60,
         "ampUpdateInterval": 30
     },
     "objects": [],
