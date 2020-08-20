@@ -18,3 +18,6 @@
 
 ### 0.0.1
 * (MK-2001) initial release
+
+# Translation
+Use https://translator.iobroker.in to translate texts.
