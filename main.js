@@ -216,22 +216,7 @@ class GoE extends utils.Adapter {
         const preContactorPhase2 = 16;
         const preContactorPhase3 = 32;
 
-        const asyncLimit = (fn, n) => {
-            let pendingPromises = [];
-            return async function (...args) {
-                while (pendingPromises.length >= n) {
-                    await Promise.race(pendingPromises).catch(() => {});
-                }
-            
-                const p = fn.apply(null, args);
-                pendingPromises.push(p);
-                await p.catch(() => {});
-                pendingPromises = pendingPromises.filter(pending => pending !== p);
-                return p;
-            };
-        };
         const queue = new PQueue({concurrency: 4});
-
 
         //this.setState = asyncLimit(this.setState, 10);
 
@@ -245,8 +230,6 @@ class GoE extends utils.Adapter {
         await queue.add(() => this.setState("access_state",                       { val: o.ast, ack: true })); // write
         await queue.add(() => this.setState("allow_charging",                     { val: o.alw, ack: true })); // write
         await queue.add(() => this.setState("stop_state",                         { val: o.stp, ack: true })); // write
-        
-        
         
         await queue.add(() => this.setState("phases",                             { val: o.pha, ack: true })); // read
         // Split phases in single states
@@ -393,12 +376,16 @@ class GoE extends utils.Adapter {
                    avgVoltage1 === null || avgVoltage1 === undefined || avgVoltage1.val === null ||
                    avgVoltage2 === null || avgVoltage2 === undefined || avgVoltage2.val === null ||
                    avgVoltage3 === null || avgVoltage3 === undefined || avgVoltage3.val === null) {
+                    this.log.error("Not all required information about the phases are found. Required Values are: energy.phase1.preContactorActive, energy.phase2.preContactorActive, energy.phase3.preContactorActive, energy.phase1.voltage, energy.phase2.voltage, energy.phase3.voltage")
                     return;
                 }
-
-                const maxAmp = Math.round(((prePhase1.val === true ? parseInt(avgVoltage1.val.toString()) : 0 ) + 
-                                (prePhase2.val === true ? parseInt(avgVoltage2.val.toString()) : 0 ) + 
-                                (prePhase3.val === true ? parseInt(avgVoltage3.val.toString()) : 0 ) )/watts);
+                this.log.debug("Total available " + Math.round((prePhase1.val === true ? parseInt(avgVoltage1.val.toString()) : 0 ) + 
+                                                                (prePhase2.val === true ? parseInt(avgVoltage2.val.toString()) : 0 ) + 
+                                                                (prePhase3.val === true ? parseInt(avgVoltage3.val.toString()) : 0 )) + " volts");
+                const maxAmp = Math.round(watts/((prePhase1.val === true ? parseInt(avgVoltage1.val.toString()) : 0 ) + 
+                                                 (prePhase2.val === true ? parseInt(avgVoltage2.val.toString()) : 0 ) + 
+                                                 (prePhase3.val === true ? parseInt(avgVoltage3.val.toString()) : 0 ) ));
+                this.log.debug("Resulting max of " + maxAmp + " Ampere");
                 if(maxAmp < 6) {
                     // The smallest value is 6 amperes
                     this.setValue("amp", 6);
@@ -414,6 +401,9 @@ class GoE extends utils.Adapter {
             } catch (e) {
                 this.log.error("Error during set MaxWatts: " + e.message);
             }
+        } else {
+            // Still existing Block-Timer
+            this.log.warn("MaxWatts ignored. You are sending to fast! Update interval in settings is currently set to: " + this.config.ampUpdateInterval);
         }
     }
 }

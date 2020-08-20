@@ -1,7 +1,7 @@
 {
     "common": {
         "name": "go-e",
-        "version": "0.0.6",
+        "version": "0.0.7",
         "news": {
             "0.0.1": {
                 "en": "initial release",
@@ -74,6 +74,9 @@
                 "es": "* (MK-2001) Activó la función de vatios máximos; Se agregó algo de documentación y documentación de NPM; Gulb activado para traducción a diferentes idiomas",
                 "pl": "* (MK-2001) Aktywowano funkcję maksymalnych watów; Dodano trochę dokumentacji i dokumentacji NPM; Aktywowany gulb do tłumaczenia na różne języki",
                 "zh-cn": "*（MK-2001）激活了最大瓦特功能；添加了一些文档和NPM文档；激活的gulb可以翻译成不同的语言"
+            }, 
+            "0.0.7": {
+                "en": "removed bug in maxWatts calculation."
             }
         },
         "title": "go-eCharger wallbox integration",
