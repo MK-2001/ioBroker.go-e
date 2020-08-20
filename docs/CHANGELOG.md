@@ -1,3 +1,8 @@
+### 0.0.7
+* (MK-2001) solved bug in maxWatts feature
+* Added debug information on maxWatts Feature
+* removed info-level-logging on status query
+
 ### 0.0.6
 * (MK-2001) Activated the max Watts Feature
 * Added some documentation and NPM Documentations

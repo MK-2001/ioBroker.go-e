@@ -191,7 +191,7 @@ class GoE extends utils.Adapter {
         await axios.get("http://" + this.config.serverName + "/status")
             .then((o) => {
                 this.log.debug("Response: " + o.status + " - " + o.statusText);
-                this.log.info(JSON.stringify(o.data));
+                this.log.debug(JSON.stringify(o.data));
 
                 this.processStatusObject(o.data);
                 
