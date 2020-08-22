@@ -319,11 +319,11 @@ class GoE extends utils.Adapter {
         await queue.add(() => this.setState("firmware_version",                   { val: o.fwv, ack: true })); // read
         await queue.add(() => this.setState("serial_number",                      { val: o.sse, ack: true })); // read
         await queue.add(() => this.setState("led_brightness",                     { val: o.lbr, ack: true })); // write
-        await queue.add(() => this.setState("ampere_level1",                      { val: o.al1, ack: true })); // write
-        await queue.add(() => this.setState("ampere_level2",                      { val: o.al2, ack: true })); // write
-        await queue.add(() => this.setState("ampere_level3",                      { val: o.al3, ack: true })); // write
-        await queue.add(() => this.setState("ampere_level4",                      { val: o.al4, ack: true })); // write
-        await queue.add(() => this.setState("ampere_level5",                      { val: o.al5, ack: true })); // write
+        await queue.add(() => this.setState("settings.ampere_level1",                      { val: o.al1, ack: true })); // write
+        await queue.add(() => this.setState("settings.ampere_level2",                      { val: o.al2, ack: true })); // write
+        await queue.add(() => this.setState("settings.ampere_level3",                      { val: o.al3, ack: true })); // write
+        await queue.add(() => this.setState("settings.ampere_level4",                      { val: o.al4, ack: true })); // write
+        await queue.add(() => this.setState("settings.ampere_level5",                      { val: o.al5, ack: true })); // write
         await queue.add(() => this.setState("color.idle",                         { val: "#" + ("000000" + parseInt(o.cid).toString(16)).slice(6), ack: true })); // write
         await queue.add(() => this.setState("color.charging",                     { val: "#" + ("000000" + parseInt(o.cch).toString(16)).slice(6), ack: true })); // write
         await queue.add(() => this.setState("color.finish",                       { val: "#" + ("000000" + parseInt(o.cfi).toString(16)).slice(6), ack: true })); // write
