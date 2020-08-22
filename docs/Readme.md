@@ -3,6 +3,27 @@
 ## General 
 This adapter collects the data via the http API from your e-GoCharger over Wifi. 
 
+## Installation
+You can just add a instance to ioBroker with the go-e Adapter
+
+## Configuration of the Hardware
+To enable the Adapter you must activate the http-interface via the app.
+1. Connect the mobile device with the hotspot WIFI of the Hardware
+1. Open the go-eCharger App
+1. go to Cloud 
+1. Advanced Settings (erweiterte Einstellungen)
+1. Activate HTTP Interface
+
+## Configuration of the ioBroker Adapter
+- Server or IP-Address  
+ Please enter here the Hostname or the IP-Adress to connect to the go-eCharger. By default the go-eCharger registers with the given hostname.
+
+- Service Update intervall  
+Defines in wich intervall will the status requested from the adpater. Recommed 30 secs. Supplier recommed a minimum of 5 secs
+
+-  Update Intervall for Updated  
+Defines how ofter should the adapter allow to reconfigure e.g. maxAmpere. To often configuration could destroy the Hardware and the car!
+
 ## Adapter functions
 
 In this paragraph are listet additional functionalities which can be used for an easier implementation in ioBroker to use it with other devices.

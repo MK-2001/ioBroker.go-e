@@ -460,19 +460,19 @@ class GoE extends utils.Adapter {
                     this.log.error("changeAmpLevelInWatts: Not all required information about the phases are found. Required Values are: eneregy.phase3.voltage");
                     return;
                 }
-                const curAmpPha1 = await this.getStateAsync("eneregy.phase1.ampere");
+                const curAmpPha1 = await this.getStateAsync("energy.phase1.ampere");
                 if(curAmpPha1 === null || curAmpPha1 === undefined || curAmpPha1.val === null) {
-                    this.log.error("changeAmpLevelInWatts: Not all required information about the phases are found. Required Values are: eneregy.phase1.ampere");
+                    this.log.error("changeAmpLevelInWatts: Not all required information about the phases are found. Required Values are: energy.phase1.ampere");
                     return;
                 }
-                const curAmpPha2 = await this.getStateAsync("eneregy.phase2.ampere");
+                const curAmpPha2 = await this.getStateAsync("energy.phase2.ampere");
                 if(curAmpPha2 === null || curAmpPha2 === undefined || curAmpPha2.val === null) {
-                    this.log.error("changeAmpLevelInWatts: Not all required information about the phases are found. Required Values are: eneregy.phase2.ampere");
+                    this.log.error("changeAmpLevelInWatts: Not all required information about the phases are found. Required Values are: energy.phase2.ampere");
                     return;
                 }
-                const curAmpPha3 = await this.getStateAsync("eneregy.phase3.ampere");
+                const curAmpPha3 = await this.getStateAsync("energy.phase3.ampere");
                 if(curAmpPha3 === null || curAmpPha3 === undefined || curAmpPha3.val === null) {
-                    this.log.error("changeAmpLevelInWatts: Not all required information about the phases are found. Required Values are: eneregy.phase3.ampere");
+                    this.log.error("changeAmpLevelInWatts: Not all required information about the phases are found. Required Values are: energy.phase3.ampere");
                     return;
                 }
                 const car = await this.getStateAsync("car");

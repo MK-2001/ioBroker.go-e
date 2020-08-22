@@ -2,6 +2,8 @@
 * (MK-2001) solved bug in maxWatts feature
 * Added debug information on maxWatts Feature
 * removed info-level-logging on status query
+* Added function adjustAmpLevelInWatts
+* Added documentation
 
 ### 0.0.6
 * (MK-2001) Activated the max Watts Feature
