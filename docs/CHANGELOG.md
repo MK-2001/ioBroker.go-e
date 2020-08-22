@@ -4,6 +4,9 @@
 * removed info-level-logging on status query
 * Added function adjustAmpLevelInWatts
 * Added documentation
+* removed synctime bug
+* adds loaded_energy_kwh (extra value for dwo for unusual unit)
+* adds setAmpLevelToButton for 5 levels
 
 ### 0.0.6
 * (MK-2001) Activated the max Watts Feature

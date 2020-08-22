@@ -360,7 +360,16 @@
                 "write": true
             }
         },{
-            "_id": "tempereature",
+            "_id": "temperatures",
+            "type": "channel",
+            "common": {
+                "name": "All about temperatures",
+                "role": "",
+                "icon": "",
+                "desc": "Channel to provide information of the temperature in the device"
+            }
+        },{
+            "_id": "temperatures.maintempereature",
             "type": "state",
             "common": {
                 "name": "Controller temperature (tmp)",
@@ -370,11 +379,51 @@
                 "write": false
             }
         },{
-            "_id": "tempereatureArray",
+            "_id": "temperatures.tempereatureArray",
             "type": "state",
             "common": {
                 "name": "all temperatures (tma)",
                 "type": "array",
+                "role": "value.temperature",
+                "read": true,
+                "write": false
+            }
+        },{
+            "_id": "temperatures.tempereature1",
+            "type": "state",
+            "common": {
+                "name": "One Temperatures for log in a db",
+                "type": "number",
+                "role": "value.temperature",
+                "read": true,
+                "write": false
+            }
+        },{
+            "_id": "temperatures.tempereature2",
+            "type": "state",
+            "common": {
+                "name": "One Temperatures for log in a db",
+                "type": "number",
+                "role": "value.temperature",
+                "read": true,
+                "write": false
+            }
+        },{
+            "_id": "temperatures.tempereature3",
+            "type": "state",
+            "common": {
+                "name": "One Temperatures for log in a db",
+                "type": "number",
+                "role": "value.temperature",
+                "read": true,
+                "write": false
+            }
+        },{
+            "_id": "temperatures.tempereature4",
+            "type": "state",
+            "common": {
+                "name": "One Temperatures for log in a db",
+                "type": "number",
                 "role": "value.temperature",
                 "read": true,
                 "write": false
@@ -393,7 +442,17 @@
             "_id": "loaded_energy",
             "type": "state",
             "common": {
-                "name": "loaded energy (dws)",
+                "name": "loaded energy (dws) in deka watt secounds (dws * 10 / 60 / 60 => kWh)",
+                "type": "number",
+                "role": "value.power.consumption",
+                "read": true,
+                "write": false
+            }
+        },{
+            "_id": "loaded_energy_kwh",
+            "type": "state",
+            "common": {
+                "name": "loaded energy in kilo watt hours",
                 "type": "number",
                 "role": "value.power.consumption",
                 "read": true,
@@ -832,7 +891,16 @@
                 "write": false
             }
         },{
-            "_id": "ampere_level1",
+            "_id":"settings",
+            "type":"channel",
+            "common": {
+                "name":"Device Settings",
+                "role": "",
+                "icon": "",
+                "desc": "Channel to provide information of the device settings"
+            }
+        },{
+            "_id": "settings.ampere_level1",
             "type": "state",
             "common": {
                 "name": "Ampere Level 1 für Druckknopf am Gerät. (al1)",
@@ -842,7 +910,7 @@
                 "write": false
             }
         },{
-            "_id": "ampere_level2",
+            "_id": "settings.ampere_level2",
             "type": "state",
             "common": {
                 "name": "Ampere Level 2 für Druckknopf am Gerät. (al2)",
@@ -852,7 +920,7 @@
                 "write": false
             }
         },{
-            "_id": "ampere_level3",
+            "_id": "settings.ampere_level3",
             "type": "state",
             "common": {
                 "name": "Ampere Level 3 für Druckknopf am Gerät. (al3)",
@@ -862,7 +930,7 @@
                 "write": false
             }
         },{
-            "_id": "ampere_level4",
+            "_id": "settings.ampere_level4",
             "type": "state",
             "common": {
                 "name": "Ampere Level 4 für Druckknopf am Gerät. (al4)",
@@ -872,7 +940,7 @@
                 "write": false
             }
         },{
-            "_id": "ampere_level5",
+            "_id": "settings.ampere_level5",
             "type": "state",
             "common": {
                 "name": "Ampere Level 5 für Druckknopf am Gerät. (al5)",
