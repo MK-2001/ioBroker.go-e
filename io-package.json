@@ -350,6 +350,16 @@
                 "write": false
             }
         },{
+            "_id": "energy.adjustAmpLevelInWatts",
+            "type": "state",
+            "common": {
+                "name": "changes the ampere Level in Watts",
+                "type": "number",
+                "role": "level",
+                "read": true,
+                "write": true
+            }
+        },{
             "_id": "tempereature",
             "type": "state",
             "common": {
@@ -1608,7 +1618,7 @@
                 }
             }
         },{
-            "_id": "electricity_exchange.max_watts",
+            "_id": "energy.max_watts",
             "type": "state",
             "common": {
                 "name": "Maximum Watts for loading process",

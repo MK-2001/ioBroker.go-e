@@ -50,7 +50,8 @@ class GoE extends utils.Adapter {
         this.subscribeStates("allow_charging");
         this.subscribeStates("max_load");
         this.subscribeStates("stop_state");
-        this.subscribeStates("electricity_exchange.max_watts");
+        this.subscribeStates("energy.max_watts");
+        this.subscribeStates("energy.adjustAmpLevelInWatts");
 
         // Start the Adapter to sync in the interval
         this.interval = setInterval(async () => {
@@ -104,7 +105,7 @@ class GoE extends utils.Adapter {
             // The state was changed
             this.log.debug(`state ${id} changed: ${state.val} (ack = ${state.ack}) namespace: ` + this.namespace);
             if (!state.ack) {
-                // If it is already acknoladged, we dont have to send it to the go-eCharger device.
+                // If it is already acknoladged, we dont have to send it to the go-eCharger device. Or have to handle the change.
                 // Handle null values with the rejection 
                 if(state.val === null) {
                     this.log.warn("Not able to handle null Values in " + id);
@@ -153,9 +154,13 @@ class GoE extends utils.Adapter {
                     case this.namespace + ".max_load":
                         this.setValue("dwo", parseInt(state.val.toString()) * 10);
                         break;
-                    case this.namespace + ".electricity_exchange.max_watts":
+                    case this.namespace + ".enrgy.max_watts":
                         this.updateAmpLevel(parseInt(state.val.toString()));
-                        this.setState("electricity_exchange.max_watts",    { val: parseInt(state.val.toString()), ack: true }); 
+                        this.setState("energy.max_watts",                  { val: parseInt(state.val.toString()), ack: true }); 
+                        break;
+                    case this.namespace + ".energy.adjustAmpLevelInWatts":
+                        this.adjustAmpLevelInWatts(parseInt(state.val.toString()));
+                        this.setState("energy.changeAmpLevelInWatts",      { val: parseInt(state.val.toString()), ack: true }); 
                         break;
                     default:
                         this.log.error("Not deveoped function to write " + id + " with state " + state);
@@ -166,6 +171,7 @@ class GoE extends utils.Adapter {
             this.log.info(`state ${id} deleted`);
         }
     }
+    
 
     // If you need to accept messages in your adapter, uncomment the following block and the corresponding line in the constructor.
     // /**
@@ -233,12 +239,12 @@ class GoE extends utils.Adapter {
         
         await queue.add(() => this.setState("phases",                             { val: o.pha, ack: true })); // read
         // Split phases in single states
-        await queue.add(() => this.setState("energy.phase1.preContactorActive",   { val: ((parseInt(o.pha) & preContactorPhase1) == preContactorPhase1)})); //read
-        await queue.add(() => this.setState("energy.phase1.postContactorActive",   { val: ((parseInt(o.pha) & postContactorPhase1) == postContactorPhase1)})); //read
-        await queue.add(() => this.setState("energy.phase2.preContactorActive",   { val: ((parseInt(o.pha) & preContactorPhase2) == preContactorPhase2)})); //read
-        await queue.add(() => this.setState("energy.phase2.postContactorActive",   { val: ((parseInt(o.pha) & postContactorPhase2) == postContactorPhase2)})); //read
-        await queue.add(() => this.setState("energy.phase3.preContactorActive",   { val: ((parseInt(o.pha) & preContactorPhase3) == preContactorPhase3)})); //read
-        await queue.add(() => this.setState("energy.phase3.postContactorActive",   { val: ((parseInt(o.pha) & postContactorPhase3) == postContactorPhase3)})); //read
+        await queue.add(() => this.setState("energy.phase1.preContactorActive",   { val: ((parseInt(o.pha) & preContactorPhase1) == preContactorPhase1), ack: true})); //read
+        await queue.add(() => this.setState("energy.phase1.postContactorActive",   { val: ((parseInt(o.pha) & postContactorPhase1) == postContactorPhase1), ack: true})); //read
+        await queue.add(() => this.setState("energy.phase2.preContactorActive",   { val: ((parseInt(o.pha) & preContactorPhase2) == preContactorPhase2), ack: true})); //read
+        await queue.add(() => this.setState("energy.phase2.postContactorActive",   { val: ((parseInt(o.pha) & postContactorPhase2) == postContactorPhase2), ack: true})); //read
+        await queue.add(() => this.setState("energy.phase3.preContactorActive",   { val: ((parseInt(o.pha) & preContactorPhase3) == preContactorPhase3), ack: true})); //read
+        await queue.add(() => this.setState("energy.phase3.postContactorActive",   { val: ((parseInt(o.pha) & postContactorPhase3) == postContactorPhase3), ack: true})); //read
         await queue.add(() => this.setState("energy.phase1.voltage",              { val: o.nrg[0], ack: true })); // read
         await queue.add(() => this.setState("energy.phase2.voltage",              { val: o.nrg[1], ack: true })); // read
         await queue.add(() => this.setState("energy.phase3.voltage",              { val: o.nrg[2], ack: true })); // read
@@ -369,22 +375,45 @@ class GoE extends utils.Adapter {
                 const avgVoltage1 = await this.getStateAsync("energy.phase1.voltage");
                 const avgVoltage2 = await this.getStateAsync("energy.phase2.voltage");
                 const avgVoltage3 = await this.getStateAsync("energy.phase3.voltage");
+                const curAmpPha1 = await this.getStateAsync("eneregy.phase1.ampere");
+                const curAmpPha2 = await this.getStateAsync("eneregy.phase2.ampere");
+                const curAmpPha3 = await this.getStateAsync("eneregy.phase3.ampere");
+                const car = await this.getStateAsync("car");
 
                 if(prePhase1 === null || prePhase1 === undefined || prePhase1.val === null ||  
                    prePhase2 === null || prePhase2 === undefined || prePhase2.val === null ||  
                    prePhase3 === null || prePhase3 === undefined || prePhase3.val === null ||  
                    avgVoltage1 === null || avgVoltage1 === undefined || avgVoltage1.val === null ||
                    avgVoltage2 === null || avgVoltage2 === undefined || avgVoltage2.val === null ||
-                   avgVoltage3 === null || avgVoltage3 === undefined || avgVoltage3.val === null) {
+                   avgVoltage3 === null || avgVoltage3 === undefined || avgVoltage3.val === null ||
+                   curAmpPha1 === null || curAmpPha1 === undefined || curAmpPha1.val === null ||
+                   curAmpPha2 === null || curAmpPha2 === undefined || curAmpPha2.val === null ||
+                   curAmpPha3 === null || curAmpPha3 === undefined || curAmpPha3.val === null ||
+                   car === null || car === undefined || car.val === null) {
                     this.log.error("Not all required information about the phases are found. Required Values are: energy.phase1.preContactorActive, energy.phase2.preContactorActive, energy.phase3.preContactorActive, energy.phase1.voltage, energy.phase2.voltage, energy.phase3.voltage")
                     return;
                 }
-                this.log.debug("Total available " + Math.round((prePhase1.val === true ? parseInt(avgVoltage1.val.toString()) : 0 ) + 
-                                                                (prePhase2.val === true ? parseInt(avgVoltage2.val.toString()) : 0 ) + 
-                                                                (prePhase3.val === true ? parseInt(avgVoltage3.val.toString()) : 0 )) + " volts");
-                const maxAmp = Math.round(watts/((prePhase1.val === true ? parseInt(avgVoltage1.val.toString()) : 0 ) + 
-                                                 (prePhase2.val === true ? parseInt(avgVoltage2.val.toString()) : 0 ) + 
-                                                 (prePhase3.val === true ? parseInt(avgVoltage3.val.toString()) : 0 ) ));
+
+                // Check which & how many phases are used for loading and summarize of these phases the volts
+                let sumVolts = 0;
+                if(car.val == 2) {
+                    if(curAmpPha1.val > 0) {
+                        sumVolts += parseInt(avgVoltage1.val.toString());
+                    }
+                    if(curAmpPha2.val > 0) {
+                        sumVolts += parseInt(avgVoltage2.val.toString());
+                    }
+                    if(curAmpPha3.val > 0) {
+                        sumVolts += parseInt(avgVoltage3.val.toString());
+                    }
+                } else {
+                    sumVolts = Math.round((prePhase1.val === true ? parseInt(avgVoltage1.val.toString()) : 0 ) + 
+                                (prePhase2.val === true ? parseInt(avgVoltage2.val.toString()) : 0 ) + 
+                                (prePhase3.val === true ? parseInt(avgVoltage3.val.toString()) : 0 ));
+                }
+
+                this.log.debug("Total "+ (car.val == 2 ? "used ":"available ") + sumVolts + " volts");
+                const maxAmp = Math.round(watts/sumVolts);
                 this.log.debug("Resulting max of " + maxAmp + " Ampere");
                 if(maxAmp < 6) {
                     // The smallest value is 6 amperes
@@ -401,6 +430,98 @@ class GoE extends utils.Adapter {
             } catch (e) {
                 this.log.error("Error during set MaxWatts: " + e.message);
             }
+        } else {
+            // Still existing Block-Timer
+            this.log.warn("MaxWatts ignored. You are sending to fast! Update interval in settings is currently set to: " + this.config.ampUpdateInterval);
+        }
+    }
+    /**
+     * Adjust the Ampere Level by set the amount of watts
+     */
+    async adjustAmpLevelInWatts(changeWatts) {
+        if (!this.ampTimer) {
+            this.ampTimer = setTimeout(() => {
+                this.ampTimer = null;
+            }, this.config.ampUpdateInterval * 1000);
+
+            try {
+                const avgVoltage1 = await this.getStateAsync("energy.phase1.voltage");
+                if(avgVoltage1 === null || avgVoltage1 === undefined || avgVoltage1.val === null) {
+                    this.log.error("changeAmpLevelInWatts: Not all required information about the phases are found. Required Values are: eneregy.phase1.voltage");
+                    return;
+                }
+                const avgVoltage2 = await this.getStateAsync("energy.phase2.voltage");
+                if(avgVoltage2 === null || avgVoltage2 === undefined || avgVoltage2.val === null) {
+                    this.log.error("changeAmpLevelInWatts: Not all required information about the phases are found. Required Values are: eneregy.phase2.voltage");
+                    return;
+                }
+                const avgVoltage3 = await this.getStateAsync("energy.phase3.voltage");
+                if(avgVoltage3 === null || avgVoltage3 === undefined || avgVoltage3.val === null) {
+                    this.log.error("changeAmpLevelInWatts: Not all required information about the phases are found. Required Values are: eneregy.phase3.voltage");
+                    return;
+                }
+                const curAmpPha1 = await this.getStateAsync("eneregy.phase1.ampere");
+                if(curAmpPha1 === null || curAmpPha1 === undefined || curAmpPha1.val === null) {
+                    this.log.error("changeAmpLevelInWatts: Not all required information about the phases are found. Required Values are: eneregy.phase1.ampere");
+                    return;
+                }
+                const curAmpPha2 = await this.getStateAsync("eneregy.phase2.ampere");
+                if(curAmpPha2 === null || curAmpPha2 === undefined || curAmpPha2.val === null) {
+                    this.log.error("changeAmpLevelInWatts: Not all required information about the phases are found. Required Values are: eneregy.phase2.ampere");
+                    return;
+                }
+                const curAmpPha3 = await this.getStateAsync("eneregy.phase3.ampere");
+                if(curAmpPha3 === null || curAmpPha3 === undefined || curAmpPha3.val === null) {
+                    this.log.error("changeAmpLevelInWatts: Not all required information about the phases are found. Required Values are: eneregy.phase3.ampere");
+                    return;
+                }
+                const car = await this.getStateAsync("car");
+                if(car === null || car === undefined || car.val === null) {
+                    this.log.error("changeAmpLevelInWatts: Not all required information about the phases are found. Required Values are: car");
+                    return;
+                }
+
+                if(car.val != 2) {
+                    this.log.warn("Ignore to chnage ampere level by watts, because there is no car loading.");
+                    return;
+                }
+
+                let usedAmperes = 0;
+                let usedVolts = 0;
+                // Check which phases are currently used
+                if(curAmpPha1.val > 0) {
+                    usedVolts += parseInt(avgVoltage1.val.toString());
+                    usedAmperes += parseInt(curAmpPha1.val.toString());
+                }
+                if(curAmpPha2.val > 0) {
+                    usedVolts += parseInt(avgVoltage2.val.toString());
+                    usedAmperes += parseInt(curAmpPha1.val.toString());
+                }
+                if(curAmpPha3.val > 0) {
+                    usedVolts += parseInt(avgVoltage3.val.toString());
+                    usedAmperes += parseInt(curAmpPha1.val.toString());
+                }
+
+                const maxAmp = Math.round(((usedVolts * usedAmperes) + changeWatts)/usedVolts);
+                this.log.debug("Current used " + Math.round(usedVolts * usedAmperes) +  " Watts adjusting with  " + changeWatts + " watts by " + usedVolts + " Volts to new max of " + maxAmp + " Amperes");
+                if(maxAmp < 6) {
+                    // The smallest value is 6 amperes
+                    this.setValue("amp", 6);
+                    this.log.debug("set maxAmperes by adjustAmpLevelInWatts: 6 amperes by " + changeWatts + " watts");
+                } else if(maxAmp < 32) {
+                    this.setValue("amp", maxAmp);
+                    this.log.debug("set maxAmperes by adjustAmpLevelInWatts: " + maxAmp + " with " + changeWatts + " watts");
+                } else {
+                    // The maximum is 32 Amperes
+                    this.setValue("amp", 32);
+                    this.log.debug("set maxAmperes by adjustAmpLevelInWatts: 32 with " + changeWatts + " watts");
+                }
+
+            } catch (e) {
+                this.log.error("Error during set adjust Watts: " + e.message);
+            }
+
+
         } else {
             // Still existing Block-Timer
             this.log.warn("MaxWatts ignored. You are sending to fast! Update interval in settings is currently set to: " + this.config.ampUpdateInterval);
