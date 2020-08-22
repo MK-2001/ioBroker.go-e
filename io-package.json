@@ -907,7 +907,7 @@
                 "type": "number",
                 "role": "level.current",
                 "read":  true,
-                "write": false
+                "write": true
             }
         },{
             "_id": "settings.ampere_level2",
@@ -917,7 +917,7 @@
                 "type": "number",
                 "role": "level.current",
                 "read":  true,
-                "write": false
+                "write": true
             }
         },{
             "_id": "settings.ampere_level3",
@@ -927,7 +927,7 @@
                 "type": "number",
                 "role": "level.current",
                 "read":  true,
-                "write": false
+                "write": true
             }
         },{
             "_id": "settings.ampere_level4",
@@ -937,7 +937,7 @@
                 "type": "number",
                 "role": "level.current",
                 "read":  true,
-                "write": false
+                "write": true
             }
         },{
             "_id": "settings.ampere_level5",
@@ -947,7 +947,7 @@
                 "type": "number",
                 "role": "level.current",
                 "read":  true,
-                "write": false
+                "write": true
             }
         },{
             "_id":"color",
