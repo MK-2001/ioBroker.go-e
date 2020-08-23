@@ -430,22 +430,31 @@ class GoE extends utils.Adapter {
                 const avgVoltage1 = await this.getStateAsync("energy.phase1.voltage");
                 const avgVoltage2 = await this.getStateAsync("energy.phase2.voltage");
                 const avgVoltage3 = await this.getStateAsync("energy.phase3.voltage");
-                const curAmpPha1  = await this.getStateAsync("eneregy.phase1.ampere");
-                const curAmpPha2  = await this.getStateAsync("eneregy.phase2.ampere");
-                const curAmpPha3  = await this.getStateAsync("eneregy.phase3.ampere");
+                const curAmpPha1  = await this.getStateAsync("energy.phase1.ampere");
+                const curAmpPha2  = await this.getStateAsync("energy.phase2.ampere");
+                const curAmpPha3  = await this.getStateAsync("energy.phase3.ampere");
                 const car         = await this.getStateAsync("car");
 
                 if(prePhase1 === null || prePhase1 === undefined || prePhase1.val === null ||  
                    prePhase2 === null || prePhase2 === undefined || prePhase2.val === null ||  
-                   prePhase3 === null || prePhase3 === undefined || prePhase3.val === null ||  
-                   avgVoltage1 === null || avgVoltage1 === undefined || avgVoltage1.val === null ||
+                   prePhase3 === null || prePhase3 === undefined || prePhase3.val === null ) {
+                    this.log.error("Not all required information about the phases are found. Required Values are: energy.phaseX.preContactorActive");
+                    return;
+                }
+                if(avgVoltage1 === null || avgVoltage1 === undefined || avgVoltage1.val === null ||
                    avgVoltage2 === null || avgVoltage2 === undefined || avgVoltage2.val === null ||
-                   avgVoltage3 === null || avgVoltage3 === undefined || avgVoltage3.val === null ||
-                   curAmpPha1 === null || curAmpPha1 === undefined || curAmpPha1.val === null ||
+                   avgVoltage3 === null || avgVoltage3 === undefined || avgVoltage3.val === null ) {
+                    this.log.error("Not all required information about the phases are found. Required Values are: energy.phaseX.voltage");
+                    return;
+                }
+                if(curAmpPha1 === null || curAmpPha1 === undefined || curAmpPha1.val === null ||
                    curAmpPha2 === null || curAmpPha2 === undefined || curAmpPha2.val === null ||
-                   curAmpPha3 === null || curAmpPha3 === undefined || curAmpPha3.val === null ||
-                   car === null || car === undefined || car.val === null) {
-                    this.log.error("Not all required information about the phases are found. Required Values are: energy.phase1.preContactorActive, energy.phase2.preContactorActive, energy.phase3.preContactorActive, energy.phase1.voltage, energy.phase2.voltage, energy.phase3.voltage");
+                   curAmpPha3 === null || curAmpPha3 === undefined || curAmpPha3.val === null ) {
+                    this.log.error("Not all required information about the phases are found. Required Values are: energy.phaseX.ampere");
+                    return;
+                }
+                if(car === null || car === undefined || car.val === null) {
+                    this.log.error("Not all required information about the phases are found. Required Values are: car");
                     return;
                 }
 
