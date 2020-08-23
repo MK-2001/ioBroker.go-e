@@ -145,6 +145,9 @@ class GoE extends utils.Adapter {
                     case this.namespace + ".settings.led_save_energy":
                         this.setValue("lse", parseInt(state.val.toString()));
                         break;
+                    case this.namespace + ".settings.led_brightness":
+                        this.setValue("lbr", parseInt(state.val.toString()));
+                        break;
                     case this.namespace + ".access_state":
                         if(parseInt(state.val.toString()) == 0 || parseInt(state.val.toString()) == 1 ) {
                             this.setValue("ast", parseInt(state.val.toString()));
