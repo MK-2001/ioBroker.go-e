@@ -1,7 +1,7 @@
 {
     "common": {
         "name": "go-e",
-        "version": "0.0.7",
+        "version": "0.1.0",
         "news": {
             "0.0.1": {
                 "en": "initial release",
@@ -86,7 +86,19 @@
                 "es": "(MK-2001) error resuelto en la función maxWatts\n* Añadida información de depuración sobre la función maxWatts\n* eliminado el registro de nivel de información en la consulta de estado\n* Función agregada adjustAmpLevelInWatts\n* Documentación agregada\n* eliminado error de sincronización\n* agregaloaded_energy_kwh (valor extra para dwo para unidad inusual)\n* agrega setAmpLevelToButton para 5 niveles\n* brillo led añadido",
                 "pl": "(MK-2001) rozwiązany błąd w funkcji maxWatts\n* Dodano informacje o debugowaniu funkcji maxWatts\n* usunięto logowanie na poziomie informacji przy zapytaniu o status\n* Dodano funkcję adjustAmpLevelInWatts\n* Dodano dokumentację\n* usunięto błąd synchronizacji\n* dodaje load_energy_kwh (dodatkowa wartość dla dwo dla nietypowej jednostki)\n* dodaje setAmpLevelToButton na 5 poziomach\n* dodano jasność diod LED",
                 "zh-cn": "（MK-2001）解决了maxWatts功能中的错误\n*在maxWatts功能上添加了调试信息\n*删除状态查询的信息级别日志记录\n*增加了功能AdjustAmpLevelInWatts\n*添加了文档\n*删除了同步时间错误\n*添加loaded_energy_kwh（dwo的额外值，代表异常单位）\n*为5个级别添加setAmpLevelToButton\n*增加了LED亮度"
-            }
+            },
+            "0.1.0": {
+                "en": "All parts of the versions 0.0.x. For more details visit ./docs/Changelog.md; Major topics: Function maxWatts, adjustAmpLevelInWatts, ability to write several endpoints. ",
+                "de": "Alle Teile der Versionen 0.0.x. Weitere Informationen finden Sie unter ./docs/Changelog.md; Hauptthemen: Funktion maxWatts, adjustAmpLevelInWatts, Fähigkeit, mehrere Endpunkte zu schreiben.",
+                "ru": "Все части версий 0.0.x. Для получения дополнительных сведений посетите ./docs/Changelog.md; Основные темы: Функция maxWatts, adjustAmpLevelInWatts, возможность писать несколько конечных точек.",
+                "pt": "Todas as partes das versões 0.0.x. Para obter mais detalhes, visite ./docs/Changelog.md; Tópicos principais: função maxWatts, ajusteAmpLevelInWatts, capacidade de gravar vários terminais.",
+                "nl": "Alle onderdelen van de versies 0.0.x. Ga voor meer details naar ./docs/Changelog.md; Hoofdonderwerpen: Functie maxWatts, adjustAmpLevelInWatts, mogelijkheid om verschillende eindpunten te schrijven.",
+                "fr": "Toutes les parties des versions 0.0.x. Pour plus de détails, visitez ./docs/Changelog.md; Principaux sujets: Fonction maxWatts, AdjustAmpLevelInWatts, possibilité d'écrire plusieurs points de terminaison.",
+                "it": "Tutte le parti delle versioni 0.0.x. Per maggiori dettagli visita ./docs/Changelog.md; Argomenti principali: funzione maxWatts, AdjustAmpLevelInWatts, capacità di scrivere diversi endpoint.",
+                "es": "Todas las partes de las versiones 0.0.x. Para obtener más detalles, visite ./docs/Changelog.md; Temas principales: función maxWatts, adjustAmpLevelInWatts, capacidad para escribir varios puntos finales.",
+                "pl": "Wszystkie części wersji 0.0.x. Aby uzyskać więcej informacji, odwiedź stronę ./docs/Changelog.md; Główne tematy: funkcja maxWatts, adjustAmpLevelInWatts, możliwość pisania kilku punktów końcowych.",
+                "zh-cn": "版本0.0.x的所有部分。有关更多详细信息，请访问./docs/Changelog.md;。主要主题：函数maxWatts，adjustAmpLevelInWatts，编写多个端点的能力。"
+              }
         },
         "title": "go-eCharger wallbox integration",
         "titleLang": {
