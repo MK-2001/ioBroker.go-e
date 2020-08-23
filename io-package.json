@@ -141,6 +141,26 @@
     "objects": [],
     "instanceObjects": [
         {
+            "_id":"settings",
+            "type":"channel",
+            "common": {
+                "name":"Device Settings",
+                "role": "",
+                "icon": "",
+                "desc": "Channel to provide information of the device settings"
+            }
+        },{
+            "_id":"settings.color",
+            "type":"channel",
+            "common": {
+                "name":"Color Settings",
+                "role": "",
+                "icon": "",
+                "desc": "Channel to provide information of the colors settings"
+            }
+        },
+        
+        {
             "_id": "encryption",
             "type": "state",
             "common": {
@@ -828,7 +848,7 @@
                 "write": false
             }
         },{
-            "_id": "led_brightness",
+            "_id": "settings.color.led_brightness",
             "type": "state",
             "common": {
                 "name": "LED Helligkeit​ von 0-255 (lbr)",
@@ -891,15 +911,6 @@
                 "write": false
             }
         },{
-            "_id":"settings",
-            "type":"channel",
-            "common": {
-                "name":"Device Settings",
-                "role": "",
-                "icon": "",
-                "desc": "Channel to provide information of the device settings"
-            }
-        },{
             "_id": "settings.ampere_level1",
             "type": "state",
             "common": {
@@ -950,16 +961,7 @@
                 "write": true
             }
         },{
-            "_id":"color",
-            "type":"channel",
-            "common": {
-                "name":"Color Settings",
-                "role": "",
-                "icon": "",
-                "desc": "Channel to provide information of the colors settings"
-            }
-        },{
-            "_id": "color.idle",
+            "_id": "settings.color.idle",
             "type": "state",
             "common": {
                 "name": "Color idle:​ Farbwert für Standby​ (kein Auto angesteckt) als Zahl (cid)",
@@ -969,7 +971,7 @@
                 "write": true
             }
         },{
-            "_id": "color.charging",
+            "_id": "settings.color.charging",
             "type": "state",
             "common": {
                 "name": "Color charging:​ Farbwert für Ladevorgang aktiv​, als Zahl (cch)",
@@ -979,7 +981,7 @@
                 "write": true
             }
         },{
-            "_id": "color.finish",
+            "_id": "settings.color.finish",
             "type": "state",
             "common": {
                 "name": "Color idle:​ Farbwert für Ladevorgang abgeschlossen​, als Zahl (cfi)",
@@ -989,7 +991,7 @@
                 "write": true
             }
         },{
-            "_id": "led_save_energy",
+            "_id": "settings.color.led_save_energy",
             "type": "state",
             "common": {
                 "name": "led_save_energy​: LED automatisch nach 10 Sekunden abschalten (lse)",
