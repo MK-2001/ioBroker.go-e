@@ -1,3 +1,7 @@
+### 1.1.2
+* Added all steps from Version 0.0.x
+* some additional minor fixes from testing.
+
 ### 0.0.7
 * (MK-2001) solved bug in maxWatts feature
 * Added debug information on maxWatts Feature
