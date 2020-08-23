@@ -172,7 +172,7 @@ class GoE extends utils.Adapter {
                     case this.namespace + ".max_load":
                         this.setValue("dwo", parseInt(state.val.toString()) * 10);
                         break;
-                    case this.namespace + ".enrgy.max_watts":
+                    case this.namespace + ".energy.max_watts":
                         this.updateAmpLevel(parseInt(state.val.toString()));
                         this.setState("energy.max_watts",                  { val: parseInt(state.val.toString()), ack: true }); 
                         break;
