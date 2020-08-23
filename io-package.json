@@ -167,6 +167,60 @@
                 "icon": "",
                 "desc": "Channel to provide information of the colors settings"
             }
+        },{
+            "_id": "energy",
+            "type": "channel",
+            "common": {
+                "name": "Energy",
+                "role": "",
+                "icon": "",
+                "desc": "Channel to provide information of the energy in all phases"
+            }
+        },{
+            "_id": "temperatures",
+            "type": "channel",
+            "common": {
+                "name": "All about temperatures",
+                "role": "",
+                "icon": "",
+                "desc": "Channel to provide information of the temperature in the device"
+            }
+        },{
+            "_id": "energy.phase1",
+            "type": "channel",
+            "common": {
+                "name": "Energy of phase 1",
+                "role": "",
+                "icon": "",
+                "desc": "Channel to provide information of the energy in phase one"
+            }
+        },{
+            "_id": "energy.phase2",
+            "type": "channel",
+            "common": {
+                "name": "Energy of phase 2",
+                "role": "",
+                "icon": "",
+                "desc": "Channel to provide information of the energy in phase two"
+            }
+        },{
+            "_id": "energy.phase3",
+            "type": "channel",
+            "common": {
+                "name": "Energy of phase 3",
+                "role": "",
+                "icon": "",
+                "desc": "Channel to provide information of the energy in phase three"
+            }
+        },{
+            "_id": "energy.neutral",
+            "type": "channel",
+            "common": {
+                "name": "Energy of neutral conductor",
+                "role": "",
+                "icon": "",
+                "desc": "Channel to provide information of the energy in neutral conductor"
+            }
         },
         
         {
@@ -233,7 +287,8 @@
                 "type": "number",
                 "role": "level.current",
                 "read": true,
-                "write": true
+                "write": true,
+                "unit": "A"
             }
         },{
             "_id": "error",
@@ -386,16 +441,8 @@
                 "type": "number",
                 "role": "level",
                 "read": true,
-                "write": true
-            }
-        },{
-            "_id": "temperatures",
-            "type": "channel",
-            "common": {
-                "name": "All about temperatures",
-                "role": "",
-                "icon": "",
-                "desc": "Channel to provide information of the temperature in the device"
+                "write": true,
+                "unit": "Watt"
             }
         },{
             "_id": "temperatures.maintempereature",
@@ -405,7 +452,8 @@
                 "type": "number",
                 "role": "value.temperature",
                 "read": true,
-                "write": false
+                "write": false,
+                "unit": "°C"
             }
         },{
             "_id": "temperatures.tempereatureArray",
@@ -425,7 +473,8 @@
                 "type": "number",
                 "role": "value.temperature",
                 "read": true,
-                "write": false
+                "write": false,
+                "unit": "°C"
             }
         },{
             "_id": "temperatures.tempereature2",
@@ -435,7 +484,8 @@
                 "type": "number",
                 "role": "value.temperature",
                 "read": true,
-                "write": false
+                "write": false,
+                "unit": "°C"
             }
         },{
             "_id": "temperatures.tempereature3",
@@ -445,7 +495,8 @@
                 "type": "number",
                 "role": "value.temperature",
                 "read": true,
-                "write": false
+                "write": false,
+                "unit": "°C"
             }
         },{
             "_id": "temperatures.tempereature4",
@@ -455,7 +506,8 @@
                 "type": "number",
                 "role": "value.temperature",
                 "read": true,
-                "write": false
+                "write": false,
+                "unit": "°C"
             }
         },{
             "_id": "avail_ampere",
@@ -465,7 +517,8 @@
                 "type": "number",
                 "role": "value.current",
                 "read": true,
-                "write": false
+                "write": false,
+                "unit": "A"
             }
         },{
             "_id": "loaded_energy",
@@ -475,7 +528,8 @@
                 "type": "number",
                 "role": "value.power.consumption",
                 "read": true,
-                "write": false
+                "write": false,
+                "unit": "dws"
             }
         },{
             "_id": "loaded_energy_kwh",
@@ -485,7 +539,8 @@
                 "type": "number",
                 "role": "value.power.consumption",
                 "read": true,
-                "write": false
+                "write": false,
+                "unit": "kWh"
             }
         },{
             "_id": "max_load",
@@ -495,7 +550,8 @@
                 "type": "number",
                 "role": "level.timer.sleep",
                 "read": true,
-                "write": true
+                "write": true,
+                "unit": "kWh"
             }
         },{
             "_id": "adapter_in",
@@ -525,11 +581,12 @@
             "_id": "energy_total",
             "type": "state",
             "common": {
-                "name": "Gesamt geladene Energiemenge in 0.1kWh (eto)",
+                "name": "Gesamt geladene Energiemenge (eto)",
                 "type": "number",
                 "role": "value.power.consumption",
                 "read": true,
-                "write": false
+                "write": false,
+                "unit": "kWh"
             }
         },{
             "_id":"wifi",
@@ -564,51 +621,6 @@
                 "write": false
             }
         },{
-            "_id": "energy",
-            "type": "channel",
-            "common": {
-                "name": "Energy",
-                "role": "",
-                "icon": "",
-                "desc": "Channel to provide information of the energy in all phases"
-            }
-        },{
-            "_id": "energy.phase1",
-            "type": "channel",
-            "common": {
-                "name": "Energy of phase 1",
-                "role": "",
-                "icon": "",
-                "desc": "Channel to provide information of the energy in phase one"
-            }
-        },{
-            "_id": "energy.phase2",
-            "type": "channel",
-            "common": {
-                "name": "Energy of phase 2",
-                "role": "",
-                "icon": "",
-                "desc": "Channel to provide information of the energy in phase two"
-            }
-        },{
-            "_id": "energy.phase3",
-            "type": "channel",
-            "common": {
-                "name": "Energy of phase 3",
-                "role": "",
-                "icon": "",
-                "desc": "Channel to provide information of the energy in phase three"
-            }
-        },{
-            "_id": "energy.neutral",
-            "type": "channel",
-            "common": {
-                "name": "Energy of neutral conductor",
-                "role": "",
-                "icon": "",
-                "desc": "Channel to provide information of the energy in neutral conductor"
-            }
-        },{
             "_id": "energy.phase1.voltage",
             "type": "state",
             "common": {
@@ -616,7 +628,8 @@
                 "type": "number",
                 "role": "value.voltage",
                 "read":  true,
-                "write": false
+                "write": false,
+                "unit": "V"
             }
         },{
             "_id": "energy.phase2.voltage",
@@ -626,7 +639,8 @@
                 "type": "number",
                 "role": "value.voltage",
                 "read":  true,
-                "write": false
+                "write": false,
+                "unit": "V"
             }
         },{
             "_id": "energy.phase3.voltage",
@@ -636,7 +650,8 @@
                 "type": "number",
                 "role": "value.voltage",
                 "read":  true,
-                "write": false
+                "write": false,
+                "unit": "V"
             }
         },{
             "_id": "energy.neutral.voltage",
@@ -646,7 +661,8 @@
                 "type": "number",
                 "role": "value.voltage",
                 "read":  true,
-                "write": false
+                "write": false,
+                "unit": "V"
             }
         },{
             "_id": "energy.phase1.ampere",
@@ -656,7 +672,8 @@
                 "type": "number",
                 "role": "value.current",
                 "read":  true,
-                "write": false
+                "write": false,
+                "unit": "A"
             }
         },{
             "_id": "energy.phase2.ampere",
@@ -666,7 +683,8 @@
                 "type": "number",
                 "role": "value.current",
                 "read":  true,
-                "write": false
+                "write": false,
+                "unit": "A"
             }
         },{
             "_id": "energy.phase3.ampere",
@@ -676,7 +694,8 @@
                 "type": "number",
                 "role": "value.current",
                 "read":  true,
-                "write": false
+                "write": false,
+                "unit": "A"
             }
         },{
             "_id": "energy.phase1.power",
@@ -686,7 +705,8 @@
                 "type": "number",
                 "role": "value.power.consumption",
                 "read":  true,
-                "write": false
+                "write": false,
+                "unit": "kW"
             }
         },{
             "_id": "energy.phase2.power",
@@ -696,7 +716,8 @@
                 "type": "number",
                 "role": "value.power.consumption",
                 "read":  true,
-                "write": false
+                "write": false,
+                "unit": "kW"
             }
         },{
             "_id": "energy.phase3.power",
@@ -706,7 +727,8 @@
                 "type": "number",
                 "role": "value.power.consumption",
                 "read":  true,
-                "write": false
+                "write": false,
+                "unit": "kW"
             }
         },{
             "_id": "energy.neutral.power",
@@ -716,7 +738,8 @@
                 "type": "number",
                 "role": "value.power.consumption",
                 "read":  true,
-                "write": false
+                "write": false,
+                "unit": "kW"
             }
         },{
             "_id": "energy.power",
@@ -726,7 +749,8 @@
                 "type": "number",
                 "role": "value.power.consumption",
                 "read":  true,
-                "write": false
+                "write": false,
+                "unit": "kW"
             }
         },{
             "_id": "energy.phase1.power_coefficient",
@@ -736,7 +760,8 @@
                 "type": "number",
                 "role": "value",
                 "read":  true,
-                "write": false
+                "write": false,
+                "unit": "%"
             }
         },{
             "_id": "energy.phase2.power_coefficient",
@@ -746,7 +771,8 @@
                 "type": "number",
                 "role": "value",
                 "read":  true,
-                "write": false
+                "write": false,
+                "unit": "%"
             }
         },{
             "_id": "energy.phase3.power_coefficient",
@@ -756,7 +782,8 @@
                 "type": "number",
                 "role": "value",
                 "read":  true,
-                "write": false
+                "write": false,
+                "unit": "%"
             }
         },{
             "_id": "energy.neutral.power_coefficient",
@@ -766,7 +793,8 @@
                 "type": "number",
                 "role": "value",
                 "read":  true,
-                "write": false
+                "write": false,
+                "unit": "%"
             }
         },{
             "_id": "firmware_version",
@@ -844,7 +872,8 @@
                 "type": "number",
                 "role": "value",
                 "read":  true,
-                "write": false
+                "write": false,
+                "unit": "UTC"
             }
         },{
             "_id": "time_daylight_saving",
@@ -917,7 +946,8 @@
                 "type": "number",
                 "role": "level.current",
                 "read":  true,
-                "write": false
+                "write": false,
+                "unit": "A"
             }
         },{
             "_id": "settings.ampere_level1",
@@ -927,7 +957,8 @@
                 "type": "number",
                 "role": "level.current",
                 "read":  true,
-                "write": true
+                "write": true,
+                "unit": "A"
             }
         },{
             "_id": "settings.ampere_level2",
@@ -937,7 +968,8 @@
                 "type": "number",
                 "role": "level.current",
                 "read":  true,
-                "write": true
+                "write": true,
+                "unit": "A"
             }
         },{
             "_id": "settings.ampere_level3",
@@ -947,7 +979,8 @@
                 "type": "number",
                 "role": "level.current",
                 "read":  true,
-                "write": true
+                "write": true,
+                "unit": "A"
             }
         },{
             "_id": "settings.ampere_level4",
@@ -957,7 +990,8 @@
                 "type": "number",
                 "role": "level.current",
                 "read":  true,
-                "write": true
+                "write": true,
+                "unit": "A"
             }
         },{
             "_id": "settings.ampere_level5",
@@ -967,7 +1001,8 @@
                 "type": "number",
                 "role": "level.current",
                 "read":  true,
-                "write": true
+                "write": true,
+                "unit": "A"
             }
         },{
             "_id": "settings.color.idle",
@@ -1547,7 +1582,8 @@
                 "type": "number",
                 "role": "value",
                 "read":  true,
-                "write": false
+                "write": false,
+                "unit": "A"
             }
         },{
             "_id": "power_management.min_ampere",
@@ -1557,7 +1593,8 @@
                 "type": "number",
                 "role": "value",
                 "read":  true,
-                "write": false
+                "write": false,
+                "unit": "A"
             }
         },{
             "_id": "power_management.priority",
@@ -1597,7 +1634,8 @@
                 "type": "number",
                 "role": "value",
                 "read":  true,
-                "write": false
+                "write": false,
+                "unit": "A"
             }
         },{
             "_id": "power_management.ampere",
@@ -1607,7 +1645,8 @@
                 "type": "number",
                 "role": "value",
                 "read":  true,
-                "write": false
+                "write": false,
+                "unit": "A"
             }
         },{
             "_id": "power_management.finish_idle_sec",
@@ -1704,7 +1743,8 @@
                 "type": "number",
                 "role": "value",
                 "read": true,
-                "write": true
+                "write": true,
+                "unit": "Watt"
             }
         } 
     ]
