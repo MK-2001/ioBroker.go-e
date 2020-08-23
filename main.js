@@ -28,6 +28,16 @@ class GoE extends utils.Adapter {
 
         // Timer Object for the update interval for ampere to the adapter
         this.ampTimer = null;
+
+        // Translation Object 
+        this.translationObject = {
+            al1: "settings.ampere_level1",
+            al2: "settings.ampere_level2",
+            al3: "settings.ampere_level3",
+            al4: "settings.ampere_level4",
+            al5: "settings.ampere_level5",
+            lbr: "settings.color.led_brightness"
+        };
     }
     
     /**
@@ -45,14 +55,19 @@ class GoE extends utils.Adapter {
         // In order to get state updates, you need to subscribe to them. The following line adds a subscription for our variable we have created above.
         this.subscribeStates("ampere");
         this.subscribeStates("color.*");
-        this.subscribeStates("led_save_energy");
+        this.subscribeStates("settings.color.led_save_energy");
+        this.subscribeStates("settings.color.led_brightness");
         this.subscribeStates("access_state");
         this.subscribeStates("allow_charging");
         this.subscribeStates("max_load");
         this.subscribeStates("stop_state");
         this.subscribeStates("energy.max_watts");
         this.subscribeStates("energy.adjustAmpLevelInWatts");
-
+        this.subscribeStates("settings.ampere_level1");
+        this.subscribeStates("settings.ampere_level2");
+        this.subscribeStates("settings.ampere_level3");
+        this.subscribeStates("settings.ampere_level4");
+        this.subscribeStates("settings.ampere_level5");
         // Start the Adapter to sync in the interval
         this.interval = setInterval(async () => {
             await this.getStateFromDevice();
@@ -115,20 +130,23 @@ class GoE extends utils.Adapter {
                     case this.namespace + ".ampere":
                         this.setValue("amp", state.val.toString());
                         break;
-                    case this.namespace + ".color.idle":
+                    case this.namespace + ".settings.color.idle":
                         // @ts-ignore // Check off null is done
                         this.setValue("cid", /^#?([a-f\d]{6})$/i.exec(state.val.toString()) !== null ? parseInt(/^#?([a-f\d]{6})$/i.exec(state.val.toString())[1], 16) : 0);
                         break;
-                    case this.namespace + ".color.charging":
+                    case this.namespace + ".settings.color.charging":
                         // @ts-ignore // Check off null is done
                         this.setValue("cid", /^#?([a-f\d]{6})$/i.exec(state.val.toString()) !== null ? parseInt(/^#?([a-f\d]{6})$/i.exec(state.val.toString())[1], 16) : 0);
                         break;
-                    case this.namespace + ".color.finish":
+                    case this.namespace + ".settings.color.finish":
                         // @ts-ignore // Check off null is done
                         this.setValue("cid", /^#?([a-f\d]{6})$/i.exec(state.val.toString()) !== null ? parseInt(/^#?([a-f\d]{6})$/i.exec(state.val.toString())[1], 16) : 0);
                         break;
-                    case this.namespace + ".led_save_energy":
+                    case this.namespace + ".settings.led_save_energy":
                         this.setValue("lse", parseInt(state.val.toString()));
+                        break;
+                    case this.namespace + ".settings.led_brightness":
+                        this.setValue("lbr", parseInt(state.val.toString()));
                         break;
                     case this.namespace + ".access_state":
                         if(parseInt(state.val.toString()) == 0 || parseInt(state.val.toString()) == 1 ) {
@@ -161,6 +179,21 @@ class GoE extends utils.Adapter {
                     case this.namespace + ".energy.adjustAmpLevelInWatts":
                         this.adjustAmpLevelInWatts(parseInt(state.val.toString()));
                         this.setState("energy.changeAmpLevelInWatts",      { val: parseInt(state.val.toString()), ack: true }); 
+                        break;
+                    case this.namespace + ".settings.ampere_level1":
+                        this.setAmpLevelToButton("al1", parseInt(state.val.toString()));
+                        break;
+                    case this.namespace + ".settings.ampere_level2":
+                        this.setAmpLevelToButton("al2", parseInt(state.val.toString()));
+                        break;
+                    case this.namespace + ".settings.ampere_level3":
+                        this.setAmpLevelToButton("al3", parseInt(state.val.toString()));
+                        break;
+                    case this.namespace + ".settings.ampere_level4":
+                        this.setAmpLevelToButton("al4", parseInt(state.val.toString()));
+                        break;
+                    case this.namespace + ".settings.ampere_level5":
+                        this.setAmpLevelToButton("al5", parseInt(state.val.toString()));
                         break;
                     default:
                         this.log.error("Not deveoped function to write " + id + " with state " + state);
@@ -227,7 +260,15 @@ class GoE extends utils.Adapter {
         //this.setState = asyncLimit(this.setState, 10);
 
         await queue.add(() => this.setState("encryption",                         { val: o.version == "C" ? true : false, ack: true })); // read
-        await queue.add(() => this.setState("synctime",                           { val: o.tme, ack: true })); 
+
+        // TME provides 2208201643
+        // Realdate: 22th August 2020 at 16:43 (CET)
+        const reggie = /(\d{2})(\d{2})(\d{2})(\d{2})(\d{2})/
+            // @ts-ignore
+            , [, year, month, day, hours, minutes] = reggie.exec(o.tme)
+            , dateObject = new Date(parseInt(year)+2000, parseInt(month)-1, parseInt(day), parseInt(hours), parseInt(minutes), 0);
+
+        await queue.add(() => this.setState("synctime",                           { val: dateObject, ack: true })); 
         await queue.add(() => this.setState("reboot_counter",                     { val: o.rbc, ack: true })); // read
         await queue.add(() => this.setState("reboot_timer",                       { val: o.rbt, ack: true })); // read
         await queue.add(() => this.setState("car",                                { val: o.car, ack: true })); // read
@@ -240,11 +281,11 @@ class GoE extends utils.Adapter {
         await queue.add(() => this.setState("phases",                             { val: o.pha, ack: true })); // read
         // Split phases in single states
         await queue.add(() => this.setState("energy.phase1.preContactorActive",   { val: ((parseInt(o.pha) & preContactorPhase1) == preContactorPhase1), ack: true})); //read
-        await queue.add(() => this.setState("energy.phase1.postContactorActive",   { val: ((parseInt(o.pha) & postContactorPhase1) == postContactorPhase1), ack: true})); //read
+        await queue.add(() => this.setState("energy.phase1.postContactorActive",  { val: ((parseInt(o.pha) & postContactorPhase1) == postContactorPhase1), ack: true})); //read
         await queue.add(() => this.setState("energy.phase2.preContactorActive",   { val: ((parseInt(o.pha) & preContactorPhase2) == preContactorPhase2), ack: true})); //read
-        await queue.add(() => this.setState("energy.phase2.postContactorActive",   { val: ((parseInt(o.pha) & postContactorPhase2) == postContactorPhase2), ack: true})); //read
+        await queue.add(() => this.setState("energy.phase2.postContactorActive",  { val: ((parseInt(o.pha) & postContactorPhase2) == postContactorPhase2), ack: true})); //read
         await queue.add(() => this.setState("energy.phase3.preContactorActive",   { val: ((parseInt(o.pha) & preContactorPhase3) == preContactorPhase3), ack: true})); //read
-        await queue.add(() => this.setState("energy.phase3.postContactorActive",   { val: ((parseInt(o.pha) & postContactorPhase3) == postContactorPhase3), ack: true})); //read
+        await queue.add(() => this.setState("energy.phase3.postContactorActive",  { val: ((parseInt(o.pha) & postContactorPhase3) == postContactorPhase3), ack: true})); //read
         await queue.add(() => this.setState("energy.phase1.voltage",              { val: o.nrg[0], ack: true })); // read
         await queue.add(() => this.setState("energy.phase2.voltage",              { val: o.nrg[1], ack: true })); // read
         await queue.add(() => this.setState("energy.phase3.voltage",              { val: o.nrg[2], ack: true })); // read
@@ -274,6 +315,7 @@ class GoE extends utils.Adapter {
         await queue.add(() => this.setState("wifi.hotspot_key",                   { val: o.wak, ack: true })); // write
         await queue.add(() => this.setState("http_flags",                         { val: o.r1x, ack: true })); // write
         await queue.add(() => this.setState("loaded_energy",                      { val: o.dws, ack: true })); // read
+        await queue.add(() => this.setState("loaded_energy_kwh",                  { val: o.dws * 10 / 60 / 60, ack: true}));
         await queue.add(() => this.setState("max_load",                           { val: (o.dwo / 10), ack: true })); // write
         await queue.add(() => this.setState("electricity_exchange.min_hours",     { val: o.aho, ack: true })); // write
         await queue.add(() => this.setState("electricity_exchange.finish_hour",   { val: o.afi, ack: true })); // write
@@ -281,15 +323,15 @@ class GoE extends utils.Adapter {
         await queue.add(() => this.setState("max_ampere",                         { val: o.ama, ack: true }));
         await queue.add(() => this.setState("firmware_version",                   { val: o.fwv, ack: true })); // read
         await queue.add(() => this.setState("serial_number",                      { val: o.sse, ack: true })); // read
-        await queue.add(() => this.setState("led_brightness",                     { val: o.lbr, ack: true })); // write
-        await queue.add(() => this.setState("ampere_level1",                      { val: o.al1, ack: true })); // write
-        await queue.add(() => this.setState("ampere_level2",                      { val: o.al2, ack: true })); // write
-        await queue.add(() => this.setState("ampere_level3",                      { val: o.al3, ack: true })); // write
-        await queue.add(() => this.setState("ampere_level4",                      { val: o.al4, ack: true })); // write
-        await queue.add(() => this.setState("ampere_level5",                      { val: o.al5, ack: true })); // write
-        await queue.add(() => this.setState("color.idle",                         { val: "#" + ("000000" + parseInt(o.cid).toString(16)).slice(6), ack: true })); // write
-        await queue.add(() => this.setState("color.charging",                     { val: "#" + ("000000" + parseInt(o.cch).toString(16)).slice(6), ack: true })); // write
-        await queue.add(() => this.setState("color.finish",                       { val: "#" + ("000000" + parseInt(o.cfi).toString(16)).slice(6), ack: true })); // write
+        await queue.add(() => this.setState("settings.color.led_brightness",      { val: o.lbr, ack: true })); // write
+        await queue.add(() => this.setState("settings.ampere_level1",             { val: o.al1, ack: true })); // write
+        await queue.add(() => this.setState("settings.ampere_level2",             { val: o.al2, ack: true })); // write
+        await queue.add(() => this.setState("settings.ampere_level3",             { val: o.al3, ack: true })); // write
+        await queue.add(() => this.setState("settings.ampere_level4",             { val: o.al4, ack: true })); // write
+        await queue.add(() => this.setState("settings.ampere_level5",             { val: o.al5, ack: true })); // write
+        await queue.add(() => this.setState("settings.color.idle",                { val: "#" + ("000000" + parseInt(o.cid).toString(16)).slice(6), ack: true })); // write
+        await queue.add(() => this.setState("settings.color.charging",            { val: "#" + ("000000" + parseInt(o.cch).toString(16)).slice(6), ack: true })); // write
+        await queue.add(() => this.setState("settings.color.finish",              { val: "#" + ("000000" + parseInt(o.cfi).toString(16)).slice(6), ack: true })); // write
         await queue.add(() => this.setState("time_offset",                        { val: o.tof, ack: true})); // write
         await queue.add(() => this.setState("time_daylight_saving",               { val: o.tds, ack: true })); // write
         // RFID Badges
@@ -331,11 +373,24 @@ class GoE extends utils.Adapter {
         await queue.add(() => this.setState("mqtt.user",                          { val: o.mcu, ack: true }));
         await queue.add(() => this.setState("mqtt.key",                           { val: o.mck, ack: true }));
         await queue.add(() => this.setState("mqtt.connection",                    { val: o.mcc, ack: true }));
-        await queue.add(() => this.setState("tempereature",                       { val: o.tmp, ack: true })); // read
-        await queue.add(() => this.setState("tempereatureArray",                  { val: o.tma, ack: true }));
+        await queue.add(() => this.setState("temperatures.maintempereature",      { val: o.tmp, ack: true })); // read
+        await queue.add(() => this.setState("temperatures.tempereatureArray",     { val: o.tma, ack: true })); 
+        try {
+            const tempArr = o.tma.toString().split(",");
+            if(tempArr.length == 4) {
+                await queue.add(() => this.setState("temperatures.tempereature1", { val: tempArr[0], ack: true}));
+                await queue.add(() => this.setState("temperatures.tempereature2", { val: tempArr[1], ack: true}));
+                await queue.add(() => this.setState("temperatures.tempereature3", { val: tempArr[2], ack: true}));
+                await queue.add(() => this.setState("temperatures.tempereature4", { val: tempArr[3], ack: true}));
+            } else {
+                this.log.debug("Cant write temp single temps. Expected 3 elements got " + JSON.stringify(tempArr));
+            }
+        } catch (e) {
+            this.log.warn("Cloud not store temperature array to single values, because of error " + e.message);
+        }
         await queue.add(() => this.setState("adapter_in",                         { val: o.adi, ack: true })); // read
         await queue.add(() => this.setState("unlocked_by",                        { val: o.uby, ack: true })); // read
-        await queue.add(() => this.setState("led_save_energy",                    { val: o.lse, ack: true })); // write
+        await queue.add(() => this.setState("settings.color.led_save_energy",     { val: o.lse, ack: true })); // write
         await queue.add(() => this.setState("unlock_state",                       { val: o.ust, ack: true })); // write
         await queue.add(() => this.setState("electricity_exchange.balance_time",  { val: o.dto, ack: true })); // write
         await queue.add(() => this.setState("energy.norway_mode",                 { val: o.nmo, ack: true })); // write
@@ -369,16 +424,16 @@ class GoE extends utils.Adapter {
             }, this.config.ampUpdateInterval * 1000);
             try {
                 // San for active phases on Adapter
-                const prePhase1 = await this.getStateAsync("energy.phase1.preContactorActive");
-                const prePhase2 = await this.getStateAsync("energy.phase2.preContactorActive");
-                const prePhase3 = await this.getStateAsync("energy.phase3.preContactorActive");
+                const prePhase1   = await this.getStateAsync("energy.phase1.preContactorActive");
+                const prePhase2   = await this.getStateAsync("energy.phase2.preContactorActive");
+                const prePhase3   = await this.getStateAsync("energy.phase3.preContactorActive");
                 const avgVoltage1 = await this.getStateAsync("energy.phase1.voltage");
                 const avgVoltage2 = await this.getStateAsync("energy.phase2.voltage");
                 const avgVoltage3 = await this.getStateAsync("energy.phase3.voltage");
-                const curAmpPha1 = await this.getStateAsync("eneregy.phase1.ampere");
-                const curAmpPha2 = await this.getStateAsync("eneregy.phase2.ampere");
-                const curAmpPha3 = await this.getStateAsync("eneregy.phase3.ampere");
-                const car = await this.getStateAsync("car");
+                const curAmpPha1  = await this.getStateAsync("eneregy.phase1.ampere");
+                const curAmpPha2  = await this.getStateAsync("eneregy.phase2.ampere");
+                const curAmpPha3  = await this.getStateAsync("eneregy.phase3.ampere");
+                const car         = await this.getStateAsync("car");
 
                 if(prePhase1 === null || prePhase1 === undefined || prePhase1.val === null ||  
                    prePhase2 === null || prePhase2 === undefined || prePhase2.val === null ||  
@@ -390,7 +445,7 @@ class GoE extends utils.Adapter {
                    curAmpPha2 === null || curAmpPha2 === undefined || curAmpPha2.val === null ||
                    curAmpPha3 === null || curAmpPha3 === undefined || curAmpPha3.val === null ||
                    car === null || car === undefined || car.val === null) {
-                    this.log.error("Not all required information about the phases are found. Required Values are: energy.phase1.preContactorActive, energy.phase2.preContactorActive, energy.phase3.preContactorActive, energy.phase1.voltage, energy.phase2.voltage, energy.phase3.voltage")
+                    this.log.error("Not all required information about the phases are found. Required Values are: energy.phase1.preContactorActive, energy.phase2.preContactorActive, energy.phase3.preContactorActive, energy.phase1.voltage, energy.phase2.voltage, energy.phase3.voltage");
                     return;
                 }
 
@@ -516,15 +571,25 @@ class GoE extends utils.Adapter {
                     this.setValue("amp", 32);
                     this.log.debug("set maxAmperes by adjustAmpLevelInWatts: 32 with " + changeWatts + " watts");
                 }
-
             } catch (e) {
                 this.log.error("Error during set adjust Watts: " + e.message);
             }
-
-
         } else {
             // Still existing Block-Timer
             this.log.warn("MaxWatts ignored. You are sending to fast! Update interval in settings is currently set to: " + this.config.ampUpdateInterval);
+        }
+    }
+    /**
+     * set amplevel to button
+     * @param {string} attribute be al1, al2, al3, al4, al5
+     * @param {number} ampLvl is the value to be set
+     */
+    async setAmpLevelToButton(attribute, ampLvl) {
+        if(ampLvl >= 6 && ampLvl <= 32) {
+            this.setValue(attribute, ampLvl);
+            this.setState(this.translationObject[attribute], { val: ampLvl, ack: true });
+        } else {
+            this.log.warn("Cant set " + ampLvl + " to " + attribute + "it must be between 6 and 32 ampere");
         }
     }
 }

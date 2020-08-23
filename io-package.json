@@ -1,7 +1,7 @@
 {
     "common": {
         "name": "go-e",
-        "version": "0.0.7",
+        "version": "0.1.0",
         "news": {
             "0.0.1": {
                 "en": "initial release",
@@ -76,8 +76,29 @@
                 "zh-cn": "*（MK-2001）激活了最大瓦特功能；添加了一些文档和NPM文档；激活的gulb可以翻译成不同的语言"
             }, 
             "0.0.7": {
-                "en": "removed bug in maxWatts calculation."
-            }
+                "en": "(MK-2001) solved bug in maxWatts feature\n* Added debug information on maxWatts Feature\n* removed info-level-logging on status query\n* Added function adjustAmpLevelInWatts\n* Added documentation\n* removed synctime bug\n* adds loaded_energy_kwh (extra value for dwo for unusual unit)\n* adds setAmpLevelToButton for 5 levels\n* added led brightness",
+                "de": "(MK-2001) Fehler in der maxWatts-Funktion behoben\n* Debug-Informationen zur maxWatts-Funktion hinzugefügt\n* Die Protokollierung auf Informationsebene bei Statusabfragen wurde entfernt\n* Funktion adjustAmpLevelInWatts hinzugefügt\n* Dokumentation hinzugefügt\n* Synctime-Fehler entfernt\n* fügt load_energy_kwh hinzu (zusätzlicher Wert für dwo für ungewöhnliche Einheit)\n* fügt setAmpLevelToButton für 5 Ebenen hinzu\n* LED-Helligkeit hinzugefügt",
+                "ru": "(MK-2001) исправлена ошибка в функции maxWatts\n* Добавлена отладочная информация по функции maxWatts\n* удалено ведение журнала на уровне информации при запросе статуса\n* Добавлена функция adjustAmpLevelInWatts\n* Добавлена документация\n* убран баг synctime\n* добавляет loaded_energy_kwh (дополнительное значение для dwo для необычного юнита)\n* добавляет setAmpLevelToButton для 5 уровней\n* добавлена яркость светодиода",
+                "pt": "(MK-2001) resolveu bug no recurso maxWatts\n* Adicionadas informações de depuração no recurso maxWatts\n* removido o registro em nível de informação na consulta de status\n* Adicionada função AdjustAmpLevelInWatts\n* Documentação adicionada\n* bug de sincronização removido\n* adiciona carregado_energia_kwh (valor extra para dwo para unidade incomum)\n* adiciona setAmpLevelToButton para 5 níveis\n* adicionado brilho do led",
+                "nl": "(MK-2001) bug opgelost in maxWatts-functie\n* Foutopsporingsinformatie toegevoegd over maxWatts-functie\n* verwijderd info-level-logging op status query\n* Functie adjustAmpLevelInWatts toegevoegd\n* Toegevoegd documentatie\n* verwijderde synctime-bug\n* voegt loaded_energy_kwh toe (extra waarde voor dwo voor ongebruikelijke eenheid)\n* voegt setAmpLevelToButton toe voor 5 niveaus\n* toegevoegde led-helderheid",
+                "fr": "(MK-2001) Correction d'un bug dans la fonction maxWatts\n* Ajout d'informations de débogage sur la fonctionnalité maxWatts\n* suppression de la journalisation au niveau des informations sur la requête d'état\n* Ajout de la fonction AdjustAmpLevelInWatts\n* Documentation ajoutée\n* bug de synchronisation supprimé\n* ajoute shared_energy_kwh (valeur supplémentaire pour dwo pour une unité inhabituelle)\n* ajoute setAmpLevelToButton pour 5 niveaux\n* ajout de la luminosité LED",
+                "it": "(MK-2001) risolto bug nella funzione maxWatts\n* Aggiunte informazioni di debug sulla funzione maxWatts\n* Rimossa la registrazione a livello di informazioni sulla query di stato\n* Aggiunta la funzione AdjustAmpLevelInWatts\n* Aggiunta documentazione\n* rimosso bug di sincronizzazione\n* aggiunge load_energy_kwh (valore extra per dwo per unità insolite)\n* aggiunge setAmpLevelToButton per 5 livelli\n* aggiunta luminosità del led",
+                "es": "(MK-2001) error resuelto en la función maxWatts\n* Añadida información de depuración sobre la función maxWatts\n* eliminado el registro de nivel de información en la consulta de estado\n* Función agregada adjustAmpLevelInWatts\n* Documentación agregada\n* eliminado error de sincronización\n* agregaloaded_energy_kwh (valor extra para dwo para unidad inusual)\n* agrega setAmpLevelToButton para 5 niveles\n* brillo led añadido",
+                "pl": "(MK-2001) rozwiązany błąd w funkcji maxWatts\n* Dodano informacje o debugowaniu funkcji maxWatts\n* usunięto logowanie na poziomie informacji przy zapytaniu o status\n* Dodano funkcję adjustAmpLevelInWatts\n* Dodano dokumentację\n* usunięto błąd synchronizacji\n* dodaje load_energy_kwh (dodatkowa wartość dla dwo dla nietypowej jednostki)\n* dodaje setAmpLevelToButton na 5 poziomach\n* dodano jasność diod LED",
+                "zh-cn": "（MK-2001）解决了maxWatts功能中的错误\n*在maxWatts功能上添加了调试信息\n*删除状态查询的信息级别日志记录\n*增加了功能AdjustAmpLevelInWatts\n*添加了文档\n*删除了同步时间错误\n*添加loaded_energy_kwh（dwo的额外值，代表异常单位）\n*为5个级别添加setAmpLevelToButton\n*增加了LED亮度"
+            },
+            "0.1.0": {
+                "en": "All parts of the versions 0.0.x. For more details visit ./docs/Changelog.md; Major topics: Function maxWatts, adjustAmpLevelInWatts, ability to write several endpoints. ",
+                "de": "Alle Teile der Versionen 0.0.x. Weitere Informationen finden Sie unter ./docs/Changelog.md; Hauptthemen: Funktion maxWatts, adjustAmpLevelInWatts, Fähigkeit, mehrere Endpunkte zu schreiben.",
+                "ru": "Все части версий 0.0.x. Для получения дополнительных сведений посетите ./docs/Changelog.md; Основные темы: Функция maxWatts, adjustAmpLevelInWatts, возможность писать несколько конечных точек.",
+                "pt": "Todas as partes das versões 0.0.x. Para obter mais detalhes, visite ./docs/Changelog.md; Tópicos principais: função maxWatts, ajusteAmpLevelInWatts, capacidade de gravar vários terminais.",
+                "nl": "Alle onderdelen van de versies 0.0.x. Ga voor meer details naar ./docs/Changelog.md; Hoofdonderwerpen: Functie maxWatts, adjustAmpLevelInWatts, mogelijkheid om verschillende eindpunten te schrijven.",
+                "fr": "Toutes les parties des versions 0.0.x. Pour plus de détails, visitez ./docs/Changelog.md; Principaux sujets: Fonction maxWatts, AdjustAmpLevelInWatts, possibilité d'écrire plusieurs points de terminaison.",
+                "it": "Tutte le parti delle versioni 0.0.x. Per maggiori dettagli visita ./docs/Changelog.md; Argomenti principali: funzione maxWatts, AdjustAmpLevelInWatts, capacità di scrivere diversi endpoint.",
+                "es": "Todas las partes de las versiones 0.0.x. Para obtener más detalles, visite ./docs/Changelog.md; Temas principales: función maxWatts, adjustAmpLevelInWatts, capacidad para escribir varios puntos finales.",
+                "pl": "Wszystkie części wersji 0.0.x. Aby uzyskać więcej informacji, odwiedź stronę ./docs/Changelog.md; Główne tematy: funkcja maxWatts, adjustAmpLevelInWatts, możliwość pisania kilku punktów końcowych.",
+                "zh-cn": "版本0.0.x的所有部分。有关更多详细信息，请访问./docs/Changelog.md;。主要主题：函数maxWatts，adjustAmpLevelInWatts，编写多个端点的能力。"
+              }
         },
         "title": "go-eCharger wallbox integration",
         "titleLang": {
@@ -140,6 +161,80 @@
     },
     "objects": [],
     "instanceObjects": [
+        {
+            "_id":"settings",
+            "type":"channel",
+            "common": {
+                "name":"Device Settings",
+                "role": "",
+                "icon": "",
+                "desc": "Channel to provide information of the device settings"
+            }
+        },{
+            "_id":"settings.color",
+            "type":"channel",
+            "common": {
+                "name":"Color Settings",
+                "role": "",
+                "icon": "",
+                "desc": "Channel to provide information of the colors settings"
+            }
+        },{
+            "_id": "energy",
+            "type": "channel",
+            "common": {
+                "name": "Energy",
+                "role": "",
+                "icon": "",
+                "desc": "Channel to provide information of the energy in all phases"
+            }
+        },{
+            "_id": "temperatures",
+            "type": "channel",
+            "common": {
+                "name": "All about temperatures",
+                "role": "",
+                "icon": "",
+                "desc": "Channel to provide information of the temperature in the device"
+            }
+        },{
+            "_id": "energy.phase1",
+            "type": "channel",
+            "common": {
+                "name": "Energy of phase 1",
+                "role": "",
+                "icon": "",
+                "desc": "Channel to provide information of the energy in phase one"
+            }
+        },{
+            "_id": "energy.phase2",
+            "type": "channel",
+            "common": {
+                "name": "Energy of phase 2",
+                "role": "",
+                "icon": "",
+                "desc": "Channel to provide information of the energy in phase two"
+            }
+        },{
+            "_id": "energy.phase3",
+            "type": "channel",
+            "common": {
+                "name": "Energy of phase 3",
+                "role": "",
+                "icon": "",
+                "desc": "Channel to provide information of the energy in phase three"
+            }
+        },{
+            "_id": "energy.neutral",
+            "type": "channel",
+            "common": {
+                "name": "Energy of neutral conductor",
+                "role": "",
+                "icon": "",
+                "desc": "Channel to provide information of the energy in neutral conductor"
+            }
+        },
+        
         {
             "_id": "encryption",
             "type": "state",
@@ -204,7 +299,8 @@
                 "type": "number",
                 "role": "level.current",
                 "read": true,
-                "write": true
+                "write": true,
+                "unit": "A"
             }
         },{
             "_id": "error",
@@ -357,20 +453,22 @@
                 "type": "number",
                 "role": "level",
                 "read": true,
-                "write": true
+                "write": true,
+                "unit": "Watt"
             }
         },{
-            "_id": "tempereature",
+            "_id": "temperatures.maintempereature",
             "type": "state",
             "common": {
                 "name": "Controller temperature (tmp)",
                 "type": "number",
                 "role": "value.temperature",
                 "read": true,
-                "write": false
+                "write": false,
+                "unit": "°C"
             }
         },{
-            "_id": "tempereatureArray",
+            "_id": "temperatures.tempereatureArray",
             "type": "state",
             "common": {
                 "name": "all temperatures (tma)",
@@ -380,6 +478,50 @@
                 "write": false
             }
         },{
+            "_id": "temperatures.tempereature1",
+            "type": "state",
+            "common": {
+                "name": "One Temperatures for log in a db",
+                "type": "number",
+                "role": "value.temperature",
+                "read": true,
+                "write": false,
+                "unit": "°C"
+            }
+        },{
+            "_id": "temperatures.tempereature2",
+            "type": "state",
+            "common": {
+                "name": "One Temperatures for log in a db",
+                "type": "number",
+                "role": "value.temperature",
+                "read": true,
+                "write": false,
+                "unit": "°C"
+            }
+        },{
+            "_id": "temperatures.tempereature3",
+            "type": "state",
+            "common": {
+                "name": "One Temperatures for log in a db",
+                "type": "number",
+                "role": "value.temperature",
+                "read": true,
+                "write": false,
+                "unit": "°C"
+            }
+        },{
+            "_id": "temperatures.tempereature4",
+            "type": "state",
+            "common": {
+                "name": "One Temperatures for log in a db",
+                "type": "number",
+                "role": "value.temperature",
+                "read": true,
+                "write": false,
+                "unit": "°C"
+            }
+        },{
             "_id": "avail_ampere",
             "type": "state",
             "common": {
@@ -387,17 +529,30 @@
                 "type": "number",
                 "role": "value.current",
                 "read": true,
-                "write": false
+                "write": false,
+                "unit": "A"
             }
         },{
             "_id": "loaded_energy",
             "type": "state",
             "common": {
-                "name": "loaded energy (dws)",
+                "name": "loaded energy (dws) in deka watt secounds (dws * 10 / 60 / 60 => kWh)",
                 "type": "number",
                 "role": "value.power.consumption",
                 "read": true,
-                "write": false
+                "write": false,
+                "unit": "dws"
+            }
+        },{
+            "_id": "loaded_energy_kwh",
+            "type": "state",
+            "common": {
+                "name": "loaded energy in kilo watt hours",
+                "type": "number",
+                "role": "value.power.consumption",
+                "read": true,
+                "write": false,
+                "unit": "kWh"
             }
         },{
             "_id": "max_load",
@@ -407,7 +562,8 @@
                 "type": "number",
                 "role": "level.timer.sleep",
                 "read": true,
-                "write": true
+                "write": true,
+                "unit": "kWh"
             }
         },{
             "_id": "adapter_in",
@@ -437,11 +593,12 @@
             "_id": "energy_total",
             "type": "state",
             "common": {
-                "name": "Gesamt geladene Energiemenge in 0.1kWh (eto)",
+                "name": "Gesamt geladene Energiemenge (eto)",
                 "type": "number",
                 "role": "value.power.consumption",
                 "read": true,
-                "write": false
+                "write": false,
+                "unit": "kWh"
             }
         },{
             "_id":"wifi",
@@ -476,51 +633,6 @@
                 "write": false
             }
         },{
-            "_id": "energy",
-            "type": "channel",
-            "common": {
-                "name": "Energy",
-                "role": "",
-                "icon": "",
-                "desc": "Channel to provide information of the energy in all phases"
-            }
-        },{
-            "_id": "energy.phase1",
-            "type": "channel",
-            "common": {
-                "name": "Energy of phase 1",
-                "role": "",
-                "icon": "",
-                "desc": "Channel to provide information of the energy in phase one"
-            }
-        },{
-            "_id": "energy.phase2",
-            "type": "channel",
-            "common": {
-                "name": "Energy of phase 2",
-                "role": "",
-                "icon": "",
-                "desc": "Channel to provide information of the energy in phase two"
-            }
-        },{
-            "_id": "energy.phase3",
-            "type": "channel",
-            "common": {
-                "name": "Energy of phase 3",
-                "role": "",
-                "icon": "",
-                "desc": "Channel to provide information of the energy in phase three"
-            }
-        },{
-            "_id": "energy.neutral",
-            "type": "channel",
-            "common": {
-                "name": "Energy of neutral conductor",
-                "role": "",
-                "icon": "",
-                "desc": "Channel to provide information of the energy in neutral conductor"
-            }
-        },{
             "_id": "energy.phase1.voltage",
             "type": "state",
             "common": {
@@ -528,7 +640,8 @@
                 "type": "number",
                 "role": "value.voltage",
                 "read":  true,
-                "write": false
+                "write": false,
+                "unit": "V"
             }
         },{
             "_id": "energy.phase2.voltage",
@@ -538,7 +651,8 @@
                 "type": "number",
                 "role": "value.voltage",
                 "read":  true,
-                "write": false
+                "write": false,
+                "unit": "V"
             }
         },{
             "_id": "energy.phase3.voltage",
@@ -548,7 +662,8 @@
                 "type": "number",
                 "role": "value.voltage",
                 "read":  true,
-                "write": false
+                "write": false,
+                "unit": "V"
             }
         },{
             "_id": "energy.neutral.voltage",
@@ -558,7 +673,8 @@
                 "type": "number",
                 "role": "value.voltage",
                 "read":  true,
-                "write": false
+                "write": false,
+                "unit": "V"
             }
         },{
             "_id": "energy.phase1.ampere",
@@ -568,7 +684,8 @@
                 "type": "number",
                 "role": "value.current",
                 "read":  true,
-                "write": false
+                "write": false,
+                "unit": "A"
             }
         },{
             "_id": "energy.phase2.ampere",
@@ -578,7 +695,8 @@
                 "type": "number",
                 "role": "value.current",
                 "read":  true,
-                "write": false
+                "write": false,
+                "unit": "A"
             }
         },{
             "_id": "energy.phase3.ampere",
@@ -588,7 +706,8 @@
                 "type": "number",
                 "role": "value.current",
                 "read":  true,
-                "write": false
+                "write": false,
+                "unit": "A"
             }
         },{
             "_id": "energy.phase1.power",
@@ -598,7 +717,8 @@
                 "type": "number",
                 "role": "value.power.consumption",
                 "read":  true,
-                "write": false
+                "write": false,
+                "unit": "kW"
             }
         },{
             "_id": "energy.phase2.power",
@@ -608,7 +728,8 @@
                 "type": "number",
                 "role": "value.power.consumption",
                 "read":  true,
-                "write": false
+                "write": false,
+                "unit": "kW"
             }
         },{
             "_id": "energy.phase3.power",
@@ -618,7 +739,8 @@
                 "type": "number",
                 "role": "value.power.consumption",
                 "read":  true,
-                "write": false
+                "write": false,
+                "unit": "kW"
             }
         },{
             "_id": "energy.neutral.power",
@@ -628,7 +750,8 @@
                 "type": "number",
                 "role": "value.power.consumption",
                 "read":  true,
-                "write": false
+                "write": false,
+                "unit": "kW"
             }
         },{
             "_id": "energy.power",
@@ -638,7 +761,8 @@
                 "type": "number",
                 "role": "value.power.consumption",
                 "read":  true,
-                "write": false
+                "write": false,
+                "unit": "kW"
             }
         },{
             "_id": "energy.phase1.power_coefficient",
@@ -648,7 +772,8 @@
                 "type": "number",
                 "role": "value",
                 "read":  true,
-                "write": false
+                "write": false,
+                "unit": "%"
             }
         },{
             "_id": "energy.phase2.power_coefficient",
@@ -658,7 +783,8 @@
                 "type": "number",
                 "role": "value",
                 "read":  true,
-                "write": false
+                "write": false,
+                "unit": "%"
             }
         },{
             "_id": "energy.phase3.power_coefficient",
@@ -668,7 +794,8 @@
                 "type": "number",
                 "role": "value",
                 "read":  true,
-                "write": false
+                "write": false,
+                "unit": "%"
             }
         },{
             "_id": "energy.neutral.power_coefficient",
@@ -678,7 +805,8 @@
                 "type": "number",
                 "role": "value",
                 "read":  true,
-                "write": false
+                "write": false,
+                "unit": "%"
             }
         },{
             "_id": "firmware_version",
@@ -756,7 +884,8 @@
                 "type": "number",
                 "role": "value",
                 "read":  true,
-                "write": false
+                "write": false,
+                "unit": "UTC"
             }
         },{
             "_id": "time_daylight_saving",
@@ -769,7 +898,7 @@
                 "write": false
             }
         },{
-            "_id": "led_brightness",
+            "_id": "settings.color.led_brightness",
             "type": "state",
             "common": {
                 "name": "LED Helligkeit​ von 0-255 (lbr)",
@@ -829,69 +958,66 @@
                 "type": "number",
                 "role": "level.current",
                 "read":  true,
-                "write": false
+                "write": false,
+                "unit": "A"
             }
         },{
-            "_id": "ampere_level1",
+            "_id": "settings.ampere_level1",
             "type": "state",
             "common": {
                 "name": "Ampere Level 1 für Druckknopf am Gerät. (al1)",
                 "type": "number",
                 "role": "level.current",
                 "read":  true,
-                "write": false
+                "write": true,
+                "unit": "A"
             }
         },{
-            "_id": "ampere_level2",
+            "_id": "settings.ampere_level2",
             "type": "state",
             "common": {
                 "name": "Ampere Level 2 für Druckknopf am Gerät. (al2)",
                 "type": "number",
                 "role": "level.current",
                 "read":  true,
-                "write": false
+                "write": true,
+                "unit": "A"
             }
         },{
-            "_id": "ampere_level3",
+            "_id": "settings.ampere_level3",
             "type": "state",
             "common": {
                 "name": "Ampere Level 3 für Druckknopf am Gerät. (al3)",
                 "type": "number",
                 "role": "level.current",
                 "read":  true,
-                "write": false
+                "write": true,
+                "unit": "A"
             }
         },{
-            "_id": "ampere_level4",
+            "_id": "settings.ampere_level4",
             "type": "state",
             "common": {
                 "name": "Ampere Level 4 für Druckknopf am Gerät. (al4)",
                 "type": "number",
                 "role": "level.current",
                 "read":  true,
-                "write": false
+                "write": true,
+                "unit": "A"
             }
         },{
-            "_id": "ampere_level5",
+            "_id": "settings.ampere_level5",
             "type": "state",
             "common": {
                 "name": "Ampere Level 5 für Druckknopf am Gerät. (al5)",
                 "type": "number",
                 "role": "level.current",
                 "read":  true,
-                "write": false
+                "write": true,
+                "unit": "A"
             }
         },{
-            "_id":"color",
-            "type":"channel",
-            "common": {
-                "name":"Color Settings",
-                "role": "",
-                "icon": "",
-                "desc": "Channel to provide information of the colors settings"
-            }
-        },{
-            "_id": "color.idle",
+            "_id": "settings.color.idle",
             "type": "state",
             "common": {
                 "name": "Color idle:​ Farbwert für Standby​ (kein Auto angesteckt) als Zahl (cid)",
@@ -901,7 +1027,7 @@
                 "write": true
             }
         },{
-            "_id": "color.charging",
+            "_id": "settings.color.charging",
             "type": "state",
             "common": {
                 "name": "Color charging:​ Farbwert für Ladevorgang aktiv​, als Zahl (cch)",
@@ -911,7 +1037,7 @@
                 "write": true
             }
         },{
-            "_id": "color.finish",
+            "_id": "settings.color.finish",
             "type": "state",
             "common": {
                 "name": "Color idle:​ Farbwert für Ladevorgang abgeschlossen​, als Zahl (cfi)",
@@ -921,7 +1047,7 @@
                 "write": true
             }
         },{
-            "_id": "led_save_energy",
+            "_id": "settings.color.led_save_energy",
             "type": "state",
             "common": {
                 "name": "led_save_energy​: LED automatisch nach 10 Sekunden abschalten (lse)",
@@ -1468,7 +1594,8 @@
                 "type": "number",
                 "role": "value",
                 "read":  true,
-                "write": false
+                "write": false,
+                "unit": "A"
             }
         },{
             "_id": "power_management.min_ampere",
@@ -1478,7 +1605,8 @@
                 "type": "number",
                 "role": "value",
                 "read":  true,
-                "write": false
+                "write": false,
+                "unit": "A"
             }
         },{
             "_id": "power_management.priority",
@@ -1518,7 +1646,8 @@
                 "type": "number",
                 "role": "value",
                 "read":  true,
-                "write": false
+                "write": false,
+                "unit": "A"
             }
         },{
             "_id": "power_management.ampere",
@@ -1528,7 +1657,8 @@
                 "type": "number",
                 "role": "value",
                 "read":  true,
-                "write": false
+                "write": false,
+                "unit": "A"
             }
         },{
             "_id": "power_management.finish_idle_sec",
@@ -1625,7 +1755,8 @@
                 "type": "number",
                 "role": "value",
                 "read": true,
-                "write": true
+                "write": true,
+                "unit": "Watt"
             }
         } 
     ]
