@@ -1,7 +1,7 @@
 {
     "common": {
         "name": "go-e",
-        "version": "0.1.0",
+        "version": "0.1.1",
         "news": {
             "0.0.1": {
                 "en": "initial release",
@@ -87,7 +87,7 @@
                 "pl": "(MK-2001) rozwiązany błąd w funkcji maxWatts\n* Dodano informacje o debugowaniu funkcji maxWatts\n* usunięto logowanie na poziomie informacji przy zapytaniu o status\n* Dodano funkcję adjustAmpLevelInWatts\n* Dodano dokumentację\n* usunięto błąd synchronizacji\n* dodaje load_energy_kwh (dodatkowa wartość dla dwo dla nietypowej jednostki)\n* dodaje setAmpLevelToButton na 5 poziomach\n* dodano jasność diod LED",
                 "zh-cn": "（MK-2001）解决了maxWatts功能中的错误\n*在maxWatts功能上添加了调试信息\n*删除状态查询的信息级别日志记录\n*增加了功能AdjustAmpLevelInWatts\n*添加了文档\n*删除了同步时间错误\n*添加loaded_energy_kwh（dwo的额外值，代表异常单位）\n*为5个级别添加setAmpLevelToButton\n*增加了LED亮度"
             },
-            "0.1.0": {
+            "0.1.1": {
                 "en": "All parts of the versions 0.0.x. For more details visit ./docs/Changelog.md; Major topics: Function maxWatts, adjustAmpLevelInWatts, ability to write several endpoints. ",
                 "de": "Alle Teile der Versionen 0.0.x. Weitere Informationen finden Sie unter ./docs/Changelog.md; Hauptthemen: Funktion maxWatts, adjustAmpLevelInWatts, Fähigkeit, mehrere Endpunkte zu schreiben.",
                 "ru": "Все части версий 0.0.x. Для получения дополнительных сведений посетите ./docs/Changelog.md; Основные темы: Функция maxWatts, adjustAmpLevelInWatts, возможность писать несколько конечных точек.",
