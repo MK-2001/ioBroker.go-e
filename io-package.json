@@ -1,7 +1,7 @@
 {
     "common": {
         "name": "go-e",
-        "version": "0.1.2",
+        "version": "0.1.4",
         "news": {
             "0.0.1": {
                 "en": "initial release",
@@ -232,6 +232,114 @@
                 "role": "",
                 "icon": "",
                 "desc": "Channel to provide information of the energy in neutral conductor"
+            }
+        },{
+            "_id":"rfid",
+            "type": "channel",
+            "common": {
+                "name": "RFID Settings",
+                "role": "",
+                "icon": "",
+                "desc": "Channel to provide information of the RFID settings and badgets"
+            }
+        },{
+            "_id":"rfid.badges",
+            "type": "channel",
+            "common": {
+                "name": "RFID Badgets",
+                "role": "",
+                "icon": "",
+                "desc": "Channel to provide information of the RFID badgets"
+            }
+        },{
+            "_id":"rfid.badges.1",
+            "type": "channel",
+            "common": {
+                "name": "RFID Badget 01",
+                "role": "",
+                "icon": "",
+                "desc": "Channel to provide information of the RFID badgets"
+            }
+        },{
+            "_id":"rfid.badges.2",
+            "type": "channel",
+            "common": {
+                "name": "RFID Badget 02",
+                "role": "",
+                "icon": "",
+                "desc": "Channel to provide information of the RFID badgets"
+            }
+        },{
+            "_id":"rfid.badges.3",
+            "type": "channel",
+            "common": {
+                "name": "RFID Badget 03",
+                "role": "",
+                "icon": "",
+                "desc": "Channel to provide information of the RFID badgets"
+            }
+        },{
+            "_id":"rfid.badges.4",
+            "type": "channel",
+            "common": {
+                "name": "RFID Badget 04",
+                "role": "",
+                "icon": "",
+                "desc": "Channel to provide information of the RFID badgets"
+            }
+        },{
+            "_id":"rfid.badges.5",
+            "type": "channel",
+            "common": {
+                "name": "RFID Badget 05",
+                "role": "",
+                "icon": "",
+                "desc": "Channel to provide information of the RFID badgets"
+            }
+        },{
+            "_id":"rfid.badges.6",
+            "type": "channel",
+            "common": {
+                "name": "RFID Badget 06",
+                "role": "",
+                "icon": "",
+                "desc": "Channel to provide information of the RFID badgets"
+            }
+        },{
+            "_id":"rfid.badges.7",
+            "type": "channel",
+            "common": {
+                "name": "RFID Badget 07",
+                "role": "",
+                "icon": "",
+                "desc": "Channel to provide information of the RFID badgets"
+            }
+        },{
+            "_id":"rfid.badges.8",
+            "type": "channel",
+            "common": {
+                "name": "RFID Badget 08",
+                "role": "",
+                "icon": "",
+                "desc": "Channel to provide information of the RFID badgets"
+            }
+        },{
+            "_id":"rfid.badges.9",
+            "type": "channel",
+            "common": {
+                "name": "RFID Badget 09",
+                "role": "",
+                "icon": "",
+                "desc": "Channel to provide information of the RFID badgets"
+            }
+        },{
+            "_id":"rfid.badges.10",
+            "type": "channel",
+            "common": {
+                "name": "RFID Badget 10",
+                "role": "",
+                "icon": "",
+                "desc": "Channel to provide information of the RFID badgets"
             }
         },
         
@@ -590,7 +698,7 @@
                 "write": false
             }
         },{
-            "_id": "energy_total",
+            "_id": "energy.total",
             "type": "state",
             "common": {
                 "name": "Gesamt geladene Energiemenge (eto)",
@@ -1144,114 +1252,6 @@
                 "role": "state",
                 "read": true,
                 "write": false
-            }
-        },{
-            "_id":"rfid",
-            "type": "channel",
-            "common": {
-                "name": "RFID Settings",
-                "role": "",
-                "icon": "",
-                "desc": "Channel to provide information of the RFID settings and badgets"
-            }
-        },{
-            "_id":"rfid.badges",
-            "type": "channel",
-            "common": {
-                "name": "RFID Badgets",
-                "role": "",
-                "icon": "",
-                "desc": "Channel to provide information of the RFID badgets"
-            }
-        },{
-            "_id":"rfid.badges.1",
-            "type": "channel",
-            "common": {
-                "name": "RFID Badget 01",
-                "role": "",
-                "icon": "",
-                "desc": "Channel to provide information of the RFID badgets"
-            }
-        },{
-            "_id":"rfid.badges.2",
-            "type": "channel",
-            "common": {
-                "name": "RFID Badget 02",
-                "role": "",
-                "icon": "",
-                "desc": "Channel to provide information of the RFID badgets"
-            }
-        },{
-            "_id":"rfid.badges.3",
-            "type": "channel",
-            "common": {
-                "name": "RFID Badget 03",
-                "role": "",
-                "icon": "",
-                "desc": "Channel to provide information of the RFID badgets"
-            }
-        },{
-            "_id":"rfid.badges.4",
-            "type": "channel",
-            "common": {
-                "name": "RFID Badget 04",
-                "role": "",
-                "icon": "",
-                "desc": "Channel to provide information of the RFID badgets"
-            }
-        },{
-            "_id":"rfid.badges.5",
-            "type": "channel",
-            "common": {
-                "name": "RFID Badget 05",
-                "role": "",
-                "icon": "",
-                "desc": "Channel to provide information of the RFID badgets"
-            }
-        },{
-            "_id":"rfid.badges.6",
-            "type": "channel",
-            "common": {
-                "name": "RFID Badget 06",
-                "role": "",
-                "icon": "",
-                "desc": "Channel to provide information of the RFID badgets"
-            }
-        },{
-            "_id":"rfid.badges.7",
-            "type": "channel",
-            "common": {
-                "name": "RFID Badget 07",
-                "role": "",
-                "icon": "",
-                "desc": "Channel to provide information of the RFID badgets"
-            }
-        },{
-            "_id":"rfid.badges.8",
-            "type": "channel",
-            "common": {
-                "name": "RFID Badget 08",
-                "role": "",
-                "icon": "",
-                "desc": "Channel to provide information of the RFID badgets"
-            }
-        },{
-            "_id":"rfid.badges.9",
-            "type": "channel",
-            "common": {
-                "name": "RFID Badget 09",
-                "role": "",
-                "icon": "",
-                "desc": "Channel to provide information of the RFID badgets"
-            }
-        },{
-            "_id":"rfid.badges.10",
-            "type": "channel",
-            "common": {
-                "name": "RFID Badget 10",
-                "role": "",
-                "icon": "",
-                "desc": "Channel to provide information of the RFID badgets"
             }
         },{
             "_id": "rfid.badges.1.consumption",

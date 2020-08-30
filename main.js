@@ -304,7 +304,7 @@ class GoE extends utils.Adapter {
         await queue.add(() => this.setState("energy.neutral.power_coefficient",   { val: o.nrg[15], ack: true })); // read
         await queue.add(() => this.setState("cable_ampere_code",                  { val: o.cbl, ack: true })); // read
         await queue.add(() => this.setState("avail_ampere",                       { val: o.amt, ack: true }));
-        await queue.add(() => this.setState("energy_total",                       { val: (o.eto / 10), ack: true })); // read
+        await queue.add(() => this.setState("energy.total",                       { val: (o.eto / 10), ack: true })); // read
         // Wifi
         await queue.add(() => this.setState("wifi.state",                         { val: o.wst, ack: true })); // read
         await queue.add(() => this.setState("transmit_interface",                 { val: o.txi, ack: true }));
@@ -335,15 +335,15 @@ class GoE extends utils.Adapter {
         await queue.add(() => this.setState("time_offset",                        { val: o.tof, ack: true})); // write
         await queue.add(() => this.setState("time_daylight_saving",               { val: o.tds, ack: true })); // write
         // RFID Badges
-        await queue.add(() => this.setState("rfid.badges.1.consumption",          { val: o.eca, ack: true })); // read
-        await queue.add(() => this.setState("rfid.badges.2.consumption",          { val: o.ecr, ack: true })); // read
-        await queue.add(() => this.setState("rfid.badges.3.consumption",          { val: o.ecd, ack: true })); // read
-        await queue.add(() => this.setState("rfid.badges.4.consumption",          { val: o.ec4, ack: true })); // read
-        await queue.add(() => this.setState("rfid.badges.5.consumption",          { val: o.ec5, ack: true })); // read
-        await queue.add(() => this.setState("rfid.badges.6.consumption",          { val: o.ec6, ack: true })); // read
-        await queue.add(() => this.setState("rfid.badges.7.consumption",          { val: o.ec7, ack: true })); // read
-        await queue.add(() => this.setState("rfid.badges.8.consumption",          { val: o.ec8, ack: true })); // read
-        await queue.add(() => this.setState("rfid.badges.9.consumption",          { val: o.ec9, ack: true })); // read
+        await queue.add(() => this.setState("rfid.badges.1.consumption",          { val: (o.eca / 10), ack: true })); // read
+        await queue.add(() => this.setState("rfid.badges.2.consumption",          { val: (o.ecr / 10), ack: true })); // read
+        await queue.add(() => this.setState("rfid.badges.3.consumption",          { val: (o.ecd / 10), ack: true })); // read
+        await queue.add(() => this.setState("rfid.badges.4.consumption",          { val: (o.ec4 / 10), ack: true })); // read
+        await queue.add(() => this.setState("rfid.badges.5.consumption",          { val: (o.ec5 / 10), ack: true })); // read
+        await queue.add(() => this.setState("rfid.badges.6.consumption",          { val: (o.ec6 / 10), ack: true })); // read
+        await queue.add(() => this.setState("rfid.badges.7.consumption",          { val: (o.ec7 / 10), ack: true })); // read
+        await queue.add(() => this.setState("rfid.badges.8.consumption",          { val: (o.ec8 / 10), ack: true })); // read
+        await queue.add(() => this.setState("rfid.badges.9.consumption",          { val: (o.ec9 / 10), ack: true })); // read
         await queue.add(() => this.setState("rfid.badges.10.consumption",         { val: o.ec1, ack: true })); // read    
         await queue.add(() => this.setState("rfid.badges.1.id",                   { val: o.rca, ack: true })); // read
         await queue.add(() => this.setState("rfid.badges.2.id",                   { val: o.rcr, ack: true })); // read
@@ -357,8 +357,8 @@ class GoE extends utils.Adapter {
         await queue.add(() => this.setState("rfid.badges.10.id",                  { val: o.rc1, ack: true })); // read
         // RFID Name 
         await queue.add(() => this.setState("rfid.badges.1.name",                 { val: o.rna, ack: true })); // write
-        await queue.add(() => this.setState("rfid.badges.2.name",                 { val: o.rnr, ack: true })); // write
-        await queue.add(() => this.setState("rfid.badges.3.name",                 { val: o.rnd, ack: true })); // write
+        await queue.add(() => this.setState("rfid.badges.2.name",                 { val: o.rnm, ack: true })); // write
+        await queue.add(() => this.setState("rfid.badges.3.name",                 { val: o.rne, ack: true })); // write
         await queue.add(() => this.setState("rfid.badges.4.name",                 { val: o.rn4, ack: true })); // write
         await queue.add(() => this.setState("rfid.badges.5.name",                 { val: o.rn5, ack: true })); // write
         await queue.add(() => this.setState("rfid.badges.6.name",                 { val: o.rn6, ack: true })); // write
