@@ -68,6 +68,8 @@ class GoE extends utils.Adapter {
         this.subscribeStates("settings.ampere_level3");
         this.subscribeStates("settings.ampere_level4");
         this.subscribeStates("settings.ampere_level5");
+        // Get all Information for the first time.
+        await this.getStateFromDevice();
         // Start the Adapter to sync in the interval
         this.interval = setInterval(async () => {
             await this.getStateFromDevice();
