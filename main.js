@@ -229,7 +229,8 @@ class GoE extends utils.Adapter {
     // go-eCharger functions
     async getStateFromDevice() {
         this.log.debug("Starte Abfrage an: http://" + this.config.serverName + "/status");
-        await axios.get("http://" + this.config.serverName + "/status")
+        axios.defaults.baseURL = "http://" + this.config.serverName;
+        await axios.get("/status")
             .then((o) => {
                 this.log.debug("Response: " + o.status + " - " + o.statusText);
                 this.log.debug(JSON.stringify(o.data));
