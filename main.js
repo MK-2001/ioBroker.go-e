@@ -379,14 +379,16 @@ class GoE extends utils.Adapter {
         await queue.add(() => this.setState("temperatures.maintempereature",      { val: o.tmp, ack: true })); // read
         await queue.add(() => this.setState("temperatures.tempereatureArray",     { val: o.tma, ack: true })); 
         try {
-            const tempArr = o.tma.toString().split(",");
-            if(tempArr.length == 4) {
-                await queue.add(() => this.setState("temperatures.tempereature1", { val: tempArr[0], ack: true}));
-                await queue.add(() => this.setState("temperatures.tempereature2", { val: tempArr[1], ack: true}));
-                await queue.add(() => this.setState("temperatures.tempereature3", { val: tempArr[2], ack: true}));
-                await queue.add(() => this.setState("temperatures.tempereature4", { val: tempArr[3], ack: true}));
-            } else {
-                this.log.debug("Cant write temp single temps. Expected 3 elements got " + JSON.stringify(tempArr));
+            if(o.tma) {
+                const tempArr = o.tma.toString().split(",");
+                if(tempArr.length == 4) {
+                    await queue.add(() => this.setState("temperatures.tempereature1", { val: tempArr[0], ack: true}));
+                    await queue.add(() => this.setState("temperatures.tempereature2", { val: tempArr[1], ack: true}));
+                    await queue.add(() => this.setState("temperatures.tempereature3", { val: tempArr[2], ack: true}));
+                    await queue.add(() => this.setState("temperatures.tempereature4", { val: tempArr[3], ack: true}));
+                } else {
+                    this.log.debug("Cant write temp single temps. Expected 3 elements got " + JSON.stringify(tempArr));
+                }
             }
         } catch (e) {
             this.log.warn("Cloud not store temperature array to single values, because of error " + e.message);

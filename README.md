@@ -28,13 +28,14 @@ The Manual for Installation and configuration you can find here:
 
 ## Developer manual
 
+Join the adapter Community
+https://t.me/goECharger 
+
 Official API Documentation:
 https://github.com/goecharger/go-eCharger-API-v1 
 
 Official Product Support:
 https://go-e.co/support/
-
-
 
 ## Changelog
 
