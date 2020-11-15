@@ -1,7 +1,7 @@
 {
     "common": {
         "name": "go-e",
-        "version": "0.1.4",
+        "version": "0.2.0",
         "news": {
             "0.0.1": {
                 "en": "initial release",
@@ -98,7 +98,19 @@
                 "es": "Todas las partes de las versiones 0.0.x. Para obtener más detalles, visite ./docs/Changelog.md; Temas principales: función maxWatts, adjustAmpLevelInWatts, capacidad para escribir varios puntos finales.",
                 "pl": "Wszystkie części wersji 0.0.x. Aby uzyskać więcej informacji, odwiedź stronę ./docs/Changelog.md; Główne tematy: funkcja maxWatts, adjustAmpLevelInWatts, możliwość pisania kilku punktów końcowych.",
                 "zh-cn": "版本0.0.x的所有部分。有关更多详细信息，请访问./docs/Changelog.md;。主要主题：函数maxWatts，adjustAmpLevelInWatts，编写多个端点的能力。"
-              }
+              },
+            "0.2.0": {
+                "en": "### 0.2.x\n* fix Issue 17: Some adapters are not sharing the temperatures array (Many thanks to maxe1111) \n* added telegram community channel\n* fix issue 16: Bug in calculation of loaded_energy_kwh (Many thanks to maxe1111) ",
+                "de": "### 0.2.x.\n* Problem 17 behoben: Einige Adapter teilen sich das Temperatur-Array nicht (Vielen Dank an maxe1111)\n* Telegramm-Community-Kanal hinzugefügt\n* Problem 16 behoben: Fehler bei der Berechnung von load_energy_kwh (Vielen Dank an maxe1111)",
+                "ru": "### 0.2.x\n* исправление проблемы 17: некоторые адаптеры не разделяют массив температур (большое спасибо maxe1111)\n* добавлен канал сообщества Telegram\n* исправление проблемы 16: Ошибка в вычислении loaded_energy_kwh (большое спасибо maxe1111)",
+                "pt": "### 0.2.x\n* correção do problema 17: alguns adaptadores não estão compartilhando a matriz de temperaturas (muito obrigado a maxe1111)\n* adicionado canal de comunidade de telegrama\n* corrigir o problema 16: Bug no cálculo de carregado_energy_kwh (muito obrigado a maxe1111)",
+                "nl": "### 0.2.x\n* fix probleem 17: sommige adapters delen de temperatuurreeks niet (veel dank aan maxe1111)\n* toegevoegd telegram community-kanaal\n* probleem 16 opgelost: fout in berekening van loaded_energy_kwh (veel dank aan maxe1111)",
+                "fr": "### 0.2.x\n* Correction du problème 17: certains adaptateurs ne partagent pas le tableau des températures (merci beaucoup à maxe1111)\n* canal communautaire de télégramme ajouté\n* correction du problème 16: bug dans le calcul de shared_energy_kwh (merci beaucoup à maxe1111)",
+                "it": "### 0.2.x\n* Risolto il problema 17: alcuni adattatori non condividono l'array delle temperature (molte grazie a maxe1111)\n* aggiunto il canale della community di Telegram\n* risolto problema 16: bug nel calcolo di load_energy_kwh (Mille grazie a maxe1111)",
+                "es": "### 0.2.x\n* Solucionar el problema 17: algunos adaptadores no comparten la matriz de temperaturas (muchas gracias a maxe1111)\n* canal comunitario de telegram agregado\n* Solucionar el problema 16: Error en el cálculo deloaded_energy_kwh (Muchas gracias a maxe1111)",
+                "pl": "### 0.2.x\n* naprawa Problem 17: Niektóre adaptery nie współużytkują tablicy temperatur (Podziękowania dla maxe1111)\n* dodano kanał społeczności telegramów\n* naprawiono błąd 16: Błąd w obliczaniu load_energy_kwh (Podziękowania dla maxe1111)",
+                "zh-cn": "### 0.2.x\n*修复问题17：某些适配器不共享温度阵列（非常感谢maxe1111）\n*添加电报社区频道\n*修正了问题16：计算load_energy_kwh的错误（非常感谢maxe1111）"
+            }
         },
         "title": "go-eCharger wallbox integration",
         "titleLang": {
