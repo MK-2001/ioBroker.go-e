@@ -68,6 +68,8 @@ class GoE extends utils.Adapter {
         this.subscribeStates("settings.ampere_level3");
         this.subscribeStates("settings.ampere_level4");
         this.subscribeStates("settings.ampere_level5");
+        // Get all Information for the first time.
+        await this.getStateFromDevice();
         // Start the Adapter to sync in the interval
         this.interval = setInterval(async () => {
             await this.getStateFromDevice();
@@ -227,7 +229,8 @@ class GoE extends utils.Adapter {
     // go-eCharger functions
     async getStateFromDevice() {
         this.log.debug("Starte Abfrage an: http://" + this.config.serverName + "/status");
-        await axios.get("http://" + this.config.serverName + "/status")
+        axios.defaults.baseURL = "http://" + this.config.serverName;
+        await axios.get("/status")
             .then((o) => {
                 this.log.debug("Response: " + o.status + " - " + o.statusText);
                 this.log.debug(JSON.stringify(o.data));
@@ -304,7 +307,7 @@ class GoE extends utils.Adapter {
         await queue.add(() => this.setState("energy.neutral.power_coefficient",   { val: o.nrg[15], ack: true })); // read
         await queue.add(() => this.setState("cable_ampere_code",                  { val: o.cbl, ack: true })); // read
         await queue.add(() => this.setState("avail_ampere",                       { val: o.amt, ack: true }));
-        await queue.add(() => this.setState("energy_total",                       { val: (o.eto / 10), ack: true })); // read
+        await queue.add(() => this.setState("energy.total",                       { val: (o.eto / 10), ack: true })); // read
         // Wifi
         await queue.add(() => this.setState("wifi.state",                         { val: o.wst, ack: true })); // read
         await queue.add(() => this.setState("transmit_interface",                 { val: o.txi, ack: true }));
@@ -315,7 +318,7 @@ class GoE extends utils.Adapter {
         await queue.add(() => this.setState("wifi.hotspot_key",                   { val: o.wak, ack: true })); // write
         await queue.add(() => this.setState("http_flags",                         { val: o.r1x, ack: true })); // write
         await queue.add(() => this.setState("loaded_energy",                      { val: o.dws, ack: true })); // read
-        await queue.add(() => this.setState("loaded_energy_kwh",                  { val: o.dws * 10 / 60 / 60, ack: true}));
+        await queue.add(() => this.setState("loaded_energy_kwh",                  { val: o.dws * 10 / 60 / 60 / 1000, ack: true}));
         await queue.add(() => this.setState("max_load",                           { val: (o.dwo / 10), ack: true })); // write
         await queue.add(() => this.setState("electricity_exchange.min_hours",     { val: o.aho, ack: true })); // write
         await queue.add(() => this.setState("electricity_exchange.finish_hour",   { val: o.afi, ack: true })); // write
@@ -335,15 +338,15 @@ class GoE extends utils.Adapter {
         await queue.add(() => this.setState("time_offset",                        { val: o.tof, ack: true})); // write
         await queue.add(() => this.setState("time_daylight_saving",               { val: o.tds, ack: true })); // write
         // RFID Badges
-        await queue.add(() => this.setState("rfid.badges.1.consumption",          { val: o.eca, ack: true })); // read
-        await queue.add(() => this.setState("rfid.badges.2.consumption",          { val: o.ecr, ack: true })); // read
-        await queue.add(() => this.setState("rfid.badges.3.consumption",          { val: o.ecd, ack: true })); // read
-        await queue.add(() => this.setState("rfid.badges.4.consumption",          { val: o.ec4, ack: true })); // read
-        await queue.add(() => this.setState("rfid.badges.5.consumption",          { val: o.ec5, ack: true })); // read
-        await queue.add(() => this.setState("rfid.badges.6.consumption",          { val: o.ec6, ack: true })); // read
-        await queue.add(() => this.setState("rfid.badges.7.consumption",          { val: o.ec7, ack: true })); // read
-        await queue.add(() => this.setState("rfid.badges.8.consumption",          { val: o.ec8, ack: true })); // read
-        await queue.add(() => this.setState("rfid.badges.9.consumption",          { val: o.ec9, ack: true })); // read
+        await queue.add(() => this.setState("rfid.badges.1.consumption",          { val: (o.eca / 10), ack: true })); // read
+        await queue.add(() => this.setState("rfid.badges.2.consumption",          { val: (o.ecr / 10), ack: true })); // read
+        await queue.add(() => this.setState("rfid.badges.3.consumption",          { val: (o.ecd / 10), ack: true })); // read
+        await queue.add(() => this.setState("rfid.badges.4.consumption",          { val: (o.ec4 / 10), ack: true })); // read
+        await queue.add(() => this.setState("rfid.badges.5.consumption",          { val: (o.ec5 / 10), ack: true })); // read
+        await queue.add(() => this.setState("rfid.badges.6.consumption",          { val: (o.ec6 / 10), ack: true })); // read
+        await queue.add(() => this.setState("rfid.badges.7.consumption",          { val: (o.ec7 / 10), ack: true })); // read
+        await queue.add(() => this.setState("rfid.badges.8.consumption",          { val: (o.ec8 / 10), ack: true })); // read
+        await queue.add(() => this.setState("rfid.badges.9.consumption",          { val: (o.ec9 / 10), ack: true })); // read
         await queue.add(() => this.setState("rfid.badges.10.consumption",         { val: o.ec1, ack: true })); // read    
         await queue.add(() => this.setState("rfid.badges.1.id",                   { val: o.rca, ack: true })); // read
         await queue.add(() => this.setState("rfid.badges.2.id",                   { val: o.rcr, ack: true })); // read
@@ -357,8 +360,8 @@ class GoE extends utils.Adapter {
         await queue.add(() => this.setState("rfid.badges.10.id",                  { val: o.rc1, ack: true })); // read
         // RFID Name 
         await queue.add(() => this.setState("rfid.badges.1.name",                 { val: o.rna, ack: true })); // write
-        await queue.add(() => this.setState("rfid.badges.2.name",                 { val: o.rnr, ack: true })); // write
-        await queue.add(() => this.setState("rfid.badges.3.name",                 { val: o.rnd, ack: true })); // write
+        await queue.add(() => this.setState("rfid.badges.2.name",                 { val: o.rnm, ack: true })); // write
+        await queue.add(() => this.setState("rfid.badges.3.name",                 { val: o.rne, ack: true })); // write
         await queue.add(() => this.setState("rfid.badges.4.name",                 { val: o.rn4, ack: true })); // write
         await queue.add(() => this.setState("rfid.badges.5.name",                 { val: o.rn5, ack: true })); // write
         await queue.add(() => this.setState("rfid.badges.6.name",                 { val: o.rn6, ack: true })); // write
@@ -376,14 +379,16 @@ class GoE extends utils.Adapter {
         await queue.add(() => this.setState("temperatures.maintempereature",      { val: o.tmp, ack: true })); // read
         await queue.add(() => this.setState("temperatures.tempereatureArray",     { val: o.tma, ack: true })); 
         try {
-            const tempArr = o.tma.toString().split(",");
-            if(tempArr.length == 4) {
-                await queue.add(() => this.setState("temperatures.tempereature1", { val: tempArr[0], ack: true}));
-                await queue.add(() => this.setState("temperatures.tempereature2", { val: tempArr[1], ack: true}));
-                await queue.add(() => this.setState("temperatures.tempereature3", { val: tempArr[2], ack: true}));
-                await queue.add(() => this.setState("temperatures.tempereature4", { val: tempArr[3], ack: true}));
-            } else {
-                this.log.debug("Cant write temp single temps. Expected 3 elements got " + JSON.stringify(tempArr));
+            if(o.tma) {
+                const tempArr = o.tma.toString().split(",");
+                if(tempArr.length == 4) {
+                    await queue.add(() => this.setState("temperatures.tempereature1", { val: tempArr[0], ack: true}));
+                    await queue.add(() => this.setState("temperatures.tempereature2", { val: tempArr[1], ack: true}));
+                    await queue.add(() => this.setState("temperatures.tempereature3", { val: tempArr[2], ack: true}));
+                    await queue.add(() => this.setState("temperatures.tempereature4", { val: tempArr[3], ack: true}));
+                } else {
+                    this.log.debug("Cant write temp single temps. Expected 3 elements got " + JSON.stringify(tempArr));
+                }
             }
         } catch (e) {
             this.log.warn("Cloud not store temperature array to single values, because of error " + e.message);

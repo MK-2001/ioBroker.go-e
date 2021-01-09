@@ -1,4 +1,9 @@
-### 1.1.2
+### 0.2.x
+* fix Issue 17: Some adapters are not sharing the temperatures array (Many thanks to maxe1111) 
+* added telegram community channel
+* fix issue 16: Bug in calculation of loaded_energy_kwh (Many thanks to maxe1111) 
+
+### 0.1.2
 * Added all steps from Version 0.0.x
 * some additional minor fixes from testing.
 
