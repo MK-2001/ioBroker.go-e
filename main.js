@@ -56,7 +56,6 @@ class GoE extends utils.Adapter {
         this.subscribeStates("access_state");
         this.subscribeStates("allow_charging");
         this.subscribeStates("ampere");
-        this.subscribeStates("color.*");
         this.subscribeStates("energy.adjustAmpLevelInWatts");
         this.subscribeStates("energy.max_watts");
         this.subscribeStates("max_load");
@@ -65,8 +64,11 @@ class GoE extends utils.Adapter {
         this.subscribeStates("settings.ampere_level3");
         this.subscribeStates("settings.ampere_level4");
         this.subscribeStates("settings.ampere_level5");
-        this.subscribeStates("settings.color.led_save_energy");
-        this.subscribeStates("settings.color.led_brightness");
+        this.subscribeStates("settings.color.idle");
+        this.subscribeStates("settings.color.charging");
+        this.subscribeStates("settings.color.finish");
+        this.subscribeStates("settings.led_save_energy");
+        this.subscribeStates("settings.led_brightness");
         this.subscribeStates("stop_state");
         
         // Get all Information for the first time.
@@ -180,11 +182,11 @@ class GoE extends utils.Adapter {
                         break;
                     case this.namespace + ".settings.color.charging":
                         // @ts-ignore // Check off null is done
-                        this.setValue("cid", /^#?([a-f\d]{6})$/i.exec(state.val.toString()) !== null ? parseInt(/^#?([a-f\d]{6})$/i.exec(state.val.toString())[1], 16) : 0);
+                        this.setValue("cch", /^#?([a-f\d]{6})$/i.exec(state.val.toString()) !== null ? parseInt(/^#?([a-f\d]{6})$/i.exec(state.val.toString())[1], 16) : 0);
                         break;
                     case this.namespace + ".settings.color.finish":
                         // @ts-ignore // Check off null is done
-                        this.setValue("cid", /^#?([a-f\d]{6})$/i.exec(state.val.toString()) !== null ? parseInt(/^#?([a-f\d]{6})$/i.exec(state.val.toString())[1], 16) : 0);
+                        this.setValue("cfi", /^#?([a-f\d]{6})$/i.exec(state.val.toString()) !== null ? parseInt(/^#?([a-f\d]{6})$/i.exec(state.val.toString())[1], 16) : 0);
                         break;
                     case this.namespace + ".settings.led_save_energy":
                         this.setValue("lse", parseInt(state.val.toString()));
