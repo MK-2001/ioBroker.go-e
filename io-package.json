@@ -423,6 +423,17 @@
                 "unit": "A"
             }
         },{
+            "_id": "amperePV",
+            "type": "state",
+            "common": {
+                "name": "Ampere for PWM (amx) (FW > 033 required)",
+                "type": "number",
+                "role": "level.current",
+                "read": true,
+                "write": true,
+                "unit": "A"
+            }
+        },{
             "_id": "error",
             "type": "state",
             "common": {

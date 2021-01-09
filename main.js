@@ -56,6 +56,7 @@ class GoE extends utils.Adapter {
         this.subscribeStates("access_state");
         this.subscribeStates("allow_charging");
         this.subscribeStates("ampere");
+        this.subscribeStates("amperePV");
         this.subscribeStates("energy.adjustAmpLevelInWatts");
         this.subscribeStates("energy.max_watts");
         this.subscribeStates("max_load");
@@ -70,6 +71,7 @@ class GoE extends utils.Adapter {
         this.subscribeStates("settings.led_save_energy");
         this.subscribeStates("settings.led_brightness");
         this.subscribeStates("stop_state");
+        this.subscribeStates("unlock_state");
         
         // Get all Information for the first time.
         await this.getStateFromDevice();
@@ -150,6 +152,9 @@ class GoE extends utils.Adapter {
                     case this.namespace + ".ampere":
                         this.setValue("amp", state.val.toString());
                         break;
+                    case this.namespace + ".amperePV":
+                        this.setValue("amx", state.val.toString());
+                        break;
                     case this.namespace + ".energy.adjustAmpLevelInWatts":
                         this.adjustAmpLevelInWatts(parseInt(state.val.toString()));
                         this.setState("energy.changeAmpLevelInWatts",      { val: parseInt(state.val.toString()), ack: true }); 
@@ -195,11 +200,19 @@ class GoE extends utils.Adapter {
                         this.setValue("lbr", parseInt(state.val.toString()));
                         break;
                     case this.namespace + ".stop_state":
-                        if(parseInt(state.val.toString()) == 0 || parseInt(state.val.toString()) == 2 ) {
+                        if(parseInt(state.val.toString()) === 0 || parseInt(state.val.toString()) == 2 ) {
                             this.setValue("stp", parseInt(state.val.toString()));
                         } else {
-                            this.log.warn("Could not set value " + state.val.toString() + " in " + id);
+                            this.log.warn("Could not set value " + state.val.toString() + " into " + id);
                         }
+                        break;
+                    case this.namespace + ".unlock_state":
+                        if(parseInt(state.val.toString()) === 0 || parseInt(state.val.toString()) === 1 || parseInt(state.val.toString()) == 2 ) {
+                            this.setValue("ust", parseInt(state.val.toString()));
+                        } else {
+                            this.log.warn("Could not set value " + state.val.toString() + " into " + id);
+                        }
+                        
                         break;
                     default:
                         this.log.error("Not deveoped function to write " + id + " with state " + state);
@@ -284,6 +297,7 @@ class GoE extends utils.Adapter {
             await queue.add(() => this.setState("reboot_timer",                       { val: o.rbt, ack: true })); // read
             await queue.add(() => this.setState("car",                                { val: o.car, ack: true })); // read
             await queue.add(() => this.setState("ampere",                             { val: o.amp, ack: true })); // write
+            await queue.add(() => this.setState("amperePV",                           { val: o.amx, ack: true })); // write
             await queue.add(() => this.setState("error",                              { val: o.err, ack: true })); // read
             await queue.add(() => this.setState("access_state",                       { val: o.ast, ack: true })); // write
             await queue.add(() => this.setState("allow_charging",                     { val: o.alw, ack: true })); // write
@@ -495,17 +509,26 @@ class GoE extends utils.Adapter {
                 this.log.debug("Total "+ (car.val == 2 ? "used ":"available ") + sumVolts + " volts");
                 const maxAmp = Math.round(watts/sumVolts);
                 this.log.debug("Resulting max of " + maxAmp + " Ampere");
+                // Get Firmware Version if amx is available
+                const fw = await this.getStateAsync("firmware_version");
+                let amp = "";
+                if(fw != null && fw!= undefined && parseInt(fw.toString()) > 33) {
+                    amp = "amp";
+                } else {
+                    // Use AMX insted of AMP. Becaus the EEPROM of amp is only 100.000 times writeable
+                    amp = "amx";
+                }
                 if(maxAmp < 6) {
                     // The smallest value is 6 amperes
-                    this.setValue("amp", 6);
-                    this.log.debug("set maxAmperes by maxWatts: 6 amperes with " + watts + " watts");
+                    this.setValue(amp, 6);
+                    this.log.debug("set maxAmperes (" + amp + ") by maxWatts: 6 amperes with " + watts + " watts");
                 } else if(maxAmp < 32) {
-                    this.setValue("amp", maxAmp);
-                    this.log.debug("set maxAmperes by maxWatts: " + maxAmp + " with " + watts + " watts");
+                    this.setValue(amp, maxAmp);
+                    this.log.debug("set maxAmperes (" + amp + ") by maxWatts: " + maxAmp + " with " + watts + " watts");
                 } else {
                     // The maximum is 32 Amperes
-                    this.setValue("amp", 32);
-                    this.log.debug("set maxAmperes by maxWatts: 32 with " + watts + " watts");
+                    this.setValue(amp, 32);
+                    this.log.debug("set maxAmperes (" + amp + ") by maxWatts: 32 with " + watts + " watts");
                 }
             } catch (e) {
                 this.log.error("Error during set MaxWatts: " + e.message);
@@ -562,7 +585,7 @@ class GoE extends utils.Adapter {
                 }
 
                 if(car.val != 2) {
-                    this.log.warn("Ignore to chnage ampere level by watts, because there is no car loading.");
+                    this.log.debug("Ignore to chnage ampere level by watts, because there is no car loading.");
                     return;
                 }
 
@@ -584,17 +607,27 @@ class GoE extends utils.Adapter {
 
                 const maxAmp = Math.round(((usedVolts * usedAmperes) + changeWatts)/usedVolts);
                 this.log.debug("Current used " + Math.round(usedVolts * usedAmperes) +  " Watts adjusting with  " + changeWatts + " watts by " + usedVolts + " Volts to new max of " + maxAmp + " Amperes");
+                
+                // Get Firmware Version if amx is available
+                const fw = await this.getStateAsync("firmware_version");
+                let amp = "";
+                if(fw != null && fw!= undefined && parseInt(fw.toString()) > 33) {
+                    amp = "amp";
+                } else {
+                    // Use AMX insted of AMP. Becaus the EEPROM of amp is only 100.000 times writeable
+                    amp = "amx";
+                }
                 if(maxAmp < 6) {
                     // The smallest value is 6 amperes
-                    this.setValue("amp", 6);
-                    this.log.debug("set maxAmperes by adjustAmpLevelInWatts: 6 amperes by " + changeWatts + " watts");
+                    this.setValue(amp, 6);
+                    this.log.debug("set maxAmperes (" + amp + ") by adjustAmpLevelInWatts: 6 amperes by " + changeWatts + " watts");
                 } else if(maxAmp < 32) {
-                    this.setValue("amp", maxAmp);
-                    this.log.debug("set maxAmperes by adjustAmpLevelInWatts: " + maxAmp + " with " + changeWatts + " watts");
+                    this.setValue(amp, maxAmp);
+                    this.log.debug("set maxAmperes (" + amp + ") by adjustAmpLevelInWatts: " + maxAmp + " with " + changeWatts + " watts");
                 } else {
                     // The maximum is 32 Amperes
-                    this.setValue("amp", 32);
-                    this.log.debug("set maxAmperes by adjustAmpLevelInWatts: 32 with " + changeWatts + " watts");
+                    this.setValue(amp, 32);
+                    this.log.debug("set maxAmperes (" + amp + ") by adjustAmpLevelInWatts: 32 with " + changeWatts + " watts");
                 }
             } catch (e) {
                 this.log.error("Error during set adjust Watts: " + e.message);

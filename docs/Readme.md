@@ -30,6 +30,7 @@ In this paragraph are listet additional functionalities which can be used for an
 - [access_state](#access-state)
 - [allow_charging](#allow-chargeing)
 - [ampere](#ampere)
+- [amperePV](#amperePV)
 - [energy](#energy)
   - [adjustAmpLevelInWatts](#-adjust-the-ampere-level-by-using-watts)
   - [max_watts](#-maximum-watts)
@@ -47,6 +48,7 @@ In this paragraph are listet additional functionalities which can be used for an
   - led_save_energy
   - led_brightness
 - [stop_state](#stop-state)
+- [unlock_state](#unlock-state)
 
 ## Access State
 
@@ -75,6 +77,13 @@ allow_charging: PWM signal may be present
 
 This attribute selects the amount of ampere which can be used for loading. 
 Ampere value for the PWM signaling in whole ampere of 6-32A.
+
+## AmperePV 
+| go-e attribute | Type | Unit | Example Attritute position |
+| -- | -- | -- | --:|
+| [amx](https://github.com/goecharger/go-eCharger-API-v1/blob/master/go-eCharger%20API%20v1%20EN.md) | integer | ampere | go-e.0.ampere |
+
+This attribute is the same as Ampere but does not store the data permanent. After a restart this information is lost. Ampere is because of the EEPROM of the device only 100000 times writeable. If you use a Photovoltaic with go-e you should use this attribute insted of Ampere.
 
 ## Energy
 Adjust all settings about the energy. This node is not writable, but it conatins sveral switches
@@ -131,3 +140,10 @@ Must be either 0 or >al1
 Automatic shutdown. Stops the loading Process automated after the giver amount of kWh.
 0: deactivated
 2: switch off after kWh
+
+## Cable Unlock Mode (Unlock STate)
+
+Cable lock adjustment. This attribute defins when the cable locks and releases.
+0: lock as long as the car is plugged in (default)
+1: Automatically unlock after charging
+2: Always leave the cable locked
