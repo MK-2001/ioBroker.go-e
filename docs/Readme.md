@@ -46,7 +46,7 @@ In this paragraph are listet additional functionalities which can be used for an
     - finish
   - led_save_energy
   - led_brightness
-- stop_state
+- [stop_state](#stop-state)
 
 ## Access State
 
