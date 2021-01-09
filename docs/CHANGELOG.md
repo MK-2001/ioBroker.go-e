@@ -1,3 +1,17 @@
+### 0.3
+* Added documentation in ./docs/Readme.md
+* added unlock_state for cable management
+* added amx for non permanat ampere settings
+
+### 0.2.x
+* fix Issue 17: Some adapters are not sharing the temperatures array (Many thanks to maxe1111) 
+* added telegram community channel
+* fix issue 16: Bug in calculation of loaded_energy_kwh (Many thanks to maxe1111) 
+
+### 0.1.2
+* Added all steps from Version 0.0.x
+* some additional minor fixes from testing.
+
 ### 0.0.7
 * (MK-2001) solved bug in maxWatts feature
 * Added debug information on maxWatts Feature
