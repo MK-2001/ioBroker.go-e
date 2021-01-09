@@ -53,21 +53,22 @@ class GoE extends utils.Adapter {
 
         
         // In order to get state updates, you need to subscribe to them. The following line adds a subscription for our variable we have created above.
-        this.subscribeStates("ampere");
-        this.subscribeStates("color.*");
-        this.subscribeStates("settings.color.led_save_energy");
-        this.subscribeStates("settings.color.led_brightness");
         this.subscribeStates("access_state");
         this.subscribeStates("allow_charging");
-        this.subscribeStates("max_load");
-        this.subscribeStates("stop_state");
-        this.subscribeStates("energy.max_watts");
+        this.subscribeStates("ampere");
+        this.subscribeStates("color.*");
         this.subscribeStates("energy.adjustAmpLevelInWatts");
+        this.subscribeStates("energy.max_watts");
+        this.subscribeStates("max_load");
         this.subscribeStates("settings.ampere_level1");
         this.subscribeStates("settings.ampere_level2");
         this.subscribeStates("settings.ampere_level3");
         this.subscribeStates("settings.ampere_level4");
         this.subscribeStates("settings.ampere_level5");
+        this.subscribeStates("settings.color.led_save_energy");
+        this.subscribeStates("settings.color.led_brightness");
+        this.subscribeStates("stop_state");
+        
         // Get all Information for the first time.
         await this.getStateFromDevice();
         // Start the Adapter to sync in the interval
@@ -129,8 +130,49 @@ class GoE extends utils.Adapter {
                     return;
                 }
                 switch (id) {
+                    // Sort by alphabet of attribute
+                    case this.namespace + ".access_state":
+                        if(parseInt(state.val.toString()) == 0 || parseInt(state.val.toString()) == 1 ) {
+                            this.setValue("ast", parseInt(state.val.toString()));
+                        } else {
+                            this.log.warn("Could not set value " + state.val.toString() + " in " + id);
+                        }
+                        break;
+                    case this.namespace + ".allow_charging":
+                        if(parseInt(state.val.toString()) == 0 || parseInt(state.val.toString()) == 1 ) {
+                            this.setValue("alw", parseInt(state.val.toString()));
+                        } else {
+                            this.log.warn("Could not set value " + state.val.toString() + " in " + id);
+                        }
+                        break;
                     case this.namespace + ".ampere":
                         this.setValue("amp", state.val.toString());
+                        break;
+                    case this.namespace + ".energy.adjustAmpLevelInWatts":
+                        this.adjustAmpLevelInWatts(parseInt(state.val.toString()));
+                        this.setState("energy.changeAmpLevelInWatts",      { val: parseInt(state.val.toString()), ack: true }); 
+                        break;
+                    case this.namespace + ".energy.max_watts":
+                        this.updateAmpLevel(parseInt(state.val.toString()));
+                        this.setState("energy.max_watts",                  { val: parseInt(state.val.toString()), ack: true }); 
+                        break;
+                    case this.namespace + ".max_load":
+                        this.setValue("dwo", parseInt(state.val.toString()) * 10);
+                        break;
+                    case this.namespace + ".settings.ampere_level1":
+                        this.setAmpLevelToButton("al1", parseInt(state.val.toString()));
+                        break;
+                    case this.namespace + ".settings.ampere_level2":
+                        this.setAmpLevelToButton("al2", parseInt(state.val.toString()));
+                        break;
+                    case this.namespace + ".settings.ampere_level3":
+                        this.setAmpLevelToButton("al3", parseInt(state.val.toString()));
+                        break;
+                    case this.namespace + ".settings.ampere_level4":
+                        this.setAmpLevelToButton("al4", parseInt(state.val.toString()));
+                        break;
+                    case this.namespace + ".settings.ampere_level5":
+                        this.setAmpLevelToButton("al5", parseInt(state.val.toString()));
                         break;
                     case this.namespace + ".settings.color.idle":
                         // @ts-ignore // Check off null is done
@@ -150,52 +192,12 @@ class GoE extends utils.Adapter {
                     case this.namespace + ".settings.led_brightness":
                         this.setValue("lbr", parseInt(state.val.toString()));
                         break;
-                    case this.namespace + ".access_state":
-                        if(parseInt(state.val.toString()) == 0 || parseInt(state.val.toString()) == 1 ) {
-                            this.setValue("ast", parseInt(state.val.toString()));
-                        } else {
-                            this.log.warn("Could not set value " + state.val.toString() + " in " + id);
-                        }
-                        break;
-                    case this.namespace + ".allow_charging":
-                        if(parseInt(state.val.toString()) == 0 || parseInt(state.val.toString()) == 1 ) {
-                            this.setValue("alw", parseInt(state.val.toString()));
-                        } else {
-                            this.log.warn("Could not set value " + state.val.toString() + " in " + id);
-                        }
-                        break;
                     case this.namespace + ".stop_state":
                         if(parseInt(state.val.toString()) == 0 || parseInt(state.val.toString()) == 2 ) {
                             this.setValue("stp", parseInt(state.val.toString()));
                         } else {
                             this.log.warn("Could not set value " + state.val.toString() + " in " + id);
                         }
-                        break;
-                    case this.namespace + ".max_load":
-                        this.setValue("dwo", parseInt(state.val.toString()) * 10);
-                        break;
-                    case this.namespace + ".energy.max_watts":
-                        this.updateAmpLevel(parseInt(state.val.toString()));
-                        this.setState("energy.max_watts",                  { val: parseInt(state.val.toString()), ack: true }); 
-                        break;
-                    case this.namespace + ".energy.adjustAmpLevelInWatts":
-                        this.adjustAmpLevelInWatts(parseInt(state.val.toString()));
-                        this.setState("energy.changeAmpLevelInWatts",      { val: parseInt(state.val.toString()), ack: true }); 
-                        break;
-                    case this.namespace + ".settings.ampere_level1":
-                        this.setAmpLevelToButton("al1", parseInt(state.val.toString()));
-                        break;
-                    case this.namespace + ".settings.ampere_level2":
-                        this.setAmpLevelToButton("al2", parseInt(state.val.toString()));
-                        break;
-                    case this.namespace + ".settings.ampere_level3":
-                        this.setAmpLevelToButton("al3", parseInt(state.val.toString()));
-                        break;
-                    case this.namespace + ".settings.ampere_level4":
-                        this.setAmpLevelToButton("al4", parseInt(state.val.toString()));
-                        break;
-                    case this.namespace + ".settings.ampere_level5":
-                        this.setAmpLevelToButton("al5", parseInt(state.val.toString()));
                         break;
                     default:
                         this.log.error("Not deveoped function to write " + id + " with state " + state);
