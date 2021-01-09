@@ -1,3 +1,8 @@
+### 0.3
+* Added documentation in ./docs/Readme.md
+* added unlock_state for cable management
+* added amx for non permanat ampere settings
+
 ### 0.2.x
 * fix Issue 17: Some adapters are not sharing the temperatures array (Many thanks to maxe1111) 
 * added telegram community channel
