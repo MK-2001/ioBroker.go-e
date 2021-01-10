@@ -14,4 +14,8 @@ Thumbs.db
 
 # i18n intermediate files
 admin/i18n/flat.txt
-admin/i18n/*/flat.txt%     
+admin/i18n/*/flat.txt%
+
+# Visual Studio cache/options directory
+.vs/
+.vscode/
