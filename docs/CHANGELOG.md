@@ -1,4 +1,4 @@
-### 0.3
+### 0.2.2
 * Added documentation in ./docs/Readme.md
 * added unlock_state for cable management
 * added amx for non permanat ampere settings

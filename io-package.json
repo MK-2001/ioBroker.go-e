@@ -1,116 +1,20 @@
 {
     "common": {
         "name": "go-e",
-        "version": "0.2.2",
+        "version": "1.0.0",
         "news": {
-            "0.0.1": {
-                "en": "initial release",
-                "de": "Erstveröffentlichung",
-                "ru": "Начальная версия",
-                "pt": "lançamento inicial",
-                "nl": "Eerste uitgave",
-                "fr": "Première version",
-                "it": "Versione iniziale",
-                "es": "Versión inicial",
-                "pl": "Pierwsze wydanie",
-                "zh-cn": "首次出版"
-            },
-            "0.0.2": {
-                "en": "added requirements to publish the adapter",
-                "de": "Anforderungen zum Veröffentlichen des Adapters hinzugefügt",
-                "ru": "добавлены требования для публикации адаптера",
-                "pt": "requisitos adicionados para publicar o adaptador",
-                "nl": "toegevoegde vereisten om de adapter te publiceren",
-                "fr": "exigences supplémentaires pour publier l'adaptateur",
-                "it": "aggiunti requisiti per pubblicare l'adattatore",
-                "es": "requisitos adicionales para publicar el adaptador",
-                "pl": "dodano wymagania do opublikowania adaptera",
-                "zh-cn": "首次出版"
-            },
-            "0.0.3": {
-                "en": "added requirements to publish the adapter",
-                "de": "Anforderungen zum Veröffentlichen des Adapters hinzugefügt",
-                "ru": "добавлены требования для публикации адаптера",
-                "pt": "requisitos adicionados para publicar o adaptador",
-                "nl": "toegevoegde vereisten om de adapter te publiceren",
-                "fr": "exigences supplémentaires pour publier l'adaptateur",
-                "it": "aggiunti requisiti per pubblicare l'adattatore",
-                "es": "requisitos adicionales para publicar el adaptador",
-                "pl": "dodano wymagania do opublikowania adaptera",
-                "zh-cn": "首次出版"
-            },
-            "0.0.4": {
-                "en": "solved bug with different names.",
-                "de": "solved bug with different names.",
-                "ru": "solved bug with different names.",
-                "pt": "solved bug with different names.",
-                "nl": "solved bug with different names.",
-                "fr": "solved bug with different names.",
-                "it": "solved bug with different names.",
-                "es": "solved bug with different names.",
-                "pl": "solved bug with different names.",
-                "zh-cn": "solved bug with different names."
-            },
-            "0.0.5": {
-                "en": "Added feature ",
-                "de": "solved bug with different names.",
-                "ru": "solved bug with different names.",
-                "pt": "solved bug with different names.",
-                "nl": "solved bug with different names.",
-                "fr": "solved bug with different names.",
-                "it": "solved bug with different names.",
-                "es": "solved bug with different names.",
-                "pl": "solved bug with different names.",
-                "zh-cn": "solved bug with different names."
-            },
-            "0.0.6": {
-                "en": "* (MK-2001) Activated the max Watts Feature; Added some documentation and NPM Documentations; Activated gulb for translation to different languages",
-                "de": "* (MK-2001) Aktiviert die Max-Watt-Funktion; Einige Dokumentationen und NPM-Dokumentationen hinzugefügt; Aktivierte Gulb zur Übersetzung in verschiedene Sprachen",
-                "ru": "* (MK-2001) Активирована функция максимальной мощности; Добавлена некоторая документация и документация NPM; Активирован гульб для перевода на разные языки",
-                "pt": "* (MK-2001) Ativado o recurso de watts máximos; Adicionada alguma documentação e Documentações NPM; Gulb ativado para tradução para diferentes idiomas",
-                "nl": "* (MK-2001) De max. Watt-functie geactiveerd; Wat documentatie en NPM-documentatie toegevoegd; Geactiveerde gulb voor vertaling naar verschillende talen",
-                "fr": "* (MK-2001) Activation de la fonction Max Watts; Ajout de la documentation et des documentations NPM; Gulb activé pour la traduction dans différentes langues",
-                "it": "* (MK-2001) Attivata la funzione max Watts; Aggiunta documentazione e documentazione NPM; Gulb attivato per la traduzione in diverse lingue",
-                "es": "* (MK-2001) Activó la función de vatios máximos; Se agregó algo de documentación y documentación de NPM; Gulb activado para traducción a diferentes idiomas",
-                "pl": "* (MK-2001) Aktywowano funkcję maksymalnych watów; Dodano trochę dokumentacji i dokumentacji NPM; Aktywowany gulb do tłumaczenia na różne języki",
-                "zh-cn": "*（MK-2001）激活了最大瓦特功能；添加了一些文档和NPM文档；激活的gulb可以翻译成不同的语言"
-            }, 
-            "0.0.7": {
-                "en": "(MK-2001) solved bug in maxWatts feature\n* Added debug information on maxWatts Feature\n* removed info-level-logging on status query\n* Added function adjustAmpLevelInWatts\n* Added documentation\n* removed synctime bug\n* adds loaded_energy_kwh (extra value for dwo for unusual unit)\n* adds setAmpLevelToButton for 5 levels\n* added led brightness",
-                "de": "(MK-2001) Fehler in der maxWatts-Funktion behoben\n* Debug-Informationen zur maxWatts-Funktion hinzugefügt\n* Die Protokollierung auf Informationsebene bei Statusabfragen wurde entfernt\n* Funktion adjustAmpLevelInWatts hinzugefügt\n* Dokumentation hinzugefügt\n* Synctime-Fehler entfernt\n* fügt load_energy_kwh hinzu (zusätzlicher Wert für dwo für ungewöhnliche Einheit)\n* fügt setAmpLevelToButton für 5 Ebenen hinzu\n* LED-Helligkeit hinzugefügt",
-                "ru": "(MK-2001) исправлена ошибка в функции maxWatts\n* Добавлена отладочная информация по функции maxWatts\n* удалено ведение журнала на уровне информации при запросе статуса\n* Добавлена функция adjustAmpLevelInWatts\n* Добавлена документация\n* убран баг synctime\n* добавляет loaded_energy_kwh (дополнительное значение для dwo для необычного юнита)\n* добавляет setAmpLevelToButton для 5 уровней\n* добавлена яркость светодиода",
-                "pt": "(MK-2001) resolveu bug no recurso maxWatts\n* Adicionadas informações de depuração no recurso maxWatts\n* removido o registro em nível de informação na consulta de status\n* Adicionada função AdjustAmpLevelInWatts\n* Documentação adicionada\n* bug de sincronização removido\n* adiciona carregado_energia_kwh (valor extra para dwo para unidade incomum)\n* adiciona setAmpLevelToButton para 5 níveis\n* adicionado brilho do led",
-                "nl": "(MK-2001) bug opgelost in maxWatts-functie\n* Foutopsporingsinformatie toegevoegd over maxWatts-functie\n* verwijderd info-level-logging op status query\n* Functie adjustAmpLevelInWatts toegevoegd\n* Toegevoegd documentatie\n* verwijderde synctime-bug\n* voegt loaded_energy_kwh toe (extra waarde voor dwo voor ongebruikelijke eenheid)\n* voegt setAmpLevelToButton toe voor 5 niveaus\n* toegevoegde led-helderheid",
-                "fr": "(MK-2001) Correction d'un bug dans la fonction maxWatts\n* Ajout d'informations de débogage sur la fonctionnalité maxWatts\n* suppression de la journalisation au niveau des informations sur la requête d'état\n* Ajout de la fonction AdjustAmpLevelInWatts\n* Documentation ajoutée\n* bug de synchronisation supprimé\n* ajoute shared_energy_kwh (valeur supplémentaire pour dwo pour une unité inhabituelle)\n* ajoute setAmpLevelToButton pour 5 niveaux\n* ajout de la luminosité LED",
-                "it": "(MK-2001) risolto bug nella funzione maxWatts\n* Aggiunte informazioni di debug sulla funzione maxWatts\n* Rimossa la registrazione a livello di informazioni sulla query di stato\n* Aggiunta la funzione AdjustAmpLevelInWatts\n* Aggiunta documentazione\n* rimosso bug di sincronizzazione\n* aggiunge load_energy_kwh (valore extra per dwo per unità insolite)\n* aggiunge setAmpLevelToButton per 5 livelli\n* aggiunta luminosità del led",
-                "es": "(MK-2001) error resuelto en la función maxWatts\n* Añadida información de depuración sobre la función maxWatts\n* eliminado el registro de nivel de información en la consulta de estado\n* Función agregada adjustAmpLevelInWatts\n* Documentación agregada\n* eliminado error de sincronización\n* agregaloaded_energy_kwh (valor extra para dwo para unidad inusual)\n* agrega setAmpLevelToButton para 5 niveles\n* brillo led añadido",
-                "pl": "(MK-2001) rozwiązany błąd w funkcji maxWatts\n* Dodano informacje o debugowaniu funkcji maxWatts\n* usunięto logowanie na poziomie informacji przy zapytaniu o status\n* Dodano funkcję adjustAmpLevelInWatts\n* Dodano dokumentację\n* usunięto błąd synchronizacji\n* dodaje load_energy_kwh (dodatkowa wartość dla dwo dla nietypowej jednostki)\n* dodaje setAmpLevelToButton na 5 poziomach\n* dodano jasność diod LED",
-                "zh-cn": "（MK-2001）解决了maxWatts功能中的错误\n*在maxWatts功能上添加了调试信息\n*删除状态查询的信息级别日志记录\n*增加了功能AdjustAmpLevelInWatts\n*添加了文档\n*删除了同步时间错误\n*添加loaded_energy_kwh（dwo的额外值，代表异常单位）\n*为5个级别添加setAmpLevelToButton\n*增加了LED亮度"
-            },
-            "0.1.2": {
-                "en": "All parts of the versions 0.0.x. For more details visit ./docs/Changelog.md; Major topics: Function maxWatts, adjustAmpLevelInWatts, ability to write several endpoints. ",
-                "de": "Alle Teile der Versionen 0.0.x. Weitere Informationen finden Sie unter ./docs/Changelog.md; Hauptthemen: Funktion maxWatts, adjustAmpLevelInWatts, Fähigkeit, mehrere Endpunkte zu schreiben.",
-                "ru": "Все части версий 0.0.x. Для получения дополнительных сведений посетите ./docs/Changelog.md; Основные темы: Функция maxWatts, adjustAmpLevelInWatts, возможность писать несколько конечных точек.",
-                "pt": "Todas as partes das versões 0.0.x. Para obter mais detalhes, visite ./docs/Changelog.md; Tópicos principais: função maxWatts, ajusteAmpLevelInWatts, capacidade de gravar vários terminais.",
-                "nl": "Alle onderdelen van de versies 0.0.x. Ga voor meer details naar ./docs/Changelog.md; Hoofdonderwerpen: Functie maxWatts, adjustAmpLevelInWatts, mogelijkheid om verschillende eindpunten te schrijven.",
-                "fr": "Toutes les parties des versions 0.0.x. Pour plus de détails, visitez ./docs/Changelog.md; Principaux sujets: Fonction maxWatts, AdjustAmpLevelInWatts, possibilité d'écrire plusieurs points de terminaison.",
-                "it": "Tutte le parti delle versioni 0.0.x. Per maggiori dettagli visita ./docs/Changelog.md; Argomenti principali: funzione maxWatts, AdjustAmpLevelInWatts, capacità di scrivere diversi endpoint.",
-                "es": "Todas las partes de las versiones 0.0.x. Para obtener más detalles, visite ./docs/Changelog.md; Temas principales: función maxWatts, adjustAmpLevelInWatts, capacidad para escribir varios puntos finales.",
-                "pl": "Wszystkie części wersji 0.0.x. Aby uzyskać więcej informacji, odwiedź stronę ./docs/Changelog.md; Główne tematy: funkcja maxWatts, adjustAmpLevelInWatts, możliwość pisania kilku punktów końcowych.",
-                "zh-cn": "版本0.0.x的所有部分。有关更多详细信息，请访问./docs/Changelog.md;。主要主题：函数maxWatts，adjustAmpLevelInWatts，编写多个端点的能力。"
-              },
-            "0.2.0": {
-                "en": "### 0.2.x\n* fix Issue 17: Some adapters are not sharing the temperatures array (Many thanks to maxe1111) \n* added telegram community channel\n* fix issue 16: Bug in calculation of loaded_energy_kwh (Many thanks to maxe1111) ",
-                "de": "### 0.2.x.\n* Problem 17 behoben: Einige Adapter teilen sich das Temperatur-Array nicht (Vielen Dank an maxe1111)\n* Telegramm-Community-Kanal hinzugefügt\n* Problem 16 behoben: Fehler bei der Berechnung von load_energy_kwh (Vielen Dank an maxe1111)",
-                "ru": "### 0.2.x\n* исправление проблемы 17: некоторые адаптеры не разделяют массив температур (большое спасибо maxe1111)\n* добавлен канал сообщества Telegram\n* исправление проблемы 16: Ошибка в вычислении loaded_energy_kwh (большое спасибо maxe1111)",
-                "pt": "### 0.2.x\n* correção do problema 17: alguns adaptadores não estão compartilhando a matriz de temperaturas (muito obrigado a maxe1111)\n* adicionado canal de comunidade de telegrama\n* corrigir o problema 16: Bug no cálculo de carregado_energy_kwh (muito obrigado a maxe1111)",
-                "nl": "### 0.2.x\n* fix probleem 17: sommige adapters delen de temperatuurreeks niet (veel dank aan maxe1111)\n* toegevoegd telegram community-kanaal\n* probleem 16 opgelost: fout in berekening van loaded_energy_kwh (veel dank aan maxe1111)",
-                "fr": "### 0.2.x\n* Correction du problème 17: certains adaptateurs ne partagent pas le tableau des températures (merci beaucoup à maxe1111)\n* canal communautaire de télégramme ajouté\n* correction du problème 16: bug dans le calcul de shared_energy_kwh (merci beaucoup à maxe1111)",
-                "it": "### 0.2.x\n* Risolto il problema 17: alcuni adattatori non condividono l'array delle temperature (molte grazie a maxe1111)\n* aggiunto il canale della community di Telegram\n* risolto problema 16: bug nel calcolo di load_energy_kwh (Mille grazie a maxe1111)",
-                "es": "### 0.2.x\n* Solucionar el problema 17: algunos adaptadores no comparten la matriz de temperaturas (muchas gracias a maxe1111)\n* canal comunitario de telegram agregado\n* Solucionar el problema 16: Error en el cálculo deloaded_energy_kwh (Muchas gracias a maxe1111)",
-                "pl": "### 0.2.x\n* naprawa Problem 17: Niektóre adaptery nie współużytkują tablicy temperatur (Podziękowania dla maxe1111)\n* dodano kanał społeczności telegramów\n* naprawiono błąd 16: Błąd w obliczaniu load_energy_kwh (Podziękowania dla maxe1111)",
-                "zh-cn": "### 0.2.x\n*修复问题17：某些适配器不共享温度阵列（非常感谢maxe1111）\n*添加电报社区频道\n*修正了问题16：计算load_energy_kwh的错误（非常感谢maxe1111）"
-            }
+            "1.0.0": {
+                "en": "First Stable release and tests wit PV with these functions:\naccess_state\nallow_charging\nampere\namperePV\nenergy\nadjustAmpLevelInWatts\nmax_watts\nmax_load\nsettings\nampere_level1\nampere_level2\nampere_level3\nampere_level4\nampere_level5\ncolor\nidle\nchargeing\nfinish\nled_save_energy\nled_brightness\nstop_state\nunlock_state",
+                "de": "Erste stabile Version und Tests mit PV mit folgenden Funktionen:\naccess_state\nallow_charging\nAmpere\namperePV\nEnergie\nadjustAmpLevelInWatts\nmax_watts\nTragfähigkeit\ndie Einstellungen\nampere_level1\nampere_level2\nampere_level3\nampere_level4\nampere_level5\nFarbe\nLeerlauf\nAufladen\nFertig\nled_save_energy\nled_brightness\nstop_state\nUnlock_State",
+                "ru": "Первый стабильный выпуск и тесты с PV со следующими функциями:\naccess_state\nallow_charging\nампер\nамперПВ\nэнергия\nAdjustAmpLevelInWatts\nmax_watts\nМаксимальная нагрузка\nнастройки\nampere_level1\nampere_level2\nampere_level3\nampere_level4\nampere_level5\nцвет\nпраздный\nзарядка\nКонец\nled_save_energy\nled_brightness\nstop_state\nunlock_state",
+                "pt": "Primeira versão estável e testes com PV com estas funções:\naccess_state\nallow_charging\nampère\namperePV\nenergia\najustarAmpLevelInWatts\nmax_watts\ncarregamento máximo\nconfigurações\nampere_level1\nampere_level2\nampere_level3\nampere_level4\nampere_level5\ncor\nocioso\ncobrando\nterminar\nled_save_energy\nled_brightness\nstop_state\nunlock_state",
+                "nl": "Eerste stabiele release en tests met PV met deze functies:\naccess_state\nallow_charging\nampère\namperePV\nenergie\nadjustAmpLevelInWatts\nmax_watts\nmax_load\ninstellingen\nampere_level1\nampere_level2\nampere_level3\nampere_level4\nampere_level5\nkleur\ninactief\nopladen\naf hebben\nled_save_energy\nled_brightness\nstop_state\nunlock_state",
+                "fr": "Première version stable et tests avec PV avec ces fonctions:\naccess_state\nallow_charging\nampère\nampèrePV\nénergie\nAdjustAmpLevelInWatts\nmax_watts\nmax_load\nréglages\nampere_level1\nampere_level2\nampere_level3\nampere_level4\nampere_level5\nCouleur\ntourner au ralenti\ncharge\nterminer\nled_save_energy\nled_brightness\nstop_state\nunlock_state",
+                "it": "Primo rilascio stabile e test con PV con queste funzioni:\naccess_state\nallow_charging\nampere\namperePV\nenergia\nAdjustAmpLevelInWatts\nmax_watts\ncarico massimo\nimpostazioni\nampere_level1\nampere_level2\nampere_level3\nampere_level4\nampere_level5\ncolore\ninattivo\nin carica\nfinire\nled_save_energy\nled_brightness\nstop_state\nunlock_state",
+                "es": "Primera versión estable y pruebas con PV con estas funciones:\naccess_state\nallow_charging\namperio\namperio PV\nenergía\nAdjustAmpLevelInWatts\nmax_watts\ncarga maxima\najustes\nampere_level1\nampere_level2\nampere_level3\nampere_level4\nampere_level5\ncolor\nocioso\ncargando\nterminar\nled_save_energy\nled_brightness\nstop_state\nunlock_state",
+                "pl": "Pierwsza stabilna wersja i testy z PV z następującymi funkcjami:\nstan_dostępu\nallow_charging\namper\namperePV\nenergia\nadjustAmpLevelInWatts\nmax_watts\nmax_load\nustawienia\nampere_level1\nampere_level2\nampere_level3\nampere_level4\nampere_level5\nkolor\nbezczynny\nładowanie\nkoniec\nled_save_energy\nled_brightness\nstop_state\nunlock_state",
+                "zh-cn": "First稳定版并通过以下功能对PV进行测试：\naccess_state\nallow_charging\n安培\n电流\n能源\nAdjustAmpLevelInWatts\nmax_watts\n最大负荷\n设定\nampe_level1\nampe_level2\nampe_level3\nampe_level4\nampe_level5\n颜色\n闲\n充电中\n完\nled_save_energy\nled_brightness\n停止状态\nunlock_state"
+              }
         },
         "title": "go-eCharger wallbox integration",
         "titleLang": {
