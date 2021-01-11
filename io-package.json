@@ -385,7 +385,7 @@
             "_id": "stop_state",
             "type": "state",
             "common": {
-                "name": "stop_state: Automatische Abschaltung (stp),
+                "name": "stop_state: Automatische Abschaltung (stp)",
                 "type": "number",
                 "role": "level.timer.sleep",
                 "read": true,
