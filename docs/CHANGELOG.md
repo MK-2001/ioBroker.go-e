@@ -1,3 +1,8 @@
+### 1.0.1
+* Error in adjustAmpLevelInWatts function
+* Wrong date 
+* reomved endpoint changeAmpLevelInWatts
+
 ### 1.0.0
 * Publish the adapter package to ioBroker stable
 * Added documentation in ./docs/Readme.md

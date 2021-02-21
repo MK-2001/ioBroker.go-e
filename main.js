@@ -157,7 +157,7 @@ class GoE extends utils.Adapter {
                         break;
                     case this.namespace + ".energy.adjustAmpLevelInWatts":
                         this.adjustAmpLevelInWatts(parseInt(state.val.toString()));
-                        this.setState("energy.changeAmpLevelInWatts",      { val: parseInt(state.val.toString()), ack: true }); 
+                        this.setState("energy.adjustAmpLevelInWatts",      { val: parseInt(state.val.toString()), ack: true }); 
                         break;
                     case this.namespace + ".energy.max_watts":
                         this.updateAmpLevel(parseInt(state.val.toString()));
@@ -550,37 +550,37 @@ class GoE extends utils.Adapter {
             try {
                 const avgVoltage1 = await this.getStateAsync("energy.phase1.voltage");
                 if(avgVoltage1 === null || avgVoltage1 === undefined || avgVoltage1.val === null) {
-                    this.log.error("changeAmpLevelInWatts: Not all required information about the phases are found. Required Values are: eneregy.phase1.voltage");
+                    this.log.error("adjustAmpLevelInWatts: Not all required information about the phases are found. Required Values are: eneregy.phase1.voltage");
                     return;
                 }
                 const avgVoltage2 = await this.getStateAsync("energy.phase2.voltage");
                 if(avgVoltage2 === null || avgVoltage2 === undefined || avgVoltage2.val === null) {
-                    this.log.error("changeAmpLevelInWatts: Not all required information about the phases are found. Required Values are: eneregy.phase2.voltage");
+                    this.log.error("adjustAmpLevelInWatts: Not all required information about the phases are found. Required Values are: eneregy.phase2.voltage");
                     return;
                 }
                 const avgVoltage3 = await this.getStateAsync("energy.phase3.voltage");
                 if(avgVoltage3 === null || avgVoltage3 === undefined || avgVoltage3.val === null) {
-                    this.log.error("changeAmpLevelInWatts: Not all required information about the phases are found. Required Values are: eneregy.phase3.voltage");
+                    this.log.error("adjustAmpLevelInWatts: Not all required information about the phases are found. Required Values are: eneregy.phase3.voltage");
                     return;
                 }
                 const curAmpPha1 = await this.getStateAsync("energy.phase1.ampere");
                 if(curAmpPha1 === null || curAmpPha1 === undefined || curAmpPha1.val === null) {
-                    this.log.error("changeAmpLevelInWatts: Not all required information about the phases are found. Required Values are: energy.phase1.ampere");
+                    this.log.error("adjustAmpLevelInWatts: Not all required information about the phases are found. Required Values are: energy.phase1.ampere");
                     return;
                 }
                 const curAmpPha2 = await this.getStateAsync("energy.phase2.ampere");
                 if(curAmpPha2 === null || curAmpPha2 === undefined || curAmpPha2.val === null) {
-                    this.log.error("changeAmpLevelInWatts: Not all required information about the phases are found. Required Values are: energy.phase2.ampere");
+                    this.log.error("adjustAmpLevelInWatts: Not all required information about the phases are found. Required Values are: energy.phase2.ampere");
                     return;
                 }
                 const curAmpPha3 = await this.getStateAsync("energy.phase3.ampere");
                 if(curAmpPha3 === null || curAmpPha3 === undefined || curAmpPha3.val === null) {
-                    this.log.error("changeAmpLevelInWatts: Not all required information about the phases are found. Required Values are: energy.phase3.ampere");
+                    this.log.error("adjustAmpLevelInWatts: Not all required information about the phases are found. Required Values are: energy.phase3.ampere");
                     return;
                 }
                 const car = await this.getStateAsync("car");
                 if(car === null || car === undefined || car.val === null) {
-                    this.log.error("changeAmpLevelInWatts: Not all required information about the phases are found. Required Values are: car");
+                    this.log.error("adjustAmpLevelInWatts: Not all required information about the phases are found. Required Values are: car");
                     return;
                 }
 
@@ -591,22 +591,33 @@ class GoE extends utils.Adapter {
 
                 let usedAmperes = 0;
                 let usedVolts = 0;
+                let usedWatts = 0;
+                let usedPhases = 0;
+
                 // Check which phases are currently used
                 if(curAmpPha1.val > 0) {
                     usedVolts += parseInt(avgVoltage1.val.toString());
                     usedAmperes += parseInt(curAmpPha1.val.toString());
+                    usedWatts += parseInt(avgVoltage1.val.toString()) * parseInt(curAmpPha1.val.toString());
+                    usedPhases += 1;
                 }
                 if(curAmpPha2.val > 0) {
                     usedVolts += parseInt(avgVoltage2.val.toString());
-                    usedAmperes += parseInt(curAmpPha1.val.toString());
+                    usedAmperes += parseInt(curAmpPha2.val.toString());
+                    usedWatts += parseInt(avgVoltage2.val.toString()) * parseInt(curAmpPha2.val.toString());
+                    usedPhases += 1;
                 }
                 if(curAmpPha3.val > 0) {
                     usedVolts += parseInt(avgVoltage3.val.toString());
-                    usedAmperes += parseInt(curAmpPha1.val.toString());
+                    usedAmperes += parseInt(curAmpPha3.val.toString());
+                    usedWatts += parseInt(avgVoltage3.val.toString()) * parseInt(curAmpPha3.val.toString());
+                    usedPhases += 1;
                 }
-
-                const maxAmp = Math.round(((usedVolts * usedAmperes) + changeWatts)/usedVolts);
-                this.log.debug("Current used " + Math.round(usedVolts * usedAmperes) +  " Watts adjusting with  " + changeWatts + " watts by " + usedVolts + " Volts to new max of " + maxAmp + " Amperes");
+                // Currents Watts + adjustment / average Volts / usedPhases => max Ampere
+                // Example: 3 Phases, 220V , Current 14 A (Adding 2A each Phase)
+                // (9240 W + 1320) / (660 / 3) / 3 => 16 A
+                const maxAmp = (usedWatts + changeWatts) / (usedVolts / usedPhases) / usedPhases;
+                this.log.debug("Current used " + Math.round(usedWatts) +  " Watts with " + usedAmperes + " Ampere (sum) by " + usedPhases + "Phases and adjusting this with  " + changeWatts + " watts by " + (usedVolts / usedPhases) + " Volts (avg) to new max of " + maxAmp + " Amperes per Phase");
                 
                 // Get Firmware Version if amx is available
                 const fw = await this.getStateAsync("firmware_version");

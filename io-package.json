@@ -1,7 +1,7 @@
 {
     "common": {
         "name": "go-e",
-        "version": "1.0.0",
+        "version": "1.0.1",
         "news": {
             "1.0.0": {
                 "en": "First Stable release and tests wit PV with these functions:\naccess_state\nallow_charging\nampere\namperePV\nenergy\nadjustAmpLevelInWatts\nmax_watts\nmax_load\nsettings\nampere_level1\nampere_level2\nampere_level3\nampere_level4\nampere_level5\ncolor\nidle\nchargeing\nfinish\nled_save_energy\nled_brightness\nstop_state\nunlock_state",
@@ -1679,6 +1679,17 @@
             "type": "state",
             "common": {
                 "name": "Maximum Watts for loading process",
+                "type": "number",
+                "role": "value",
+                "read": true,
+                "write": true,
+                "unit": "Watt"
+            }
+        },{
+            "_id": "energy.changeAmpLevelInWatts",
+            "type": "state",
+            "common": {
+                "name": "(deprecated / deleted in 1.2) use changeAmpLevelInWatts",
                 "type": "number",
                 "role": "value",
                 "read": true,
