@@ -289,7 +289,7 @@ class GoE extends utils.Adapter {
             // Realdate: 22th August 2020 at 16:43 (CET)
             const reggie = /(\d{2})(\d{2})(\d{2})(\d{2})(\d{2})/
                 // @ts-ignore
-                , [, year, month, day, hours, minutes] = reggie.exec(o.tme)
+                , [, day, month, year, hours, minutes] = reggie.exec(o.tme)
                 , dateObject = new Date(parseInt(year)+2000, parseInt(month)-1, parseInt(day), parseInt(hours), parseInt(minutes), 0);
 
             await queue.add(() => this.setState("synctime",                           { val: dateObject, ack: true })); 
