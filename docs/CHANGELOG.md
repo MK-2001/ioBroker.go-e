@@ -2,6 +2,7 @@
 * Error in adjustAmpLevelInWatts function
 * Wrong date 
 * reomved endpoint changeAmpLevelInWatts
+* bug float to amp/amx (Thanks mr. Dvorak)
 
 ### 1.0.0
 * Publish the adapter package to ioBroker stable

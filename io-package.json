@@ -1689,7 +1689,7 @@
             "_id": "energy.changeAmpLevelInWatts",
             "type": "state",
             "common": {
-                "name": "(deprecated / deleted in 1.2) use changeAmpLevelInWatts",
+                "name": "(deprecated / deleted in 1.2) use adjustAmpLevelInWatts",
                 "type": "number",
                 "role": "value",
                 "read": true,
