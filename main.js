@@ -424,7 +424,7 @@ class GoE extends utils.Adapter {
             await queue.add(() => this.setState("scheduler_settings",                 { val: o.sch, ack: true }));
             await queue.add(() => this.setState("scheduler_double_press",             { val: o.sdp, ack: true }));
         } catch (e) {
-            this.log.warn("Error in go.e: " + JSON.stringify(e));
+            this.log.warn("Error in go.e: " + JSON.stringify(e.message) + "; Stack: " + e.stack);
         }
     }
     /**
@@ -616,7 +616,7 @@ class GoE extends utils.Adapter {
                 // Currents Watts + adjustment / average Volts / usedPhases => max Ampere
                 // Example: 3 Phases, 220V , Current 14 A (Adding 2A each Phase)
                 // (9240 W + 1320) / (660 / 3) / 3 => 16 A
-                const maxAmp = (usedWatts + changeWatts) / (usedVolts / usedPhases) / usedPhases;
+                const maxAmp = Math.round((usedWatts + changeWatts) / (usedVolts / usedPhases) / usedPhases);
                 this.log.debug("Current used " + Math.round(usedWatts) +  " Watts with " + usedAmperes + " Ampere (sum) by " + usedPhases + "Phases and adjusting this with  " + changeWatts + " watts by " + (usedVolts / usedPhases) + " Volts (avg) to new max of " + maxAmp + " Amperes per Phase");
                 
                 // Get Firmware Version if amx is available
