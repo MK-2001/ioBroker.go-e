@@ -29,7 +29,7 @@ class GoE extends utils.Adapter {
         // Timer Object for the update interval for ampere to the adapter
         this.ampTimer = null;
 
-        // Translation Object 
+        // Translation Object
         this.translationObject = {
             al1: "settings.ampere_level1",
             al2: "settings.ampere_level2",
@@ -39,7 +39,7 @@ class GoE extends utils.Adapter {
             lbr: "settings.color.led_brightness"
         };
     }
-    
+
     /**
      * Is called when databases are connected and adapter received configuration.
      */
@@ -51,7 +51,7 @@ class GoE extends utils.Adapter {
         this.log.info("Server: " + this.config.serverName);
         this.log.info("Intervall: " + this.config.serverInterval);
 
-        
+
         // In order to get state updates, you need to subscribe to them. The following line adds a subscription for our variable we have created above.
         this.subscribeStates("access_state");
         this.subscribeStates("allow_charging");
@@ -72,7 +72,7 @@ class GoE extends utils.Adapter {
         this.subscribeStates("settings.led_brightness");
         this.subscribeStates("stop_state");
         this.subscribeStates("unlock_state");
-        
+
         // Get all Information for the first time.
         await this.getStateFromDevice();
         // Start the Adapter to sync in the interval
@@ -128,7 +128,7 @@ class GoE extends utils.Adapter {
             this.log.debug(`state ${id} changed: ${state.val} (ack = ${state.ack}) namespace: ` + this.namespace);
             if (!state.ack) {
                 // If it is already acknoladged, we dont have to send it to the go-eCharger device. Or have to handle the change.
-                // Handle null values with the rejection 
+                // Handle null values with the rejection
                 if(state.val === null) {
                     this.log.warn("Not able to handle null Values in " + id);
                     return;
@@ -157,11 +157,11 @@ class GoE extends utils.Adapter {
                         break;
                     case this.namespace + ".energy.adjustAmpLevelInWatts":
                         this.adjustAmpLevelInWatts(parseInt(state.val.toString()));
-                        this.setState("energy.adjustAmpLevelInWatts",      { val: parseInt(state.val.toString()), ack: true }); 
+                        this.setState("energy.adjustAmpLevelInWatts",      { val: parseInt(state.val.toString()), ack: true });
                         break;
                     case this.namespace + ".energy.max_watts":
                         this.updateAmpLevel(parseInt(state.val.toString()));
-                        this.setState("energy.max_watts",                  { val: parseInt(state.val.toString()), ack: true }); 
+                        this.setState("energy.max_watts",                  { val: parseInt(state.val.toString()), ack: true });
                         break;
                     case this.namespace + ".max_load":
                         this.setValue("dwo", parseInt(state.val.toString()) * 10);
@@ -212,7 +212,7 @@ class GoE extends utils.Adapter {
                         } else {
                             this.log.warn("Could not set value " + state.val.toString() + " into " + id);
                         }
-                        
+
                         break;
                     default:
                         this.log.error("Not deveoped function to write " + id + " with state " + state);
@@ -223,7 +223,7 @@ class GoE extends utils.Adapter {
             this.log.info(`state ${id} deleted`);
         }
     }
-    
+
 
     // If you need to accept messages in your adapter, uncomment the following block and the corresponding line in the constructor.
     // /**
@@ -253,22 +253,22 @@ class GoE extends utils.Adapter {
                 this.log.debug(JSON.stringify(o.data));
 
                 this.processStatusObject(o.data);
-                
+
             })
             .catch(e => {
                 this.log.error(e.message);
             });
     }
 
-    
+
 
     /**
      * Process a default status response as descibed in the api documentation of go-eCharger
-     * @param {object} o 
+     * @param {object} o
      */
     async processStatusObject(o) {
         try {
-    
+
             // Const for variable pha
             const postContactorPhase1 = 1;
             const postContactorPhase2 = 2;
@@ -285,14 +285,18 @@ class GoE extends utils.Adapter {
             // Write the whole object for debugging in a State
             await queue.add(() => this.setObjectNotExists("stateObject", o));
 
-            // TME provides 2208201643
-            // Realdate: 22th August 2020 at 16:43 (CET)
-            const reggie = /(\d{2})(\d{2})(\d{2})(\d{2})(\d{2})/
-                // @ts-ignore
-                , [, day, month, year, hours, minutes] = reggie.exec(o.tme)
-                , dateObject = new Date(parseInt(year)+2000, parseInt(month)-1, parseInt(day), parseInt(hours), parseInt(minutes), 0);
+            try {
+                // TME provides 2208201643
+                // Realdate: 22th August 2020 at 16:43 (CET)
+                const reggie = /(\d{2})(\d{2})(\d{2})(\d{2})(\d{2})/
+                    // @ts-ignore
+                    , [, day, month, year, hours, minutes] = reggie.exec(o.tme)
+                    , dateObject = new Date(parseInt(year)+2000, parseInt(month)-1, parseInt(day), parseInt(hours), parseInt(minutes), 0);
+                await queue.add(() => this.setState("synctime",                           { val: dateObject, ack: true }));
+            } catch (e) {
+                this.log.warn("Cloud not store synctime, because of error " + e.message);
+            }
 
-            await queue.add(() => this.setState("synctime",                           { val: dateObject, ack: true })); 
             await queue.add(() => this.setState("reboot_counter",                     { val: o.rbc, ack: true })); // read
             await queue.add(() => this.setState("reboot_timer",                       { val: o.rbt, ack: true })); // read
             await queue.add(() => this.setState("car",                                { val: o.car, ack: true })); // read
@@ -302,7 +306,7 @@ class GoE extends utils.Adapter {
             await queue.add(() => this.setState("access_state",                       { val: o.ast, ack: true })); // write
             await queue.add(() => this.setState("allow_charging",                     { val: o.alw, ack: true })); // write
             await queue.add(() => this.setState("stop_state",                         { val: o.stp, ack: true })); // write
-            
+
             await queue.add(() => this.setState("phases",                             { val: o.pha, ack: true })); // read
             // Split phases in single states
             await queue.add(() => this.setState("energy.phase1.preContactorActive",   { val: ((parseInt(o.pha) & preContactorPhase1) == preContactorPhase1), ack: true})); //read
@@ -369,7 +373,7 @@ class GoE extends utils.Adapter {
             await queue.add(() => this.setState("rfid.badges.7.consumption",          { val: (o.ec7 / 10), ack: true })); // read
             await queue.add(() => this.setState("rfid.badges.8.consumption",          { val: (o.ec8 / 10), ack: true })); // read
             await queue.add(() => this.setState("rfid.badges.9.consumption",          { val: (o.ec9 / 10), ack: true })); // read
-            await queue.add(() => this.setState("rfid.badges.10.consumption",         { val: o.ec1, ack: true })); // read    
+            await queue.add(() => this.setState("rfid.badges.10.consumption",         { val: o.ec1, ack: true })); // read
             await queue.add(() => this.setState("rfid.badges.1.id",                   { val: o.rca, ack: true })); // read
             await queue.add(() => this.setState("rfid.badges.2.id",                   { val: o.rcr, ack: true })); // read
             await queue.add(() => this.setState("rfid.badges.3.id",                   { val: o.rcd, ack: true })); // read
@@ -380,7 +384,7 @@ class GoE extends utils.Adapter {
             await queue.add(() => this.setState("rfid.badges.8.id",                   { val: o.rc8, ack: true })); // read
             await queue.add(() => this.setState("rfid.badges.9.id",                   { val: o.rc9, ack: true })); // read
             await queue.add(() => this.setState("rfid.badges.10.id",                  { val: o.rc1, ack: true })); // read
-            // RFID Name 
+            // RFID Name
             await queue.add(() => this.setState("rfid.badges.1.name",                 { val: o.rna, ack: true })); // write
             await queue.add(() => this.setState("rfid.badges.2.name",                 { val: o.rnm, ack: true })); // write
             await queue.add(() => this.setState("rfid.badges.3.name",                 { val: o.rne, ack: true })); // write
@@ -399,7 +403,7 @@ class GoE extends utils.Adapter {
             await queue.add(() => this.setState("mqtt.key",                           { val: o.mck, ack: true }));
             await queue.add(() => this.setState("mqtt.connection",                    { val: o.mcc, ack: true }));
             await queue.add(() => this.setState("temperatures.maintempereature",      { val: o.tmp, ack: true })); // read
-            await queue.add(() => this.setState("temperatures.tempereatureArray",     { val: o.tma, ack: true })); 
+            await queue.add(() => this.setState("temperatures.tempereatureArray",     { val: o.tma, ack: true }));
             try {
                 if(o.tma) {
                     const tempArr = o.tma.toString().split(",");
@@ -428,9 +432,9 @@ class GoE extends utils.Adapter {
         }
     }
     /**
-     * 
-     * @param {string} id 
-     * @param {string | number | boolean} value 
+     *
+     * @param {string} id
+     * @param {string | number | boolean} value
      */
     setValue(id, value) {
         this.log.info("Set value " + value + " of id " + id);
@@ -465,8 +469,8 @@ class GoE extends utils.Adapter {
                 const curAmpPha3  = await this.getStateAsync("energy.phase3.ampere");
                 const car         = await this.getStateAsync("car");
 
-                if(prePhase1 === null || prePhase1 === undefined || prePhase1.val === null ||  
-                   prePhase2 === null || prePhase2 === undefined || prePhase2.val === null ||  
+                if(prePhase1 === null || prePhase1 === undefined || prePhase1.val === null ||
+                   prePhase2 === null || prePhase2 === undefined || prePhase2.val === null ||
                    prePhase3 === null || prePhase3 === undefined || prePhase3.val === null ) {
                     this.log.error("Not all required information about the phases are found. Required Values are: energy.phaseX.preContactorActive");
                     return;
@@ -501,8 +505,8 @@ class GoE extends utils.Adapter {
                         sumVolts += parseInt(avgVoltage3.val.toString());
                     }
                 } else {
-                    sumVolts = Math.round((prePhase1.val === true ? parseInt(avgVoltage1.val.toString()) : 0 ) + 
-                                (prePhase2.val === true ? parseInt(avgVoltage2.val.toString()) : 0 ) + 
+                    sumVolts = Math.round((prePhase1.val === true ? parseInt(avgVoltage1.val.toString()) : 0 ) +
+                                (prePhase2.val === true ? parseInt(avgVoltage2.val.toString()) : 0 ) +
                                 (prePhase3.val === true ? parseInt(avgVoltage3.val.toString()) : 0 ));
                 }
 
@@ -618,7 +622,7 @@ class GoE extends utils.Adapter {
                 // (9240 W + 1320) / (660 / 3) / 3 => 16 A
                 const maxAmp = Math.round((usedWatts + changeWatts) / (usedVolts / usedPhases) / usedPhases);
                 this.log.debug("Current used " + Math.round(usedWatts) +  " Watts with " + usedAmperes + " Ampere (sum) by " + usedPhases + "Phases and adjusting this with  " + changeWatts + " watts by " + (usedVolts / usedPhases) + " Volts (avg) to new max of " + maxAmp + " Amperes per Phase");
-                
+
                 // Get Firmware Version if amx is available
                 const fw = await this.getStateAsync("firmware_version");
                 let amp = "";

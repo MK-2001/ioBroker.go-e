@@ -1,6 +1,9 @@
+### 1.0.3
+* Catch warn message in read object
+
 ### 1.0.1
 * Error in adjustAmpLevelInWatts function
-* Wrong date 
+* Wrong date
 * reomved endpoint changeAmpLevelInWatts
 * bug float to amp/amx (Thanks mr. Dvorak)
 
@@ -9,9 +12,9 @@
 * Added documentation in ./docs/Readme.md
 * added unlock_state for cable management
 * added amx for non permanat ampere settings
-* fix Issue 17: Some adapters are not sharing the temperatures array (Many thanks to maxe1111) 
+* fix Issue 17: Some adapters are not sharing the temperatures array (Many thanks to maxe1111)
 * added telegram community channel
-* fix issue 16: Bug in calculation of loaded_energy_kwh (Many thanks to maxe1111) 
+* fix issue 16: Bug in calculation of loaded_energy_kwh (Many thanks to maxe1111)
 * Added all steps from Version 0.0.x
 * some additional minor fixes from testing.
 * (MK-2001) solved bug in maxWatts feature
