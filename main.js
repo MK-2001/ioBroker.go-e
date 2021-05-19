@@ -361,8 +361,8 @@ class GoE extends utils.Adapter {
             await queue.add(() => this.setState("settings.color.idle",                { val: "#" + ("000000" + parseInt(o.cid).toString(16)).slice(6), ack: true })); // write
             await queue.add(() => this.setState("settings.color.charging",            { val: "#" + ("000000" + parseInt(o.cch).toString(16)).slice(6), ack: true })); // write
             await queue.add(() => this.setState("settings.color.finish",              { val: "#" + ("000000" + parseInt(o.cfi).toString(16)).slice(6), ack: true })); // write
-            await queue.add(() => this.setState("time_offset",                        { val: o.tof, ack: true})); // write
-            await queue.add(() => this.setState("time_daylight_saving",               { val: o.tds, ack: true })); // write
+            await queue.add(() => this.setState("time_offset",                        { val: parseInt(o.tof), ack: true})); // write
+            await queue.add(() => this.setState("time_daylight_saving",               { val: parseInt(o.tds), ack: true })); // write
             // RFID Badges
             await queue.add(() => this.setState("rfid.badges.1.consumption",          { val: (o.eca / 10), ack: true })); // read
             await queue.add(() => this.setState("rfid.badges.2.consumption",          { val: (o.ecr / 10), ack: true })); // read
@@ -373,7 +373,7 @@ class GoE extends utils.Adapter {
             await queue.add(() => this.setState("rfid.badges.7.consumption",          { val: (o.ec7 / 10), ack: true })); // read
             await queue.add(() => this.setState("rfid.badges.8.consumption",          { val: (o.ec8 / 10), ack: true })); // read
             await queue.add(() => this.setState("rfid.badges.9.consumption",          { val: (o.ec9 / 10), ack: true })); // read
-            await queue.add(() => this.setState("rfid.badges.10.consumption",         { val: o.ec1, ack: true })); // read
+            await queue.add(() => this.setState("rfid.badges.10.consumption",         { val: (o.ec1 / 10), ack: true })); // read
             await queue.add(() => this.setState("rfid.badges.1.id",                   { val: o.rca, ack: true })); // read
             await queue.add(() => this.setState("rfid.badges.2.id",                   { val: o.rcr, ack: true })); // read
             await queue.add(() => this.setState("rfid.badges.3.id",                   { val: o.rcd, ack: true })); // read
@@ -402,7 +402,7 @@ class GoE extends utils.Adapter {
             await queue.add(() => this.setState("mqtt.user",                          { val: o.mcu, ack: true }));
             await queue.add(() => this.setState("mqtt.key",                           { val: o.mck, ack: true }));
             await queue.add(() => this.setState("mqtt.connection",                    { val: o.mcc, ack: true }));
-            await queue.add(() => this.setState("temperatures.maintempereature",      { val: o.tmp, ack: true })); // read
+            await queue.add(() => this.setState("temperatures.maintempereature",      { val: parseInt(o.tmp), ack: true })); // read
             await queue.add(() => this.setState("temperatures.tempereatureArray",     { val: o.tma, ack: true }));
             try {
                 if(o.tma) {
@@ -419,14 +419,14 @@ class GoE extends utils.Adapter {
             } catch (e) {
                 this.log.warn("Cloud not store temperature array to single values, because of error " + e.message);
             }
-            await queue.add(() => this.setState("adapter_in",                         { val: o.adi, ack: true })); // read
-            await queue.add(() => this.setState("unlocked_by",                        { val: o.uby, ack: true })); // read
-            await queue.add(() => this.setState("settings.color.led_save_energy",     { val: o.lse, ack: true })); // write
-            await queue.add(() => this.setState("unlock_state",                       { val: o.ust, ack: true })); // write
-            await queue.add(() => this.setState("electricity_exchange.balance_time",  { val: o.dto, ack: true })); // write
-            await queue.add(() => this.setState("energy.norway_mode",                 { val: o.nmo, ack: true })); // write
+            await queue.add(() => this.setState("adapter_in",                         { val: parseInt(o.adi), ack: true })); // read
+            await queue.add(() => this.setState("unlocked_by",                        { val: parseInt(o.uby), ack: true })); // read
+            await queue.add(() => this.setState("settings.color.led_save_energy",     { val: parseInt(o.lse), ack: true })); // write
+            await queue.add(() => this.setState("unlock_state",                       { val: parseInt(o.ust), ack: true })); // write
+            await queue.add(() => this.setState("electricity_exchange.balance_time",  { val: parseInt(o.dto), ack: true })); // write
+            await queue.add(() => this.setState("energy.norway_mode",                 { val: parseInt(o.nmo), ack: true })); // write
             await queue.add(() => this.setState("scheduler_settings",                 { val: o.sch, ack: true }));
-            await queue.add(() => this.setState("scheduler_double_press",             { val: o.sdp, ack: true }));
+            await queue.add(() => this.setState("scheduler_double_press",             { val: parseInt(o.sdp), ack: true })); //
         } catch (e) {
             this.log.warn("Error in go.e: " + JSON.stringify(e.message) + "; Stack: " + e.stack);
         }
