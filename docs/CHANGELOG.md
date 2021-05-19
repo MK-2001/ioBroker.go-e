@@ -1,5 +1,6 @@
-### 1.0.3
+### 1.0.5
 * Catch warn message in read object
+* Added SENTRY to get more details for debbugging
 
 ### 1.0.1
 * Error in adjustAmpLevelInWatts function

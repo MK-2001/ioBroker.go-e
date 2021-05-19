@@ -1,7 +1,7 @@
 {
     "common": {
         "name": "go-e",
-        "version": "1.0.4",
+        "version": "1.0.5",
         "news": {
             "1.0.0": {
                 "en": "First Stable release and tests wit PV with these functions:\naccess_state\nallow_charging\nampere\namperePV\nenergy\nadjustAmpLevelInWatts\nmax_watts\nmax_load\nsettings\nampere_level1\nampere_level2\nampere_level3\nampere_level4\nampere_level5\ncolor\nidle\nchargeing\nfinish\nled_save_energy\nled_brightness\nstop_state\nunlock_state",
@@ -73,7 +73,8 @@
     "native": {
         "serverName": "go-eCharger",
         "serverInterval": 60,
-        "ampUpdateInterval": 30
+        "ampUpdateInterval": 30,
+        "sentryEnabled":true
     },
     "objects": [],
     "instanceObjects": [

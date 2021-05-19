@@ -11,6 +11,9 @@ const utils = require("@iobroker/adapter-core");
 // const fs = require("fs");
 const axios = require("axios").default;
 const {default: PQueue} = require("p-queue");
+const sentry = require("@sentry/node");
+const tracing = require("@sentry/tracing");
+
 class GoE extends utils.Adapter {
     /**
      * @param {Partial<utils.AdapterOptions>} [options={}]
@@ -51,6 +54,18 @@ class GoE extends utils.Adapter {
         this.log.info("Server: " + this.config.serverName);
         this.log.info("Intervall: " + this.config.serverInterval);
 
+        if(this.config.sentryEnabled) {
+            // Activate Sentry if enabled
+            this.log.warn("Sentry enabled. You can switch it off in settings of the adapter.");
+            sentry.init({
+                dsn: "https://6190adbfedd24ef5ad49d34aa306abd5@o689933.ingest.sentry.io/5774371",
+
+                // Set tracesSampleRate to 1.0 to capture 100%
+                // of transactions for performance monitoring.
+                // We recommend adjusting this value in production
+                tracesSampleRate: 1.0
+            });
+        }
 
         // In order to get state updates, you need to subscribe to them. The following line adds a subscription for our variable we have created above.
         this.subscribeStates("access_state");
@@ -257,6 +272,7 @@ class GoE extends utils.Adapter {
             })
             .catch(e => {
                 this.log.error(e.message);
+                sentry.captureException(e);
             });
     }
 
@@ -295,6 +311,7 @@ class GoE extends utils.Adapter {
                 await queue.add(() => this.setState("synctime",                           { val: dateObject, ack: true }));
             } catch (e) {
                 this.log.warn("Cloud not store synctime, because of error " + e.message);
+                sentry.captureException(e);
             }
 
             await queue.add(() => this.setState("reboot_counter",                     { val: o.rbc, ack: true })); // read
@@ -418,6 +435,7 @@ class GoE extends utils.Adapter {
                 }
             } catch (e) {
                 this.log.warn("Cloud not store temperature array to single values, because of error " + e.message);
+                sentry.captureException(e);
             }
             await queue.add(() => this.setState("adapter_in",                         { val: parseInt(o.adi), ack: true })); // read
             await queue.add(() => this.setState("unlocked_by",                        { val: parseInt(o.uby), ack: true })); // read
@@ -429,6 +447,7 @@ class GoE extends utils.Adapter {
             await queue.add(() => this.setState("scheduler_double_press",             { val: parseInt(o.sdp), ack: true })); //
         } catch (e) {
             this.log.warn("Error in go.e: " + JSON.stringify(e.message) + "; Stack: " + e.stack);
+            sentry.captureException(e);
         }
     }
     /**
@@ -445,6 +464,7 @@ class GoE extends utils.Adapter {
             })
             .catch(err => {
                 this.log.error(err.message + " at " + id + " / " + value);
+                sentry.captureException(err);
             });
     }
     /**
@@ -646,6 +666,7 @@ class GoE extends utils.Adapter {
                 }
             } catch (e) {
                 this.log.error("Error during set adjust Watts: " + e.message);
+                sentry.captureException(e);
             }
         } else {
             // Still existing Block-Timer
@@ -663,6 +684,7 @@ class GoE extends utils.Adapter {
             this.setState(this.translationObject[attribute], { val: ampLvl, ack: true });
         } else {
             this.log.warn("Cant set " + ampLvl + " to " + attribute + "it must be between 6 and 32 ampere");
+            sentry.captureException("Cant set " + ampLvl + " to " + attribute + "it must be between 6 and 32 ampere");
         }
     }
 }
