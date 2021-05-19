@@ -1,6 +1,7 @@
-### 1.0.5
+### 1.0.6
 * Catch warn message in read object
 * Added SENTRY to get more details for debbugging
+* Only work with JSON compatible answers from your adapter
 
 ### 1.0.1
 * Error in adjustAmpLevelInWatts function

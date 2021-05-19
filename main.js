@@ -264,10 +264,14 @@ class GoE extends utils.Adapter {
         axios.defaults.baseURL = "http://" + this.config.serverName;
         await axios.get("/status")
             .then((o) => {
-                this.log.debug("Response: " + o.status + " - " + o.statusText);
+                this.log.debug("Response: " + o.status + " - " + o.statusText + " with data as " + typeof o.data);
                 this.log.debug(JSON.stringify(o.data));
+                if(typeof o.data === "object") {
+                    this.processStatusObject(o.data);
+                } else {
+                    sentry.captureException("Unable to parse JSON: " + o.data);
+                }
 
-                this.processStatusObject(o.data);
 
             })
             .catch(e => {
@@ -425,10 +429,10 @@ class GoE extends utils.Adapter {
                 if(o.tma) {
                     const tempArr = o.tma.toString().split(",");
                     if(tempArr.length == 4) {
-                        await queue.add(() => this.setState("temperatures.tempereature1", { val: tempArr[0], ack: true}));
-                        await queue.add(() => this.setState("temperatures.tempereature2", { val: tempArr[1], ack: true}));
-                        await queue.add(() => this.setState("temperatures.tempereature3", { val: tempArr[2], ack: true}));
-                        await queue.add(() => this.setState("temperatures.tempereature4", { val: tempArr[3], ack: true}));
+                        await queue.add(() => this.setState("temperatures.tempereature1", { val: Number(tempArr[0]), ack: true}));
+                        await queue.add(() => this.setState("temperatures.tempereature2", { val: Number(tempArr[1]), ack: true}));
+                        await queue.add(() => this.setState("temperatures.tempereature3", { val: Number(tempArr[2]), ack: true}));
+                        await queue.add(() => this.setState("temperatures.tempereature4", { val: Number(tempArr[3]), ack: true}));
                     } else {
                         this.log.debug("Cant write temp single temps. Expected 3 elements got " + JSON.stringify(tempArr));
                     }
