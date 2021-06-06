@@ -79,6 +79,18 @@
     "objects": [],
     "instanceObjects": [
         {
+            "_id": "info.connection",
+            "type": "state",
+            "common": {
+                "role": "indicator.connected",
+                "name": "If communication with circuit works",
+                "type": "boolean",
+                "read": true,
+                "write": false,
+                "def": false
+            },
+            "native": {}
+        },{
             "_id":"settings",
             "type":"channel",
             "common": {
@@ -951,7 +963,7 @@
                 "type": "number",
                 "role": "value.brightness",
                 "read":  true,
-                "write": false
+                "write": true
             }
         },{
             "_id":"electricity_exchange",
@@ -1114,7 +1126,7 @@
                 "type": "number",
                 "role": "level",
                 "read":  true,
-                "write": false,
+                "write": true,
                 "states":{
                     "0":"locked with car",
                     "1":"unlock after finish",
