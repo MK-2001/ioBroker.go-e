@@ -12,7 +12,111 @@ const utils = require("@iobroker/adapter-core");
 const axios = require("axios").default;
 const {default: PQueue} = require("p-queue");
 const sentry = require("@sentry/node");
-const tracing = require("@sentry/tracing");
+const joi = require("joi");
+const schema = joi.object({
+    version: joi.string()
+        .min(1)
+        .max(1)
+        .required(),
+
+    tme: joi.string()
+        .pattern(new RegExp("^[0-9]{10}$"))
+        .required(),
+
+    rbc: joi.number().required(),
+
+    rbt: joi.number().required(),
+    car: joi.number().required(),
+    amp: joi.number().required(),
+    err: joi.number().required(),
+    ast: joi.number().required(),
+    alw: joi.number().required(),
+    stp: joi.number().required(),
+    cbl: joi.number().required(),
+    pha: joi.number().required(),
+    tmp: joi.number().required(),
+    dws: joi.number().required(),
+    dwo: joi.number().required(),
+    adi: joi.number().required(),
+    uby: joi.number().required(),
+    eto: joi.number().required(),
+    wst: joi.number().required(),
+    txi: joi.number().required(),
+    nrg: joi.array().required(),
+    fwv: joi.number().required(),
+    sse: joi.number().required(),
+    wss: joi.number().required(),
+    wke: joi.string().required(),
+    wen: joi.number().required(),
+    cdi: joi.number().required(),
+    tof: joi.number().required(),
+    tds: joi.number().required(),
+    lbr: joi.number().required(),
+    aho: joi.number().required(),
+    afi: joi.number().required(),
+    azo: joi.number().required(),
+    ama: joi.number().required(),
+    al1: joi.number().required(),
+    al2: joi.number().required(),
+    al3: joi.number().required(),
+    al4: joi.number().required(),
+    al5: joi.number().required(),
+    cid: joi.number().required(),
+    cch: joi.number().required(),
+    cfi: joi.number().required(),
+    lse: joi.number().required(),
+    ust: joi.number().required(),
+    wak: joi.number().required(),
+    r1x: joi.number().required(),
+    dto: joi.number().required(),
+    nmo: joi.number().required(),
+    sch: joi.string().required(),
+    sdp: joi.number().required(),
+    eca: joi.number().required(),
+    ecr: joi.number().required(),
+    ecd: joi.number().required(),
+    ec4: joi.number().required(),
+    ec5: joi.number().required(),
+    ec6: joi.number().required(),
+    ec7: joi.number().required(),
+    ec8: joi.number().required(),
+    ec9: joi.number().required(),
+    rca: joi.string().required(),
+    rcr: joi.string().required(),
+    rcd: joi.string().required(),
+    rc4: joi.string(),
+    rc5: joi.string(),
+    rc6: joi.string(),
+    rc7: joi.string(),
+    rc8: joi.string(),
+    rc9: joi.string(),
+    rc1: joi.string(),
+    rna: joi.string(),
+    rnm: joi.string(),
+    rne: joi.string(),
+    rn4: joi.string(),
+    rn5: joi.string(),
+    rn6: joi.string(),
+    rn7: joi.string(),
+    rn8: joi.string(),
+    rn9: joi.string(),
+    rn1: joi.string(),
+    loe: joi.number().required(),
+    lot: joi.number().required(),
+    lom: joi.number().required(),
+    lop: joi.number().required(),
+    log: joi.string(),
+    lon: joi.number().required(),
+    lof: joi.number().required(),
+    loa: joi.number().required(),
+    lch: joi.number().required(),
+    mce: joi.number().required(),
+    mcs: joi.string(),
+    mcp: joi.number().required(),
+    mcu: joi.string(),
+    mck: joi.string(),
+    mcc: joi.number().required()
+});
 
 class GoE extends utils.Adapter {
     /**
@@ -208,10 +312,10 @@ class GoE extends utils.Adapter {
                         // @ts-ignore // Check off null is done
                         this.setValue("cfi", /^#?([a-f\d]{6})$/i.exec(state.val.toString()) !== null ? parseInt(/^#?([a-f\d]{6})$/i.exec(state.val.toString())[1], 16) : 0);
                         break;
-                    case this.namespace + ".settings.led_save_energy":
+                    case this.namespace + ".settings.color.led_save_energy":
                         this.setValue("lse", parseInt(state.val.toString()));
                         break;
-                    case this.namespace + ".settings.led_brightness":
+                    case this.namespace + ".settings.color.led_brightness":
                         this.setValue("lbr", parseInt(state.val.toString()));
                         break;
                     case this.namespace + ".stop_state":
@@ -266,17 +370,32 @@ class GoE extends utils.Adapter {
             .then((o) => {
                 this.log.debug("Response: " + o.status + " - " + o.statusText + " with data as " + typeof o.data);
                 this.log.debug(JSON.stringify(o.data));
-                if(typeof o.data === "object") {
-                    this.processStatusObject(o.data);
+                const validation = schema.validate(o.data,{abortEarly: false});
+                if (validation.error || validation.value === undefined) {
+                    if (validation.value === undefined) {
+                        this.log.error("API send no content");
+                    } else {
+                        sentry.captureException(validation.error);
+                        this.log.error("API response validation error: " + JSON.stringify(validation.error));
+                    }
                 } else {
-                    sentry.captureException("Unable to parse JSON: " + o.data);
+                    this.processStatusObject(o.data);
                 }
-
-
             })
             .catch(e => {
-                this.log.error(e.message);
-                sentry.captureException(e);
+                if(e.code ==  "ENOTFOUND") {
+                    this.setState("info.connection", false, true);
+                    this.log.warn("Host not found: " + this.config.serverName);
+                } else if(e.code == "ECONNRESET") {
+                    this.setState("info.connection", false, true);
+                    this.log.warn("Cant connect to host " + this.config.serverName);
+                } else {
+                    this.log.error(e.message);
+                    sentry.captureException(typeof e);
+                }
+            })
+            .then(() => {
+                this.setState("info.connection", true, true);
             });
     }
 

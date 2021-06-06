@@ -1,7 +1,13 @@
-### 1.0.6
+### 1.0.7
 * Catch warn message in read object
 * Added SENTRY to get more details for debbugging
 * Only work with JSON compatible answers from your adapter
+* Updated writable objects attribut #47 Thanks to GoClyde
+* Enabled Sentry for debugging
+* Added documentation for API v1 of go-e.co (Unsupported v2, yet)
+* Added joi validation to validate response from the hardware adapter
+* Update color in settings used a watch on a wrong io-object
+* Error handling on status update got improved
 
 ### 1.0.1
 * Error in adjustAmpLevelInWatts function

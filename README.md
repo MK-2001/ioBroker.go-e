@@ -10,10 +10,19 @@
 ![Build & Tests](https://img.shields.io/travis/MK-2001/ioBroker.go-e/master.svg)
 [![NPM](https://nodei.co/npm/iobroker.go-e.png?mini=true)](https://nodei.co/npm/iobroker.go-e/)
 
+# Usage of Sentry
+**This adapter uses Sentry libraries to automatically report exceptions and code errors to the developers.** For more details and for information how to disable the error reporting see [Sentry-Plugin Documentation](https://github.com/ioBroker/plugin-sentry#plugin-sentry)! Sentry reporting is used starting with js-controller 3.0.
+
 # The go-eCharger Wallbox
 ![Product Image](admin/go-eCharger-HOME-Wallbox.png)
-For more details please visit https://go-e.co/ 
+For more details please visit https://go-e.co/
 
+## Notice
+This Adapter is currently only running with API v1. The new API v2 support is currently pending.
+Please make sure that in the App you turned on the API v1.
+
+Dieser Adapter unterstützt derzeit nur die API v1. Die Entwicklung auf die API v2 steht in der Warteschlange. Bitte stelle sicher, dass in der APP die API v1 aktiviert wurde.
+![API_v1](./99-docs/active_v1.Jjpg)
 ## go-eCharger adapter for ioBroker
 **EN**
 go-e is an invitation to move electrically. E-mobility is our drive, whereby our core competence is the charging technology for electric cars. From the individual charging station for e-cars to photovoltaic connections to load management of entire buildings, we are providers of holistic system solutions for all requirements of modern e-mobility.
@@ -21,7 +30,7 @@ go-e is an invitation to move electrically. E-mobility is our drive, whereby our
 **DE**
 go-e ist die Aufforderung, sich elektrisch zu bewegen. e-Mobilität ist unser Antrieb, wobei unsere Kernkompetenz die Ladetechnik für Elektroautos ist. Von der einzelnen Ladestation für e-Autos über Photovoltaik-Anbindung bis hin zum Lastmanagement von ganzen Gebäuden, sind wir Anbieter gesamtheitlicher Systemlösungen für sämtliche Anforderungen der modernen e-Mobilität.
 
-## ioBroker-Adapter manual 
+## ioBroker-Adapter manual
 
 The Manual for installation and configuration you can find here:
 [Adapter Manual](./docs/Readme.md)
@@ -29,10 +38,10 @@ The Manual for installation and configuration you can find here:
 ## Developer manual
 
 Join the adapter Community
-https://t.me/goECharger 
+https://t.me/goECharger
 
 Official API Documentation:
-https://github.com/goecharger/go-eCharger-API-v1 
+https://github.com/goecharger/go-eCharger-API-v1
 
 Official Product Support:
 https://go-e.co/support/
