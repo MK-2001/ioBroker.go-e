@@ -488,7 +488,11 @@ class GoE extends utils.Adapter {
             await queue.add(() => this.setState("wifi.hotspot_key",                   { val: o.wak, ack: true })); // write
             await queue.add(() => this.setState("http_flags",                         { val: o.r1x, ack: true })); // write
             await queue.add(() => this.setState("loaded_energy",                      { val: o.dws, ack: true })); // read
-            await queue.add(() => this.setState("loaded_energy_kwh",                  { val: o.dws * 10 / 60 / 60 / 1000, ack: true}));
+            if(/^050/.test(o.fwv)) {
+                await queue.add(() => this.setState("loaded_energy_kwh",                  { val: o.dws / 100, ack: true}));
+            } else {
+                await queue.add(() => this.setState("loaded_energy_kwh",                  { val: o.dws * 10 / 60 / 60 / 1000, ack: true}));
+            }
             await queue.add(() => this.setState("max_load",                           { val: (o.dwo / 10), ack: true })); // write
             await queue.add(() => this.setState("electricity_exchange.min_hours",     { val: o.aho, ack: true })); // write
             await queue.add(() => this.setState("electricity_exchange.finish_hour",   { val: o.afi, ack: true })); // write
