@@ -118,7 +118,7 @@ const schema = joi.object({
     mck: joi.string().allow(null, ""),
     mcc: joi.number().required(),
     tma: joi.array(),
-    amt: joi.number().required()
+    amt: joi.number()
 
 });
 
