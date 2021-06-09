@@ -18,13 +18,10 @@ const schema = joi.object({
         .min(1)
         .max(1)
         .required(),
-
     tme: joi.string()
         .pattern(new RegExp("^[0-9]{10}$"))
         .required(),
-
     rbc: joi.number().required(),
-
     rbt: joi.number().required(),
     car: joi.number().required(),
     amp: joi.number().required(),
@@ -259,15 +256,15 @@ class GoE extends utils.Adapter {
                 switch (id) {
                     // Sort by alphabet of attribute
                     case this.namespace + ".access_state":
-                        if(parseInt(state.val.toString()) == 0 || parseInt(state.val.toString()) == 1 ) {
-                            this.setValue("ast", parseInt(state.val.toString()));
+                        if(parseInt(state.val.toString()) == 0 || parseInt(state.val.toString(), 10) == 1 ) {
+                            this.setValue("ast", parseInt(state.val.toString(), 10));
                         } else {
                             this.log.warn("Could not set value " + state.val.toString() + " in " + id);
                         }
                         break;
                     case this.namespace + ".allow_charging":
-                        if(parseInt(state.val.toString()) == 0 || parseInt(state.val.toString()) == 1 ) {
-                            this.setValue("alw", parseInt(state.val.toString()));
+                        if(parseInt(state.val.toString()) == 0 || parseInt(state.val.toString(), 10) == 1 ) {
+                            this.setValue("alw", parseInt(state.val.toString(), 10));
                         } else {
                             this.log.warn("Could not set value " + state.val.toString() + " in " + id);
                         }
@@ -279,30 +276,30 @@ class GoE extends utils.Adapter {
                         this.setValue("amx", state.val.toString());
                         break;
                     case this.namespace + ".energy.adjustAmpLevelInWatts":
-                        this.adjustAmpLevelInWatts(parseInt(state.val.toString()));
-                        this.setState("energy.adjustAmpLevelInWatts",      { val: parseInt(state.val.toString()), ack: true });
+                        this.adjustAmpLevelInWatts(parseInt(state.val.toString(), 10));
+                        this.setState("energy.adjustAmpLevelInWatts",      { val: parseInt(state.val.toString(), 10), ack: true });
                         break;
                     case this.namespace + ".energy.max_watts":
                         this.updateAmpLevel(parseInt(state.val.toString()));
-                        this.setState("energy.max_watts",                  { val: parseInt(state.val.toString()), ack: true });
+                        this.setState("energy.max_watts",                  { val: parseInt(state.val.toString(), 10), ack: true });
                         break;
                     case this.namespace + ".max_load":
-                        this.setValue("dwo", parseInt(state.val.toString()) * 10);
+                        this.setValue("dwo", parseInt(state.val.toString(), 10) * 10);
                         break;
                     case this.namespace + ".settings.ampere_level1":
-                        this.setAmpLevelToButton("al1", parseInt(state.val.toString()));
+                        this.setAmpLevelToButton("al1", parseInt(state.val.toString(), 10));
                         break;
                     case this.namespace + ".settings.ampere_level2":
-                        this.setAmpLevelToButton("al2", parseInt(state.val.toString()));
+                        this.setAmpLevelToButton("al2", parseInt(state.val.toString(), 10));
                         break;
                     case this.namespace + ".settings.ampere_level3":
-                        this.setAmpLevelToButton("al3", parseInt(state.val.toString()));
+                        this.setAmpLevelToButton("al3", parseInt(state.val.toString(), 10));
                         break;
                     case this.namespace + ".settings.ampere_level4":
-                        this.setAmpLevelToButton("al4", parseInt(state.val.toString()));
+                        this.setAmpLevelToButton("al4", parseInt(state.val.toString(), 10));
                         break;
                     case this.namespace + ".settings.ampere_level5":
-                        this.setAmpLevelToButton("al5", parseInt(state.val.toString()));
+                        this.setAmpLevelToButton("al5", parseInt(state.val.toString(), 10));
                         break;
                     case this.namespace + ".settings.color.idle":
                         // @ts-ignore // Check off null is done
@@ -317,21 +314,21 @@ class GoE extends utils.Adapter {
                         this.setValue("cfi", /^#?([a-f\d]{6})$/i.exec(state.val.toString()) !== null ? parseInt(/^#?([a-f\d]{6})$/i.exec(state.val.toString())[1], 16) : 0);
                         break;
                     case this.namespace + ".settings.color.led_save_energy":
-                        this.setValue("lse", parseInt(state.val.toString()));
+                        this.setValue("lse", parseInt(state.val.toString(), 10));
                         break;
                     case this.namespace + ".settings.color.led_brightness":
-                        this.setValue("lbr", parseInt(state.val.toString()));
+                        this.setValue("lbr", parseInt(state.val.toString(), 10));
                         break;
                     case this.namespace + ".stop_state":
                         if(parseInt(state.val.toString()) === 0 || parseInt(state.val.toString()) == 2 ) {
-                            this.setValue("stp", parseInt(state.val.toString()));
+                            this.setValue("stp", parseInt(state.val.toString(), 10));
                         } else {
                             this.log.warn("Could not set value " + state.val.toString() + " into " + id);
                         }
                         break;
                     case this.namespace + ".unlock_state":
                         if(parseInt(state.val.toString()) === 0 || parseInt(state.val.toString()) === 1 || parseInt(state.val.toString()) == 2 ) {
-                            this.setValue("ust", parseInt(state.val.toString()));
+                            this.setValue("ust", parseInt(state.val.toString(), 10));
                         } else {
                             this.log.warn("Could not set value " + state.val.toString() + " into " + id);
                         }
@@ -434,7 +431,7 @@ class GoE extends utils.Adapter {
                 const reggie = /(\d{2})(\d{2})(\d{2})(\d{2})(\d{2})/
                     // @ts-ignore
                     , [, day, month, year, hours, minutes] = reggie.exec(o.tme)
-                    , dateObject = new Date(parseInt(year)+2000, parseInt(month)-1, parseInt(day), parseInt(hours), parseInt(minutes), 0);
+                    , dateObject = new Date(parseInt(year, 10)+2000, parseInt(month, 10)-1, parseInt(day, 10), parseInt(hours, 10), parseInt(minutes, 10), 0);
                 await queue.add(() => this.setState("synctime",                           { val: dateObject, ack: true }));
             } catch (e) {
                 this.log.warn("Cloud not store synctime, because of error " + e.message);
@@ -453,12 +450,12 @@ class GoE extends utils.Adapter {
 
             await queue.add(() => this.setState("phases",                             { val: o.pha, ack: true })); // read
             // Split phases in single states
-            await queue.add(() => this.setState("energy.phase1.preContactorActive",   { val: ((parseInt(o.pha) & preContactorPhase1) == preContactorPhase1), ack: true})); //read
-            await queue.add(() => this.setState("energy.phase1.postContactorActive",  { val: ((parseInt(o.pha) & postContactorPhase1) == postContactorPhase1), ack: true})); //read
-            await queue.add(() => this.setState("energy.phase2.preContactorActive",   { val: ((parseInt(o.pha) & preContactorPhase2) == preContactorPhase2), ack: true})); //read
-            await queue.add(() => this.setState("energy.phase2.postContactorActive",  { val: ((parseInt(o.pha) & postContactorPhase2) == postContactorPhase2), ack: true})); //read
-            await queue.add(() => this.setState("energy.phase3.preContactorActive",   { val: ((parseInt(o.pha) & preContactorPhase3) == preContactorPhase3), ack: true})); //read
-            await queue.add(() => this.setState("energy.phase3.postContactorActive",  { val: ((parseInt(o.pha) & postContactorPhase3) == postContactorPhase3), ack: true})); //read
+            await queue.add(() => this.setState("energy.phase1.preContactorActive",   { val: ((parseInt(o.pha, 10) & preContactorPhase1) == preContactorPhase1), ack: true})); //read
+            await queue.add(() => this.setState("energy.phase1.postContactorActive",  { val: ((parseInt(o.pha, 10) & postContactorPhase1) == postContactorPhase1), ack: true})); //read
+            await queue.add(() => this.setState("energy.phase2.preContactorActive",   { val: ((parseInt(o.pha, 10) & preContactorPhase2) == preContactorPhase2), ack: true})); //read
+            await queue.add(() => this.setState("energy.phase2.postContactorActive",  { val: ((parseInt(o.pha, 10) & postContactorPhase2) == postContactorPhase2), ack: true})); //read
+            await queue.add(() => this.setState("energy.phase3.preContactorActive",   { val: ((parseInt(o.pha, 10) & preContactorPhase3) == preContactorPhase3), ack: true})); //read
+            await queue.add(() => this.setState("energy.phase3.postContactorActive",  { val: ((parseInt(o.pha, 10) & postContactorPhase3) == postContactorPhase3), ack: true})); //read
             await queue.add(() => this.setState("energy.phase1.voltage",              { val: o.nrg[0], ack: true })); // read
             await queue.add(() => this.setState("energy.phase2.voltage",              { val: o.nrg[1], ack: true })); // read
             await queue.add(() => this.setState("energy.phase3.voltage",              { val: o.nrg[2], ack: true })); // read
@@ -488,7 +485,11 @@ class GoE extends utils.Adapter {
             await queue.add(() => this.setState("wifi.hotspot_key",                   { val: o.wak, ack: true })); // write
             await queue.add(() => this.setState("http_flags",                         { val: o.r1x, ack: true })); // write
             await queue.add(() => this.setState("loaded_energy",                      { val: o.dws, ack: true })); // read
-            await queue.add(() => this.setState("loaded_energy_kwh",                  { val: o.dws * 10 / 60 / 60 / 1000, ack: true}));
+            if(/^050/.test(o.fwv)) {
+                await queue.add(() => this.setState("loaded_energy_kwh",                  { val: o.dws / 100, ack: true}));
+            } else {
+                await queue.add(() => this.setState("loaded_energy_kwh",                  { val: o.dws * 10 / 60 / 60 / 1000, ack: true}));
+            }
             await queue.add(() => this.setState("max_load",                           { val: (o.dwo / 10), ack: true })); // write
             await queue.add(() => this.setState("electricity_exchange.min_hours",     { val: o.aho, ack: true })); // write
             await queue.add(() => this.setState("electricity_exchange.finish_hour",   { val: o.afi, ack: true })); // write
@@ -502,11 +503,11 @@ class GoE extends utils.Adapter {
             await queue.add(() => this.setState("settings.ampere_level3",             { val: o.al3, ack: true })); // write
             await queue.add(() => this.setState("settings.ampere_level4",             { val: o.al4, ack: true })); // write
             await queue.add(() => this.setState("settings.ampere_level5",             { val: o.al5, ack: true })); // write
-            await queue.add(() => this.setState("settings.color.idle",                { val: "#" + ("000000" + parseInt(o.cid).toString(16)).slice(6), ack: true })); // write
-            await queue.add(() => this.setState("settings.color.charging",            { val: "#" + ("000000" + parseInt(o.cch).toString(16)).slice(6), ack: true })); // write
-            await queue.add(() => this.setState("settings.color.finish",              { val: "#" + ("000000" + parseInt(o.cfi).toString(16)).slice(6), ack: true })); // write
-            await queue.add(() => this.setState("time_offset",                        { val: parseInt(o.tof), ack: true})); // write
-            await queue.add(() => this.setState("time_daylight_saving",               { val: parseInt(o.tds), ack: true })); // write
+            await queue.add(() => this.setState("settings.color.idle",                { val: "#" + ("000000" + parseInt(o.cid, 10).toString(16)).slice(6), ack: true })); // write
+            await queue.add(() => this.setState("settings.color.charging",            { val: "#" + ("000000" + parseInt(o.cch, 10).toString(16)).slice(6), ack: true })); // write
+            await queue.add(() => this.setState("settings.color.finish",              { val: "#" + ("000000" + parseInt(o.cfi, 10).toString(16)).slice(6), ack: true })); // write
+            await queue.add(() => this.setState("time_offset",                        { val: parseInt(o.tof, 10), ack: true})); // write
+            await queue.add(() => this.setState("time_daylight_saving",               { val: parseInt(o.tds, 10), ack: true })); // write
             // RFID Badges
             await queue.add(() => this.setState("rfid.badges.1.consumption",          { val: (o.eca / 10), ack: true })); // read
             await queue.add(() => this.setState("rfid.badges.2.consumption",          { val: (o.ecr / 10), ack: true })); // read
@@ -546,12 +547,12 @@ class GoE extends utils.Adapter {
             await queue.add(() => this.setState("mqtt.user",                          { val: o.mcu, ack: true }));
             await queue.add(() => this.setState("mqtt.key",                           { val: o.mck, ack: true }));
             await queue.add(() => this.setState("mqtt.connection",                    { val: o.mcc, ack: true }));
-            await queue.add(() => this.setState("temperatures.maintempereature",      { val: parseInt(o.tmp), ack: true })); // read
+            await queue.add(() => this.setState("temperatures.maintempereature",      { val: parseInt(o.tmp, 10), ack: true })); // read
             await queue.add(() => this.setState("temperatures.tempereatureArray",     { val: o.tma, ack: true }));
             try {
                 if(o.tma) {
                     const tempArr = o.tma.toString().split(",");
-                    if(tempArr.length == 4) {
+                    if(tempArr.length === 4) {
                         await queue.add(() => this.setState("temperatures.tempereature1", { val: Number(tempArr[0]), ack: true}));
                         await queue.add(() => this.setState("temperatures.tempereature2", { val: Number(tempArr[1]), ack: true}));
                         await queue.add(() => this.setState("temperatures.tempereature3", { val: Number(tempArr[2]), ack: true}));
@@ -564,14 +565,14 @@ class GoE extends utils.Adapter {
                 this.log.warn("Cloud not store temperature array to single values, because of error " + e.message);
                 sentry.captureException(e);
             }
-            await queue.add(() => this.setState("adapter_in",                         { val: parseInt(o.adi), ack: true })); // read
-            await queue.add(() => this.setState("unlocked_by",                        { val: parseInt(o.uby), ack: true })); // read
-            await queue.add(() => this.setState("settings.color.led_save_energy",     { val: parseInt(o.lse), ack: true })); // write
-            await queue.add(() => this.setState("unlock_state",                       { val: parseInt(o.ust), ack: true })); // write
-            await queue.add(() => this.setState("electricity_exchange.balance_time",  { val: parseInt(o.dto), ack: true })); // write
-            await queue.add(() => this.setState("energy.norway_mode",                 { val: parseInt(o.nmo), ack: true })); // write
+            await queue.add(() => this.setState("adapter_in",                         { val: parseInt(o.adi, 10), ack: true })); // read
+            await queue.add(() => this.setState("unlocked_by",                        { val: parseInt(o.uby, 10), ack: true })); // read
+            await queue.add(() => this.setState("settings.color.led_save_energy",     { val: parseInt(o.lse, 10), ack: true })); // write
+            await queue.add(() => this.setState("unlock_state",                       { val: parseInt(o.ust, 10), ack: true })); // write
+            await queue.add(() => this.setState("electricity_exchange.balance_time",  { val: parseInt(o.dto, 10), ack: true })); // write
+            await queue.add(() => this.setState("energy.norway_mode",                 { val: parseInt(o.nmo, 10), ack: true })); // write
             await queue.add(() => this.setState("scheduler_settings",                 { val: o.sch, ack: true }));
-            await queue.add(() => this.setState("scheduler_double_press",             { val: parseInt(o.sdp), ack: true })); //
+            await queue.add(() => this.setState("scheduler_double_press",             { val: parseInt(o.sdp, 10), ack: true })); //
         } catch (e) {
             this.log.warn("Error in go.e: " + JSON.stringify(e.message) + "; Stack: " + e.stack);
             sentry.captureException(e);
@@ -641,7 +642,7 @@ class GoE extends utils.Adapter {
 
                 // Check which & how many phases are used for loading and summarize of these phases the volts
                 let sumVolts = 0;
-                if(car.val == 2) {
+                if(car.val === 2) {
                     if(curAmpPha1.val > 0) {
                         sumVolts += parseInt(avgVoltage1.val.toString());
                     }
@@ -652,9 +653,9 @@ class GoE extends utils.Adapter {
                         sumVolts += parseInt(avgVoltage3.val.toString());
                     }
                 } else {
-                    sumVolts = Math.round((prePhase1.val === true ? parseInt(avgVoltage1.val.toString()) : 0 ) +
-                                (prePhase2.val === true ? parseInt(avgVoltage2.val.toString()) : 0 ) +
-                                (prePhase3.val === true ? parseInt(avgVoltage3.val.toString()) : 0 ));
+                    sumVolts = Math.round((prePhase1.val === true ? parseInt(avgVoltage1.val.toString(), 10) : 0 ) +
+                                (prePhase2.val === true ? parseInt(avgVoltage2.val.toString(), 10) : 0 ) +
+                                (prePhase3.val === true ? parseInt(avgVoltage3.val.toString(), 10) : 0 ));
                 }
 
                 this.log.debug("Total "+ (car.val == 2 ? "used ":"available ") + sumVolts + " volts");
@@ -663,7 +664,7 @@ class GoE extends utils.Adapter {
                 // Get Firmware Version if amx is available
                 const fw = await this.getStateAsync("firmware_version");
                 let amp = "";
-                if(fw != null && fw!= undefined && parseInt(fw.toString()) > 33) {
+                if(fw != undefined && fw != null && parseInt(fw.toString()) > 33) {
                     amp = "amp";
                 } else {
                     // Use AMX insted of AMP. Becaus the EEPROM of amp is only 100.000 times writeable
@@ -747,21 +748,21 @@ class GoE extends utils.Adapter {
 
                 // Check which phases are currently used
                 if(curAmpPha1.val > 0) {
-                    usedVolts += parseInt(avgVoltage1.val.toString());
-                    usedAmperes += parseInt(curAmpPha1.val.toString());
-                    usedWatts += parseInt(avgVoltage1.val.toString()) * parseInt(curAmpPha1.val.toString());
+                    usedVolts += parseInt(avgVoltage1.val.toString(), 10);
+                    usedAmperes += parseInt(curAmpPha1.val.toString(), 10);
+                    usedWatts += parseInt(avgVoltage1.val.toString(), 10) * parseInt(curAmpPha1.val.toString(), 10);
                     usedPhases += 1;
                 }
                 if(curAmpPha2.val > 0) {
-                    usedVolts += parseInt(avgVoltage2.val.toString());
-                    usedAmperes += parseInt(curAmpPha2.val.toString());
-                    usedWatts += parseInt(avgVoltage2.val.toString()) * parseInt(curAmpPha2.val.toString());
+                    usedVolts += parseInt(avgVoltage2.val.toString(), 10);
+                    usedAmperes += parseInt(curAmpPha2.val.toString(), 10);
+                    usedWatts += parseInt(avgVoltage2.val.toString(), 10) * parseInt(curAmpPha2.val.toString(), 10);
                     usedPhases += 1;
                 }
                 if(curAmpPha3.val > 0) {
-                    usedVolts += parseInt(avgVoltage3.val.toString());
-                    usedAmperes += parseInt(curAmpPha3.val.toString());
-                    usedWatts += parseInt(avgVoltage3.val.toString()) * parseInt(curAmpPha3.val.toString());
+                    usedVolts += parseInt(avgVoltage3.val.toString(), 10);
+                    usedAmperes += parseInt(curAmpPha3.val.toString(), 10);
+                    usedWatts += parseInt(avgVoltage3.val.toString(), 10) * parseInt(curAmpPha3.val.toString(), 10);
                     usedPhases += 1;
                 }
                 // Currents Watts + adjustment / average Volts / usedPhases => max Ampere
@@ -773,7 +774,7 @@ class GoE extends utils.Adapter {
                 // Get Firmware Version if amx is available
                 const fw = await this.getStateAsync("firmware_version");
                 let amp = "";
-                if(fw != null && fw!= undefined && parseInt(fw.toString()) > 33) {
+                if(fw != undefined && fw != null && parseInt(fw.toString(), 10) > 33) {
                     amp = "amp";
                 } else {
                     // Use AMX insted of AMP. Becaus the EEPROM of amp is only 100.000 times writeable
