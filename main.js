@@ -11,6 +11,117 @@ const utils = require("@iobroker/adapter-core");
 // const fs = require("fs");
 const axios = require("axios").default;
 const {default: PQueue} = require("p-queue");
+const sentry = require("@sentry/node");
+const joi = require("joi");
+const schema = joi.object({
+    version: joi.string()
+        .min(1)
+        .max(1)
+        .required(),
+
+    tme: joi.string()
+        .pattern(new RegExp("^[0-9]{10}$"))
+        .required(),
+
+    rbc: joi.number().required(),
+
+    rbt: joi.number().required(),
+    car: joi.number().required(),
+    amp: joi.number().required(),
+    err: joi.number().required(),
+    ast: joi.number().required(),
+    alw: joi.number().required(),
+    stp: joi.number().required(),
+    cbl: joi.number().required(),
+    pha: joi.number().required(),
+    tmp: joi.number().required(),
+    dws: joi.number().required(),
+    dwo: joi.number().required(),
+    adi: joi.number().required(),
+    uby: joi.number().required(),
+    eto: joi.number().required(),
+    wst: joi.number().required(),
+    txi: joi.number().required(),
+    nrg: joi.array().required(),
+    fwv: joi.number().required(),
+    sse: joi.number().required(),
+    wss: joi.string().required(),
+    wke: joi.string().required(),
+    wen: joi.number().required(),
+    cdi: joi.number().required(),
+    tof: joi.number().required(),
+    tds: joi.number().required(),
+    lbr: joi.number().required(),
+    aho: joi.number().required(),
+    afi: joi.number().required(),
+    azo: joi.number().required(),
+    ama: joi.number().required(),
+    al1: joi.number().required(),
+    al2: joi.number().required(),
+    al3: joi.number().required(),
+    al4: joi.number().required(),
+    al5: joi.number().required(),
+    cid: joi.number().required(),
+    cch: joi.number().required(),
+    cfi: joi.number().required(),
+    lse: joi.number().required(),
+    ust: joi.number().required(),
+    wak: joi.string().required(),
+    r1x: joi.number().required(),
+    dto: joi.number().required(),
+    nmo: joi.number().required(),
+    sch: joi.string().required(),
+    sdp: joi.number().required(),
+    eca: joi.number().required(),
+    ecr: joi.number().required(),
+    ecd: joi.number().required(),
+    ec4: joi.number().required(),
+    ec5: joi.number().required(),
+    ec6: joi.number().required(),
+    ec7: joi.number().required(),
+    ec8: joi.number().required(),
+    ec9: joi.number().required(),
+    ec1: joi.number().required(),
+    rca: joi.string().required(),
+    rcr: joi.string().required(),
+    rcd: joi.string().allow(null, ""),
+    rc4: joi.string().allow(null, ""),
+    rc5: joi.string().allow(null, ""),
+    rc6: joi.string().allow(null, ""),
+    rc7: joi.string().allow(null, ""),
+    rc8: joi.string().allow(null, ""),
+    rc9: joi.string().allow(null, ""),
+    rc1: joi.string().allow(null, ""),
+    rna: joi.string().allow(null, ""),
+    rnm: joi.string().allow(null, ""),
+    rne: joi.string().allow(null, ""),
+    rn4: joi.string().allow(null, ""),
+    rn5: joi.string().allow(null, ""),
+    rn6: joi.string().allow(null, ""),
+    rn7: joi.string().allow(null, ""),
+    rn8: joi.string().allow(null, ""),
+    rn9: joi.string().allow(null, ""),
+    rn1: joi.string().allow(null, ""),
+    loe: joi.number().required(),
+    lot: joi.number().required(),
+    lom: joi.number().required(),
+    lop: joi.number().required(),
+    log: joi.string().allow(null, ""),
+    lon: joi.number().required(),
+    lof: joi.number().required(),
+    loa: joi.number().required(),
+    lch: joi.number().required(),
+    mce: joi.number().required(),
+    mcs: joi.string().allow(null, ""),
+    mcp: joi.number().required(),
+    mcu: joi.string().allow(null, ""),
+    mck: joi.string().allow(null, ""),
+    mcc: joi.number().required(),
+    tma: joi.array(),
+    amt: joi.number().required()
+
+});
+
 class GoE extends utils.Adapter {
     /**
      * @param {Partial<utils.AdapterOptions>} [options={}]
@@ -51,6 +162,18 @@ class GoE extends utils.Adapter {
         this.log.info("Server: " + this.config.serverName);
         this.log.info("Intervall: " + this.config.serverInterval);
 
+        if(this.config.sentryEnabled) {
+            // Activate Sentry if enabled
+            this.log.warn("Sentry enabled. You can switch it off in settings of the adapter.");
+            sentry.init({
+                dsn: "https://6190adbfedd24ef5ad49d34aa306abd5@o689933.ingest.sentry.io/5774371",
+
+                // Set tracesSampleRate to 1.0 to capture 100%
+                // of transactions for performance monitoring.
+                // We recommend adjusting this value in production
+                tracesSampleRate: 1.0
+            });
+        }
 
         // In order to get state updates, you need to subscribe to them. The following line adds a subscription for our variable we have created above.
         this.subscribeStates("access_state");
@@ -193,10 +316,10 @@ class GoE extends utils.Adapter {
                         // @ts-ignore // Check off null is done
                         this.setValue("cfi", /^#?([a-f\d]{6})$/i.exec(state.val.toString()) !== null ? parseInt(/^#?([a-f\d]{6})$/i.exec(state.val.toString())[1], 16) : 0);
                         break;
-                    case this.namespace + ".settings.led_save_energy":
+                    case this.namespace + ".settings.color.led_save_energy":
                         this.setValue("lse", parseInt(state.val.toString()));
                         break;
-                    case this.namespace + ".settings.led_brightness":
+                    case this.namespace + ".settings.color.led_brightness":
                         this.setValue("lbr", parseInt(state.val.toString()));
                         break;
                     case this.namespace + ".stop_state":
@@ -249,14 +372,34 @@ class GoE extends utils.Adapter {
         axios.defaults.baseURL = "http://" + this.config.serverName;
         await axios.get("/status")
             .then((o) => {
-                this.log.debug("Response: " + o.status + " - " + o.statusText);
+                this.log.debug("Response: " + o.status + " - " + o.statusText + " with data as " + typeof o.data);
                 this.log.debug(JSON.stringify(o.data));
-
-                this.processStatusObject(o.data);
-
+                const validation = schema.validate(o.data,{abortEarly: false});
+                if (validation.error || validation.value === undefined) {
+                    if (validation.value === undefined) {
+                        this.log.error("API send no content");
+                    } else {
+                        sentry.captureException(validation.error);
+                        this.log.error("API response validation error: " + JSON.stringify(validation.error));
+                    }
+                } else {
+                    this.processStatusObject(o.data);
+                }
             })
             .catch(e => {
-                this.log.error(e.message);
+                if(e.code ==  "ENOTFOUND") {
+                    this.setState("info.connection", false, true);
+                    this.log.warn("Host not found: " + this.config.serverName);
+                } else if(e.code == "ECONNRESET") {
+                    this.setState("info.connection", false, true);
+                    this.log.warn("Cant connect to host " + this.config.serverName);
+                } else {
+                    this.log.error(e.message);
+                    sentry.captureException(typeof e);
+                }
+            })
+            .then(() => {
+                this.setState("info.connection", true, true);
             });
     }
 
@@ -295,6 +438,7 @@ class GoE extends utils.Adapter {
                 await queue.add(() => this.setState("synctime",                           { val: dateObject, ack: true }));
             } catch (e) {
                 this.log.warn("Cloud not store synctime, because of error " + e.message);
+                sentry.captureException(e);
             }
 
             await queue.add(() => this.setState("reboot_counter",                     { val: o.rbc, ack: true })); // read
@@ -361,8 +505,8 @@ class GoE extends utils.Adapter {
             await queue.add(() => this.setState("settings.color.idle",                { val: "#" + ("000000" + parseInt(o.cid).toString(16)).slice(6), ack: true })); // write
             await queue.add(() => this.setState("settings.color.charging",            { val: "#" + ("000000" + parseInt(o.cch).toString(16)).slice(6), ack: true })); // write
             await queue.add(() => this.setState("settings.color.finish",              { val: "#" + ("000000" + parseInt(o.cfi).toString(16)).slice(6), ack: true })); // write
-            await queue.add(() => this.setState("time_offset",                        { val: o.tof, ack: true})); // write
-            await queue.add(() => this.setState("time_daylight_saving",               { val: o.tds, ack: true })); // write
+            await queue.add(() => this.setState("time_offset",                        { val: parseInt(o.tof), ack: true})); // write
+            await queue.add(() => this.setState("time_daylight_saving",               { val: parseInt(o.tds), ack: true })); // write
             // RFID Badges
             await queue.add(() => this.setState("rfid.badges.1.consumption",          { val: (o.eca / 10), ack: true })); // read
             await queue.add(() => this.setState("rfid.badges.2.consumption",          { val: (o.ecr / 10), ack: true })); // read
@@ -373,7 +517,7 @@ class GoE extends utils.Adapter {
             await queue.add(() => this.setState("rfid.badges.7.consumption",          { val: (o.ec7 / 10), ack: true })); // read
             await queue.add(() => this.setState("rfid.badges.8.consumption",          { val: (o.ec8 / 10), ack: true })); // read
             await queue.add(() => this.setState("rfid.badges.9.consumption",          { val: (o.ec9 / 10), ack: true })); // read
-            await queue.add(() => this.setState("rfid.badges.10.consumption",         { val: o.ec1, ack: true })); // read
+            await queue.add(() => this.setState("rfid.badges.10.consumption",         { val: (o.ec1 / 10), ack: true })); // read
             await queue.add(() => this.setState("rfid.badges.1.id",                   { val: o.rca, ack: true })); // read
             await queue.add(() => this.setState("rfid.badges.2.id",                   { val: o.rcr, ack: true })); // read
             await queue.add(() => this.setState("rfid.badges.3.id",                   { val: o.rcd, ack: true })); // read
@@ -402,33 +546,35 @@ class GoE extends utils.Adapter {
             await queue.add(() => this.setState("mqtt.user",                          { val: o.mcu, ack: true }));
             await queue.add(() => this.setState("mqtt.key",                           { val: o.mck, ack: true }));
             await queue.add(() => this.setState("mqtt.connection",                    { val: o.mcc, ack: true }));
-            await queue.add(() => this.setState("temperatures.maintempereature",      { val: o.tmp, ack: true })); // read
+            await queue.add(() => this.setState("temperatures.maintempereature",      { val: parseInt(o.tmp), ack: true })); // read
             await queue.add(() => this.setState("temperatures.tempereatureArray",     { val: o.tma, ack: true }));
             try {
                 if(o.tma) {
                     const tempArr = o.tma.toString().split(",");
                     if(tempArr.length == 4) {
-                        await queue.add(() => this.setState("temperatures.tempereature1", { val: tempArr[0], ack: true}));
-                        await queue.add(() => this.setState("temperatures.tempereature2", { val: tempArr[1], ack: true}));
-                        await queue.add(() => this.setState("temperatures.tempereature3", { val: tempArr[2], ack: true}));
-                        await queue.add(() => this.setState("temperatures.tempereature4", { val: tempArr[3], ack: true}));
+                        await queue.add(() => this.setState("temperatures.tempereature1", { val: Number(tempArr[0]), ack: true}));
+                        await queue.add(() => this.setState("temperatures.tempereature2", { val: Number(tempArr[1]), ack: true}));
+                        await queue.add(() => this.setState("temperatures.tempereature3", { val: Number(tempArr[2]), ack: true}));
+                        await queue.add(() => this.setState("temperatures.tempereature4", { val: Number(tempArr[3]), ack: true}));
                     } else {
                         this.log.debug("Cant write temp single temps. Expected 3 elements got " + JSON.stringify(tempArr));
                     }
                 }
             } catch (e) {
                 this.log.warn("Cloud not store temperature array to single values, because of error " + e.message);
+                sentry.captureException(e);
             }
-            await queue.add(() => this.setState("adapter_in",                         { val: o.adi, ack: true })); // read
-            await queue.add(() => this.setState("unlocked_by",                        { val: o.uby, ack: true })); // read
-            await queue.add(() => this.setState("settings.color.led_save_energy",     { val: o.lse, ack: true })); // write
-            await queue.add(() => this.setState("unlock_state",                       { val: o.ust, ack: true })); // write
-            await queue.add(() => this.setState("electricity_exchange.balance_time",  { val: o.dto, ack: true })); // write
-            await queue.add(() => this.setState("energy.norway_mode",                 { val: o.nmo, ack: true })); // write
+            await queue.add(() => this.setState("adapter_in",                         { val: parseInt(o.adi), ack: true })); // read
+            await queue.add(() => this.setState("unlocked_by",                        { val: parseInt(o.uby), ack: true })); // read
+            await queue.add(() => this.setState("settings.color.led_save_energy",     { val: parseInt(o.lse), ack: true })); // write
+            await queue.add(() => this.setState("unlock_state",                       { val: parseInt(o.ust), ack: true })); // write
+            await queue.add(() => this.setState("electricity_exchange.balance_time",  { val: parseInt(o.dto), ack: true })); // write
+            await queue.add(() => this.setState("energy.norway_mode",                 { val: parseInt(o.nmo), ack: true })); // write
             await queue.add(() => this.setState("scheduler_settings",                 { val: o.sch, ack: true }));
-            await queue.add(() => this.setState("scheduler_double_press",             { val: o.sdp, ack: true }));
+            await queue.add(() => this.setState("scheduler_double_press",             { val: parseInt(o.sdp), ack: true })); //
         } catch (e) {
             this.log.warn("Error in go.e: " + JSON.stringify(e.message) + "; Stack: " + e.stack);
+            sentry.captureException(e);
         }
     }
     /**
@@ -445,6 +591,7 @@ class GoE extends utils.Adapter {
             })
             .catch(err => {
                 this.log.error(err.message + " at " + id + " / " + value);
+                sentry.captureException(err);
             });
     }
     /**
@@ -646,6 +793,7 @@ class GoE extends utils.Adapter {
                 }
             } catch (e) {
                 this.log.error("Error during set adjust Watts: " + e.message);
+                sentry.captureException(e);
             }
         } else {
             // Still existing Block-Timer
@@ -663,6 +811,7 @@ class GoE extends utils.Adapter {
             this.setState(this.translationObject[attribute], { val: ampLvl, ack: true });
         } else {
             this.log.warn("Cant set " + ampLvl + " to " + attribute + "it must be between 6 and 32 ampere");
+            sentry.captureException("Cant set " + ampLvl + " to " + attribute + "it must be between 6 and 32 ampere");
         }
     }
 }
