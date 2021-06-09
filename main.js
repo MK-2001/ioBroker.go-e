@@ -18,13 +18,10 @@ const schema = joi.object({
         .min(1)
         .max(1)
         .required(),
-
     tme: joi.string()
         .pattern(new RegExp("^[0-9]{10}$"))
         .required(),
-
     rbc: joi.number().required(),
-
     rbt: joi.number().required(),
     car: joi.number().required(),
     amp: joi.number().required(),
@@ -555,7 +552,7 @@ class GoE extends utils.Adapter {
             try {
                 if(o.tma) {
                     const tempArr = o.tma.toString().split(",");
-                    if(tempArr.length == 4) {
+                    if(tempArr.length === 4) {
                         await queue.add(() => this.setState("temperatures.tempereature1", { val: Number(tempArr[0]), ack: true}));
                         await queue.add(() => this.setState("temperatures.tempereature2", { val: Number(tempArr[1]), ack: true}));
                         await queue.add(() => this.setState("temperatures.tempereature3", { val: Number(tempArr[2]), ack: true}));
@@ -645,7 +642,7 @@ class GoE extends utils.Adapter {
 
                 // Check which & how many phases are used for loading and summarize of these phases the volts
                 let sumVolts = 0;
-                if(car.val == 2) {
+                if(car.val === 2) {
                     if(curAmpPha1.val > 0) {
                         sumVolts += parseInt(avgVoltage1.val.toString());
                     }
