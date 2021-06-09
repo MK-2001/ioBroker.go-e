@@ -664,7 +664,7 @@ class GoE extends utils.Adapter {
                 // Get Firmware Version if amx is available
                 const fw = await this.getStateAsync("firmware_version");
                 let amp = "";
-                if(fw != null && fw!= undefined && parseInt(fw.toString()) > 33) {
+                if(fw != undefined && fw != null && parseInt(fw.toString()) > 33) {
                     amp = "amp";
                 } else {
                     // Use AMX insted of AMP. Becaus the EEPROM of amp is only 100.000 times writeable
@@ -774,7 +774,7 @@ class GoE extends utils.Adapter {
                 // Get Firmware Version if amx is available
                 const fw = await this.getStateAsync("firmware_version");
                 let amp = "";
-                if(fw != null && fw!= undefined && parseInt(fw.toString(), 10) > 33) {
+                if(fw != undefined && fw != null && parseInt(fw.toString(), 10) > 33) {
                     amp = "amp";
                 } else {
                     // Use AMX insted of AMP. Becaus the EEPROM of amp is only 100.000 times writeable
