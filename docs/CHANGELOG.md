@@ -1,4 +1,4 @@
-### 1.0.7
+### 1.0.8
 * Catch warn message in read object
 * Added SENTRY to get more details for debbugging
 * Only work with JSON compatible answers from your adapter
@@ -8,7 +8,7 @@
 * Added joi validation to validate response from the hardware adapter
 * Update color in settings used a watch on a wrong io-object
 * Error handling on status update got improved
-
+* udpate dependencies
 ### 1.0.1
 * Error in adjustAmpLevelInWatts function
 * Wrong date
