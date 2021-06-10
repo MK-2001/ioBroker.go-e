@@ -1,8 +1,11 @@
 {
     "common": {
         "name": "go-e",
-        "version": "1.0.8",
+        "version": "1.0.9",
         "news": {
+            "1.0.9": {
+                "en": "Better handling with validation error regarding https://github.com/MK-2001/ioBroker.go-e/issues/54"
+            },
             "1.0.8":{
                 "en": "* Catch warn message in read object\n* Added SENTRY to get more details for debbugging\n* Only work with JSON compatible answers from your adapter\n* Updated writable objects attribut #47 Thanks to GoClyde\n* Enabled Sentry for debugging\n* Added documentation for API v1 of go-e.co (Unsupported v2, yet)\n* Added joi validation to validate response from the hardware adapter\n* Update color in settings used a watch on a wrong io-object\n* Error handling on status update got improved\n* udpate dependencies",
                 "de": "* Warnmeldung im gelesenen Objekt abfangen\n* SENTRY hinzugefügt, um mehr Details zum Debuggen zu erhalten\n* Funktioniert nur mit JSON-kompatiblen Antworten von Ihrem Adapter\n* Attribut #47 für beschreibbare Objekte aktualisiert. Danke an GoClyde\n* Sentry zum Debuggen aktiviert\n* Dokumentation für API v1 von go-e.co hinzugefügt (noch nicht unterstützt v2)\n* Joi-Validierung hinzugefügt, um die Antwort vom Hardwareadapter zu validieren\n* Aktualisieren Sie die Farbe in den Einstellungen, die eine Uhr auf einem falschen io-Objekt verwendet hat\n* Fehlerbehandlung bei Statusupdates wurde verbessert\n* Abhängigkeiten aktualisieren",
