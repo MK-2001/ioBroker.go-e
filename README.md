@@ -2,9 +2,10 @@
 # ioBroker.go-echarger
 
 [![NPM version](http://img.shields.io/npm/v/iobroker.go-e.svg)](https://www.npmjs.com/package/iobroker.go-e)
+[!License](https://img.shields.io/github/license/MK-2001/ioBroker.go-eCharger)
 [![Downloads](https://img.shields.io/npm/dm/iobroker.go-e.svg)](https://www.npmjs.com/package/iobroker.go-e)
 ![Number of Installations (latest)](http://iobroker.live/badges/go-e-installed.svg)
-![Number of Installations (stable)](http://iobroker.live/badges/go-e-stable.svg)
+![Version of Installations (stable)](http://iobroker.live/badges/go-e-stable.svg)
 [![Dependency Status](https://img.shields.io/david/MK-2001/iobroker.go-e.svg)](https://david-dm.org/MK-2001/iobroker.go-e)
 [![Known Vulnerabilities](https://snyk.io/test/github/MK-2001/ioBroker.go-e/badge.svg)](https://snyk.io/test/github/MK-2001/ioBroker.go-e)
 ![Build & Tests](https://img.shields.io/travis/MK-2001/ioBroker.go-e/master.svg)

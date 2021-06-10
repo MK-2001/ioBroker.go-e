@@ -1,8 +1,29 @@
 {
     "common": {
         "name": "go-e",
-        "version": "1.0.8",
+        "version": "1.0.10",
         "news": {
+            "1.0.10": {
+                "en": "Make Label of card 1 & 2 optional."
+            },
+            "1.0.9": {
+                "en": "Better handling with validation error regarding https://github.com/MK-2001/ioBroker.go-e/issues/54"
+            },
+            "1.0.8":{
+                "en": "* Catch warn message in read object\n* Added SENTRY to get more details for debbugging\n* Only work with JSON compatible answers from your adapter\n* Updated writable objects attribut #47 Thanks to GoClyde\n* Enabled Sentry for debugging\n* Added documentation for API v1 of go-e.co (Unsupported v2, yet)\n* Added joi validation to validate response from the hardware adapter\n* Update color in settings used a watch on a wrong io-object\n* Error handling on status update got improved\n* udpate dependencies",
+                "de": "* Warnmeldung im gelesenen Objekt abfangen\n* SENTRY hinzugefügt, um mehr Details zum Debuggen zu erhalten\n* Funktioniert nur mit JSON-kompatiblen Antworten von Ihrem Adapter\n* Attribut #47 für beschreibbare Objekte aktualisiert. Danke an GoClyde\n* Sentry zum Debuggen aktiviert\n* Dokumentation für API v1 von go-e.co hinzugefügt (noch nicht unterstützt v2)\n* Joi-Validierung hinzugefügt, um die Antwort vom Hardwareadapter zu validieren\n* Aktualisieren Sie die Farbe in den Einstellungen, die eine Uhr auf einem falschen io-Objekt verwendet hat\n* Fehlerbehandlung bei Statusupdates wurde verbessert\n* Abhängigkeiten aktualisieren",
+                "ru": "* Поймать предупреждающее сообщение в прочитанном объекте\n* Добавлен SENTRY для получения более подробной информации по отладке.\n* Работайте только с JSON-совместимыми ответами вашего адаптера\n* Обновлен атрибут объектов с возможностью записи # 47 Спасибо GoClyde\n* Включен Sentry для отладки\n* Добавлена документация для API v1 go-e.co (пока не поддерживается v2)\n* Добавлена проверка joi для проверки ответа от аппаратного адаптера\n* Обновить цвет в настройках использовал часы на неправильном io-объекте\n* Улучшена обработка ошибок при обновлении статуса\n* зависимости udpate",
+                "pt": "* Pegue a mensagem de advertência no objeto lido\n* Adicionado SENTRY para obter mais detalhes para depuração\n* Funciona apenas com respostas compatíveis com JSON do seu adaptador\n* Atributo de objetos graváveis atualizado # 47 Graças a GoClyde\n* Sentry habilitado para depuração\n* Adicionada documentação para API v1 de go-e.co (ainda sem suporte v2)\n* Adicionada validação joi para validar a resposta do adaptador de hardware\n* Atualizar a cor nas configurações usadas em um relógio em um objeto IO errado\n* O tratamento de erros na atualização de status foi aprimorado\n* dependências atualizadas",
+                "nl": "* Vang waarschuwingsbericht in leesobject\n* SENTRY toegevoegd om meer details voor debugging te krijgen\n* Werk alleen met JSON-compatibele antwoorden van uw adapter\n* Beschrijfbare objecten attribuut #47 bijgewerkt dankzij GoClyde\n* Sentry ingeschakeld voor foutopsporing\n* Documentatie toegevoegd voor API v1 van go-e.co (nog niet-ondersteunde v2)\n* Joi-validatie toegevoegd om het antwoord van de hardware-adapter te valideren\n* Update kleur in instellingen gebruikt een horloge op een verkeerd io-object\n* Foutafhandeling bij statusupdate is verbeterd\n* afhankelijkheden bijwerken",
+                "fr": "* Attrapez le message d'avertissement dans l'objet lu\n* Ajout de SENTRY pour obtenir plus de détails sur le débogage\n* Ne fonctionne qu'avec les réponses compatibles JSON de votre adaptateur\n* Mise à jour de l'attribut des objets inscriptibles #47 Merci à GoClyde\n* Sentry activé pour le débogage\n* Ajout de la documentation pour l'API v1 de go-e.co (pas encore pris en charge v2)\n* Ajout de la validation joi pour valider la réponse de l'adaptateur matériel\n* Mettre à jour la couleur dans les paramètres utilisé une montre sur un mauvais objet io\n* La gestion des erreurs lors de la mise à jour du statut a été améliorée\n* mettre à jour les dépendances",
+                "it": "* Cattura il messaggio di avviso nell'oggetto letto\n* Aggiunto SENTRY per ottenere maggiori dettagli per il debug\n* Funziona solo con risposte compatibili JSON dal tuo adattatore\n* Attributo #47 aggiornato degli oggetti scrivibili Grazie a GoClyde\n* Sentry abilitato per il debug\n* Aggiunta documentazione per API v1 di go-e.co (non ancora supportata v2)\n* Aggiunta la convalida joi per convalidare la risposta dall'adattatore hardware\n* Aggiorna il colore nelle impostazioni usato un orologio su un oggetto io sbagliato\n* La gestione degli errori sull'aggiornamento dello stato è stata migliorata\n* aggiorna le dipendenze",
+                "es": "* Captura el mensaje de advertencia en el objeto leído\n* Se agregó SENTRY para obtener más detalles para la depuración\n* Solo trabaje con respuestas compatibles con JSON desde su adaptador\n* Atributo # 47 de objetos de escritura actualizado gracias a GoClyde\n* Sentry habilitado para depuración\n* Se agregó documentación para API v1 de go-e.co (aún no compatible con v2)\n* Se agregó validación joi para validar la respuesta del adaptador de hardware\n* Actualizar el color en la configuración utilizó un reloj en un objeto io incorrecto\n* Se mejoró el manejo de errores en la actualización de estado\n* udpate dependencias",
+                "pl": "* Złap wiadomość ostrzegawczą w odczytanym obiekcie\n* Dodano SENTRY, aby uzyskać więcej szczegółów dotyczących debugowania\n* Pracuj tylko z odpowiedziami zgodnymi z JSON z twojego adaptera\n* Zaktualizowany atrybut obiektów do zapisu #47 Dzięki GoClyde\n* Włączono Sentry do debugowania\n* Dodano dokumentację API v1 go-e.co (jeszcze nieobsługiwana wersja v2)\n* Dodano weryfikację joi w celu sprawdzenia odpowiedzi z adaptera sprzętowego\n* Zaktualizuj kolor w ustawieniach używał zegarka na niewłaściwym obiekcie io\n* Poprawiono obsługę błędów podczas aktualizacji statusu\n* uaktualnienia zależności",
+                "zh-cn": "* 在读取对象中捕获警告消息\n* 添加 SENTRY 以获取更多调试细节\n* 仅适用于来自您的适配器的 JSON 兼容答案\n* 更新了可写对象属性 #47 感谢 GoClyde\n* 启用 Sentry 进行调试\n* 为 go-e.co 的 API v1 添加了文档（尚不支持 v2）\n* 添加了 joi 验证以验证来自硬件适配器的响应\n* 在错误的 io 对象上使用手表的设置中更新颜色\n* 状态更新的错误处理得到改进\n* 更新依赖"
+            },
+            "1.0.6": {
+                "de": "Sentry enabled"
+            },
             "1.0.0": {
                 "en": "First Stable release and tests wit PV with these functions:\naccess_state\nallow_charging\nampere\namperePV\nenergy\nadjustAmpLevelInWatts\nmax_watts\nmax_load\nsettings\nampere_level1\nampere_level2\nampere_level3\nampere_level4\nampere_level5\ncolor\nidle\nchargeing\nfinish\nled_save_energy\nled_brightness\nstop_state\nunlock_state",
                 "de": "Erste stabile Version und Tests mit PV mit folgenden Funktionen:\naccess_state\nallow_charging\nAmpere\namperePV\nEnergie\nadjustAmpLevelInWatts\nmax_watts\nTragfähigkeit\ndie Einstellungen\nampere_level1\nampere_level2\nampere_level3\nampere_level4\nampere_level5\nFarbe\nLeerlauf\nAufladen\nFertig\nled_save_energy\nled_brightness\nstop_state\nUnlock_State",
@@ -14,7 +35,11 @@
                 "es": "Primera versión estable y pruebas con PV con estas funciones:\naccess_state\nallow_charging\namperio\namperio PV\nenergía\nAdjustAmpLevelInWatts\nmax_watts\ncarga maxima\najustes\nampere_level1\nampere_level2\nampere_level3\nampere_level4\nampere_level5\ncolor\nocioso\ncargando\nterminar\nled_save_energy\nled_brightness\nstop_state\nunlock_state",
                 "pl": "Pierwsza stabilna wersja i testy z PV z następującymi funkcjami:\nstan_dostępu\nallow_charging\namper\namperePV\nenergia\nadjustAmpLevelInWatts\nmax_watts\nmax_load\nustawienia\nampere_level1\nampere_level2\nampere_level3\nampere_level4\nampere_level5\nkolor\nbezczynny\nładowanie\nkoniec\nled_save_energy\nled_brightness\nstop_state\nunlock_state",
                 "zh-cn": "First稳定版并通过以下功能对PV进行测试：\naccess_state\nallow_charging\n安培\n电流\n能源\nAdjustAmpLevelInWatts\nmax_watts\n最大负荷\n设定\nampe_level1\nampe_level2\nampe_level3\nampe_level4\nampe_level5\n颜色\n闲\n充电中\n完\nled_save_energy\nled_brightness\n停止状态\nunlock_state"
-              }
+              },
+            "0.9.0": {
+                "de":"https://translator.iobroker.in"
+            }
+
         },
         "title": "go-eCharger wallbox integration",
         "titleLang": {
@@ -881,7 +906,7 @@
             "type": "state",
             "common": {
                 "name": "Seriennummer (sse)",
-                "type": "number",
+                "type": "string",
                 "role": "info.name",
                 "read":  true,
                 "write": false

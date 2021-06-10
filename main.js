@@ -12,112 +12,7 @@ const utils = require("@iobroker/adapter-core");
 const axios = require("axios").default;
 const {default: PQueue} = require("p-queue");
 const sentry = require("@sentry/node");
-const joi = require("joi");
-const schema = joi.object({
-    version: joi.string()
-        .min(1)
-        .max(1)
-        .required(),
-    tme: joi.string()
-        .pattern(new RegExp("^[0-9]{10}$"))
-        .required(),
-    rbc: joi.number().required(),
-    rbt: joi.number().required(),
-    car: joi.number().required(),
-    amp: joi.number().required(),
-    err: joi.number().required(),
-    ast: joi.number().required(),
-    alw: joi.number().required(),
-    stp: joi.number().required(),
-    cbl: joi.number().required(),
-    pha: joi.number().required(),
-    tmp: joi.number().required(),
-    dws: joi.number().required(),
-    dwo: joi.number().required(),
-    adi: joi.number().required(),
-    uby: joi.number().required(),
-    eto: joi.number().required(),
-    wst: joi.number().required(),
-    txi: joi.number().required(),
-    nrg: joi.array().required(),
-    fwv: joi.number().required(),
-    sse: joi.number().required(),
-    wss: joi.string().required(),
-    wke: joi.string().required(),
-    wen: joi.number().required(),
-    cdi: joi.number().required(),
-    tof: joi.number().required(),
-    tds: joi.number().required(),
-    lbr: joi.number().required(),
-    aho: joi.number().required(),
-    afi: joi.number().required(),
-    azo: joi.number().required(),
-    ama: joi.number().required(),
-    al1: joi.number().required(),
-    al2: joi.number().required(),
-    al3: joi.number().required(),
-    al4: joi.number().required(),
-    al5: joi.number().required(),
-    cid: joi.number().required(),
-    cch: joi.number().required(),
-    cfi: joi.number().required(),
-    lse: joi.number().required(),
-    ust: joi.number().required(),
-    wak: joi.string().required(),
-    r1x: joi.number().required(),
-    dto: joi.number().required(),
-    nmo: joi.number().required(),
-    sch: joi.string().required(),
-    sdp: joi.number().required(),
-    eca: joi.number().required(),
-    ecr: joi.number().required(),
-    ecd: joi.number().required(),
-    ec4: joi.number().required(),
-    ec5: joi.number().required(),
-    ec6: joi.number().required(),
-    ec7: joi.number().required(),
-    ec8: joi.number().required(),
-    ec9: joi.number().required(),
-    ec1: joi.number().required(),
-    rca: joi.string().required(),
-    rcr: joi.string().required(),
-    rcd: joi.string().allow(null, ""),
-    rc4: joi.string().allow(null, ""),
-    rc5: joi.string().allow(null, ""),
-    rc6: joi.string().allow(null, ""),
-    rc7: joi.string().allow(null, ""),
-    rc8: joi.string().allow(null, ""),
-    rc9: joi.string().allow(null, ""),
-    rc1: joi.string().allow(null, ""),
-    rna: joi.string().allow(null, ""),
-    rnm: joi.string().allow(null, ""),
-    rne: joi.string().allow(null, ""),
-    rn4: joi.string().allow(null, ""),
-    rn5: joi.string().allow(null, ""),
-    rn6: joi.string().allow(null, ""),
-    rn7: joi.string().allow(null, ""),
-    rn8: joi.string().allow(null, ""),
-    rn9: joi.string().allow(null, ""),
-    rn1: joi.string().allow(null, ""),
-    loe: joi.number().required(),
-    lot: joi.number().required(),
-    lom: joi.number().required(),
-    lop: joi.number().required(),
-    log: joi.string().allow(null, ""),
-    lon: joi.number().required(),
-    lof: joi.number().required(),
-    loa: joi.number().required(),
-    lch: joi.number().required(),
-    mce: joi.number().required(),
-    mcs: joi.string().allow(null, ""),
-    mcp: joi.number().required(),
-    mcu: joi.string().allow(null, ""),
-    mck: joi.string().allow(null, ""),
-    mcc: joi.number().required(),
-    tma: joi.array(),
-    amt: joi.number()
-
-});
+const schema = require("./lib/schema.js").schema;
 
 class GoE extends utils.Adapter {
     /**
@@ -377,7 +272,8 @@ class GoE extends utils.Adapter {
                         this.log.error("API send no content");
                     } else {
                         sentry.captureException(validation.error);
-                        this.log.error("API response validation error: " + JSON.stringify(validation.error));
+                        this.log.error("API response validation error: " + JSON.stringify(validation.error.details));
+                        this.log.info(JSON.stringify(validation.error._original));
                     }
                 } else {
                     this.processStatusObject(o.data);
@@ -432,7 +328,7 @@ class GoE extends utils.Adapter {
                     // @ts-ignore
                     , [, day, month, year, hours, minutes] = reggie.exec(o.tme)
                     , dateObject = new Date(parseInt(year, 10)+2000, parseInt(month, 10)-1, parseInt(day, 10), parseInt(hours, 10), parseInt(minutes, 10), 0);
-                await queue.add(() => this.setState("synctime",                           { val: dateObject, ack: true }));
+                await queue.add(() => this.setState("synctime",                           { val: dateObject.toISOString(), ack: true }));
             } catch (e) {
                 this.log.warn("Cloud not store synctime, because of error " + e.message);
                 sentry.captureException(e);
@@ -498,11 +394,11 @@ class GoE extends utils.Adapter {
             await queue.add(() => this.setState("firmware_version",                   { val: o.fwv, ack: true })); // read
             await queue.add(() => this.setState("serial_number",                      { val: o.sse, ack: true })); // read
             await queue.add(() => this.setState("settings.color.led_brightness",      { val: o.lbr, ack: true })); // write
-            await queue.add(() => this.setState("settings.ampere_level1",             { val: o.al1, ack: true })); // write
-            await queue.add(() => this.setState("settings.ampere_level2",             { val: o.al2, ack: true })); // write
-            await queue.add(() => this.setState("settings.ampere_level3",             { val: o.al3, ack: true })); // write
-            await queue.add(() => this.setState("settings.ampere_level4",             { val: o.al4, ack: true })); // write
-            await queue.add(() => this.setState("settings.ampere_level5",             { val: o.al5, ack: true })); // write
+            await queue.add(() => this.setState("settings.ampere_level1",             { val: parseInt(o.al1, 10), ack: true })); // write
+            await queue.add(() => this.setState("settings.ampere_level2",             { val: parseInt(o.al2, 10), ack: true })); // write
+            await queue.add(() => this.setState("settings.ampere_level3",             { val: parseInt(o.al3, 10), ack: true })); // write
+            await queue.add(() => this.setState("settings.ampere_level4",             { val: parseInt(o.al4, 10), ack: true })); // write
+            await queue.add(() => this.setState("settings.ampere_level5",             { val: parseInt(o.al5, 10), ack: true })); // write
             await queue.add(() => this.setState("settings.color.idle",                { val: "#" + ("000000" + parseInt(o.cid, 10).toString(16)).slice(6), ack: true })); // write
             await queue.add(() => this.setState("settings.color.charging",            { val: "#" + ("000000" + parseInt(o.cch, 10).toString(16)).slice(6), ack: true })); // write
             await queue.add(() => this.setState("settings.color.finish",              { val: "#" + ("000000" + parseInt(o.cfi, 10).toString(16)).slice(6), ack: true })); // write
