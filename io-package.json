@@ -1,8 +1,11 @@
 {
     "common": {
         "name": "go-e",
-        "version": "1.0.9",
+        "version": "1.0.10",
         "news": {
+            "1.0.10": {
+                "en": "Make Label of card 1 & 2 optional."
+            },
             "1.0.9": {
                 "en": "Better handling with validation error regarding https://github.com/MK-2001/ioBroker.go-e/issues/54"
             },
