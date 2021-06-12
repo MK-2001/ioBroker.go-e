@@ -88,6 +88,19 @@ class GoE extends utils.Adapter {
         this.subscribeStates("stop_state");
         this.subscribeStates("unlock_state");
 
+        // get updates from a foreign adapter if it is set in Settings
+        if(this.config.houseBatteryForeignObjectID) {
+            this.subscribeForeignStates(this.config.houseBatteryForeignObjectID);
+            this.log.debug("Subscribe foreign object " + this.config.houseBatteryForeignObjectID);
+        }
+        if(this.config.houseConsumptionForeignObjectID) {
+            this.subscribeForeignStates(this.config.houseConsumptionForeignObjectID);
+            this.log.debug("Subscribe foreign object " + this.config.houseConsumptionForeignObjectID);
+        }
+        if(this.config.solarPowerForeignObjectID) {
+            this.subscribeForeignStates(this.config.solarPowerForeignObjectID);
+            this.log.debug("Subscribe foreign object " + this.config.solarPowerForeignObjectID);
+        }
         // Get all Information for the first time.
         await this.getStateFromDevice();
         // Start the Adapter to sync in the interval
@@ -229,6 +242,11 @@ class GoE extends utils.Adapter {
                         }
 
                         break;
+                    case this.config.solarPowerForeignObjectID:
+                    case this.config.houseBatteryForeignObjectID:
+                    case this.config.houseConsumptionForeignObjectID:
+                        this.calculateFromForeignObjects(id);
+                        break;
                     default:
                         this.log.error("Not deveoped function to write " + id + " with state " + state);
                 }
@@ -295,8 +313,6 @@ class GoE extends utils.Adapter {
                 this.setState("info.connection", true, true);
             });
     }
-
-
 
     /**
      * Process a default status response as descibed in the api documentation of go-eCharger
@@ -480,6 +496,10 @@ class GoE extends utils.Adapter {
      * @param {string | number | boolean} value
      */
     setValue(id, value) {
+        const transaction = sentry.startTransaction({
+            op: "setValue",
+            name: "setValue(" + id + ", " + value + ")"
+        });
         this.log.info("Set value " + value + " of id " + id);
         axios.get("http://" + this.config.serverName + "/mqtt?payload=" + id + "=" + value)
             .then(o => {
@@ -490,9 +510,10 @@ class GoE extends utils.Adapter {
                 this.log.error(err.message + " at " + id + " / " + value);
                 sentry.captureException(err);
             });
+        transaction.finish();
     }
     /**
-     * Set the maximum ampere level to the device. But not Updates it more than x seconds. Setting ampUpdateInterval
+     * Set the maximum ampere level to the device by using watts. But not Updates it more than x seconds. Setting ampUpdateInterval
      * @param {number} watts
      */
     async updateAmpLevel(watts) {
@@ -500,6 +521,10 @@ class GoE extends utils.Adapter {
             this.ampTimer = setTimeout(() => {
                 this.ampTimer = null;
             }, this.config.ampUpdateInterval * 1000);
+            const transaction = sentry.startTransaction({
+                op: "updateAmpLevel",
+                name: "updateAmpLevel(" + watts + ")"
+            });
             try {
                 // San for active phases on Adapter
                 const prePhase1   = await this.getStateAsync("energy.phase1.preContactorActive");
@@ -561,10 +586,11 @@ class GoE extends utils.Adapter {
                 const fw = await this.getStateAsync("firmware_version");
                 let amp = "";
                 if(fw != undefined && fw != null && parseInt(fw.toString()) > 33) {
-                    amp = "amp";
-                } else {
                     // Use AMX insted of AMP. Becaus the EEPROM of amp is only 100.000 times writeable
+                    // Available by firmware > 033
                     amp = "amx";
+                } else {
+                    amp = "amp";
                 }
                 if(maxAmp < 6) {
                     // The smallest value is 6 amperes
@@ -581,6 +607,7 @@ class GoE extends utils.Adapter {
             } catch (e) {
                 this.log.error("Error during set MaxWatts: " + e.message);
             }
+            transaction.finish();
         } else {
             // Still existing Block-Timer
             this.log.warn("MaxWatts ignored. You are sending to fast! Update interval in settings is currently set to: " + this.config.ampUpdateInterval);
@@ -594,7 +621,10 @@ class GoE extends utils.Adapter {
             this.ampTimer = setTimeout(() => {
                 this.ampTimer = null;
             }, this.config.ampUpdateInterval * 1000);
-
+            const transaction = sentry.startTransaction({
+                op: "adjustAmpLevelInWatts",
+                name: "adjustAmpLevelInWatts(" + changeWatts + ")"
+            });
             try {
                 const avgVoltage1 = await this.getStateAsync("energy.phase1.voltage");
                 if(avgVoltage1 === null || avgVoltage1 === undefined || avgVoltage1.val === null) {
@@ -692,9 +722,63 @@ class GoE extends utils.Adapter {
                 this.log.error("Error during set adjust Watts: " + e.message);
                 sentry.captureException(e);
             }
+            transaction.finish();
         } else {
             // Still existing Block-Timer
             this.log.warn("MaxWatts ignored. You are sending to fast! Update interval in settings is currently set to: " + this.config.ampUpdateInterval);
+        }
+    }
+    /**
+     * Get the max Watts from foreign adapters
+     */
+    async calculateFromForeignObjects(adapterName = "unknown") {
+
+        const transaction = sentry.startTransaction({
+            op: "calculateFromForeignObjects",
+            name: "calculateFromForeignObjects(" + adapterName + ")"
+        });
+        try {
+            const usedPower = await this.getStateAsync("energy.power");
+            // Check if used Power has a value
+            if(usedPower === undefined || usedPower == null || usedPower.val == null) {
+                this.log.debug("No actual energy.power found. Abort recalculation by foreign adapter.");
+                return;
+            }
+
+            let availWatts = 0;
+            availWatts += (await this.getNumberFromForeignObjectId(this.config.solarPowerForeignObjectID));
+            if(availWatts >= this.config.bufferToSolar) {
+                availWatts -= this.config.bufferToSolar;
+            }
+            availWatts -= await this.getNumberFromForeignObjectId(this.config.houseConsumptionForeignObjectID);
+            const houseBattery = await this.getNumberFromForeignObjectId(this.config.houseBatteryForeignObjectID);
+
+            // If your home battery contains 3000 Wh use in one hour the whole energy to load.
+            //
+
+            this.log.debug("Start ajust by foreign Object with " + (availWatts - parseInt(usedPower.val.toString(), 10)) + " Watts");
+            this.adjustAmpLevelInWatts(availWatts - parseInt(usedPower.val.toString(), 10));
+        } catch (err) {
+            this.log.error("Error in calculateFromForeignObjects: " + JSON.stringify(err));
+        }
+        transaction.finish();
+    }
+    /**
+     * get a number from a foreign object id or reply with a default value
+     * @param {*} ObjectId
+     * @param {*} defaultValue
+     * @returns number
+     */
+    async getNumberFromForeignObjectId(ObjectId, defaultValue = 0) {
+        try {
+            const obj = await this.getForeignStateAsync(ObjectId);
+            if(obj != undefined && obj != null && obj.val != null) {
+                return parseInt(obj.val.toString(), 10);
+            } else {
+                return defaultValue;
+            }
+        } catch (err) {
+            return defaultValue;
         }
     }
     /**
