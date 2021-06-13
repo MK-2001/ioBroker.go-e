@@ -76,7 +76,7 @@ function save(callback) {
 let selectId;
 function initSelectId (cb) {
     if (selectId) return cb(selectId);
-    socket.emit('getObjects', function (err, res) {
+    socket.emit("getObjects", function (err, res) {
         if (!err && res) {
             selectId = $("#dialog-select-member").selectId('init',  {
                 noMultiselect: true,
