@@ -8,7 +8,7 @@ function load(settings, onChange) {
         if ($key.attr('type') === 'checkbox') {
             // do not call onChange direct, because onChange could expect some arguments
             $key.prop('checked', settings[id])
-                .on('change', () => onChange());
+                .on("change", () => onChange());
         } else {
             // do not call onChange direct, because onChange could expect some arguments
             $key.val(settings[id])
