@@ -26,7 +26,7 @@ function load(settings, onChange) {
         initSelectId(function (sid) {
             sid.selectId("show", $('#solarPowerForeignObjectID').val(), function (newId) {
                 if (newId != $('#solarPowerForeignObjectID').val()) {
-                    $('#solarPowerForeignObjectID').val(newId);
+                    $("#solarPowerForeignObjectID").val(newId);
                     $("#solarPowerLbl").addClass("active ");
                     onChange();
                 }
