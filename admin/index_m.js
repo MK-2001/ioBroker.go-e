@@ -4,7 +4,7 @@ function load(settings, onChange) {
     if (!settings) return;
     $(".value").each(function () {
         let $key = $(this);
-        let id = $key.attr('id');
+        const id = $key.attr('id');
         if ($key.attr('type') === 'checkbox') {
             // do not call onChange direct, because onChange could expect some arguments
             $key.prop('checked', settings[id])
