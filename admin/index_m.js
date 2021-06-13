@@ -24,7 +24,7 @@ function load(settings, onChange) {
 
     $('#solarPowerForeignSearch').click(function () {
         initSelectId(function (sid) {
-            sid.selectId('show', $('#solarPowerForeignObjectID').val(), function (newId) {
+            sid.selectId("show", $('#solarPowerForeignObjectID').val(), function (newId) {
                 if (newId != $('#solarPowerForeignObjectID').val()) {
                     $('#solarPowerForeignObjectID').val(newId);
                     $("#solarPowerLbl").addClass("active ");
