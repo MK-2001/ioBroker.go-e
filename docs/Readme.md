@@ -27,7 +27,7 @@ Defines how ofter should the adapter allow to reconfigure e.g. maxAmpere. To oft
 ## Decission matrix: Use case to adapter function
 If you dont know which function you should use in your script or environment, just use this table and examples:
 | Available data | example | use function/attribute | use case description |
-|:--|:--:|:--|
+|:--|:--:|:--|:--|
 | available amperes | 10A | ampere | you know how many consumtion in ampere is used by other devices in you environment and know that the adapter should only load with a specific amount of amperes |
 | available watts | 11.000 W | max_watts | from your solar power you can see how many energy is received and want to use all the power to get your car loaded |
 | delta available watts | +1.000 W / -1.000 W | adjustAmpLevelInWatts | you have a solar power installed and use some devices in parallel and you are gettings the rest of available power by your general electric meter |
