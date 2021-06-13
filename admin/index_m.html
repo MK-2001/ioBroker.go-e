@@ -76,6 +76,10 @@
                 <input type="checkbox" class="value" id="sentryEnabled" />
                 <label for="sentryEnabled" class="translate">sentryEnabled</label>
             </div>
+            <!-- div class="col s5 input-field">
+                <input type="checkbox" class="value" id="stopIfLessAmperes" />
+                <label for="stopIfLessAmperes" class="translate">stopIfLessAmperes</label>
+            </div -->
         </div>
         <div class="row">
             <div class="col s12">
@@ -105,7 +109,11 @@
                 <input type="text" class="value" id="bufferToBattery" />
                 <label id="bufferToBatteryLbl" for="bufferToBattery" class="translate">bufferToBattery</label>
             </div>
-
+            <div class="col s12">
+                <p>The script is using the following formular:</p>
+                <pre>(solarPower - bufferToSolar) {must be lager than 0} - houseConsumtion + (houseBattery - bufferToBattery) {must be larger than 0}</pre>
+                <p>This will be used in the function <pre>adjustAmpLevelInWatts</pre></p>
+            </div>
         </div>
     </div>
 </body>

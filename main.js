@@ -751,8 +751,13 @@ class GoE extends utils.Adapter {
                 availWatts -= this.config.bufferToSolar;
             }
             availWatts -= await this.getNumberFromForeignObjectId(this.config.houseConsumptionForeignObjectID);
-            const houseBattery = await this.getNumberFromForeignObjectId(this.config.houseBatteryForeignObjectID);
-
+            let houseBattery = await this.getNumberFromForeignObjectId(this.config.houseBatteryForeignObjectID);
+            if(houseBattery > this.config.bufferToBattery) {
+                houseBattery -= this.config.bufferToBattery;
+            } else {
+                houseBattery = 0;
+            }
+            availWatts += houseBattery;
             // If your home battery contains 3000 Wh use in one hour the whole energy to load.
             //
 
@@ -765,8 +770,8 @@ class GoE extends utils.Adapter {
     }
     /**
      * get a number from a foreign object id or reply with a default value
-     * @param {*} ObjectId
-     * @param {*} defaultValue
+     * @param {string} ObjectId
+     * @param {number} defaultValue
      * @returns number
      */
     async getNumberFromForeignObjectId(ObjectId, defaultValue = 0) {

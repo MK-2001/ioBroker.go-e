@@ -106,7 +106,8 @@
         "solarPowerForeignObjectID": "",
         "houseConsumptionForeignObjectID": "",
         "houseBatteryForeignObjectID": "",
-        "bufferToSolar": 100
+        "bufferToSolar": 100,
+        "bufferToBattery": 1600
     },
     "objects": [],
     "instanceObjects": [
