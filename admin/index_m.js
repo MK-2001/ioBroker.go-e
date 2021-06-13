@@ -2,7 +2,7 @@
 function load(settings, onChange) {
     // example: select elements with id=key and class=value and insert value
     if (!settings) return;
-    $('.value').each(function () {
+    $(".value").each(function () {
         let $key = $(this);
         let id = $key.attr('id');
         if ($key.attr('type') === 'checkbox') {
