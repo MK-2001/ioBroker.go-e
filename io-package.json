@@ -3,6 +3,9 @@
         "name": "go-e",
         "version": "1.0.11",
         "news": {
+            "1.0.12": {
+                "en": "Updated Packages"
+            },
             "1.0.11":{
                 "en": "Added possibility to connect original Power Information from foreign adapters"
             },
