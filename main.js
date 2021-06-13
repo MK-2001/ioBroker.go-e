@@ -777,7 +777,7 @@ class GoE extends utils.Adapter {
     async getNumberFromForeignObjectId(ObjectId, defaultValue = 0) {
         try {
             const obj = await this.getForeignStateAsync(ObjectId);
-            if(obj != undefined && obj != null && obj.val != null) {
+            if(obj != null && obj != undefined && obj.val != null) {
                 return parseInt(obj.val.toString(), 10);
             } else {
                 return defaultValue;
