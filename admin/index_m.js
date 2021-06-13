@@ -12,7 +12,7 @@ function load(settings, onChange) {
         } else {
             // do not call onChange direct, because onChange could expect some arguments
             $key.val(settings[id])
-                .on('change', () => onChange())
+                .on("change", () => onChange())
                 .on('keyup', () => onChange());
         }
     });
