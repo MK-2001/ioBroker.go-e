@@ -63,7 +63,7 @@ function save(callback) {
     var obj = {};
     $('.value').each(function () {
         var $this = $(this);
-        if ($this.attr('type') === 'checkbox') {
+        if ($this.attr("type") === 'checkbox') {
             obj[$this.attr('id')] = $this.prop('checked');
         } else {
             obj[$this.attr('id')] = $this.val();
