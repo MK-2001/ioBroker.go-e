@@ -47,7 +47,7 @@ function load(settings, onChange) {
     $('#houseBatteryForeignSearch').click(function () {
         initSelectId(function (sid) {
             sid.selectId('show', $('#houseBatteryForeignObjectID').val(), function (newId) {
-                if (newId != $('#houseBatteryForeignObjectID').val()) {
+                if (newId != $("#houseBatteryForeignObjectID").val()) {
                     $('#houseBatteryForeignObjectID').val(newId);
                     $("#houseBatteryLbl").addClass("active ");
                     onChange();
