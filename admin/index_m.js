@@ -66,7 +66,7 @@ function save(callback) {
         if ($this.attr("type") === 'checkbox') {
             obj[$this.attr('id')] = $this.prop('checked');
         } else {
-            obj[$this.attr('id')] = $this.val();
+            obj[$this.attr("id")] = $this.val();
         }
     });
     callback(obj);
