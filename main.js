@@ -88,6 +88,19 @@ class GoE extends utils.Adapter {
         this.subscribeStates("stop_state");
         this.subscribeStates("unlock_state");
 
+        // get updates from a foreign adapter if it is set in Settings
+        if(this.config.houseBatteryForeignObjectID) {
+            this.subscribeForeignStates(this.config.houseBatteryForeignObjectID);
+            this.log.debug("Subscribe foreign object " + this.config.houseBatteryForeignObjectID);
+        }
+        if(this.config.houseConsumptionForeignObjectID) {
+            this.subscribeForeignStates(this.config.houseConsumptionForeignObjectID);
+            this.log.debug("Subscribe foreign object " + this.config.houseConsumptionForeignObjectID);
+        }
+        if(this.config.solarPowerForeignObjectID) {
+            this.subscribeForeignStates(this.config.solarPowerForeignObjectID);
+            this.log.debug("Subscribe foreign object " + this.config.solarPowerForeignObjectID);
+        }
         // Get all Information for the first time.
         await this.getStateFromDevice();
         // Start the Adapter to sync in the interval
@@ -229,6 +242,11 @@ class GoE extends utils.Adapter {
                         }
 
                         break;
+                    case this.config.solarPowerForeignObjectID:
+                    case this.config.houseBatteryForeignObjectID:
+                    case this.config.houseConsumptionForeignObjectID:
+                        this.calculateFromForeignObjects(id);
+                        break;
                     default:
                         this.log.error("Not deveoped function to write " + id + " with state " + state);
                 }
@@ -296,8 +314,6 @@ class GoE extends utils.Adapter {
             });
     }
 
-
-
     /**
      * Process a default status response as descibed in the api documentation of go-eCharger
      * @param {object} o
@@ -334,17 +350,17 @@ class GoE extends utils.Adapter {
                 sentry.captureException(e);
             }
 
-            await queue.add(() => this.setState("reboot_counter",                     { val: o.rbc, ack: true })); // read
-            await queue.add(() => this.setState("reboot_timer",                       { val: o.rbt, ack: true })); // read
-            await queue.add(() => this.setState("car",                                { val: o.car, ack: true })); // read
-            await queue.add(() => this.setState("ampere",                             { val: o.amp, ack: true })); // write
-            await queue.add(() => this.setState("amperePV",                           { val: o.amx, ack: true })); // write
-            await queue.add(() => this.setState("error",                              { val: o.err, ack: true })); // read
-            await queue.add(() => this.setState("access_state",                       { val: o.ast, ack: true })); // write
-            await queue.add(() => this.setState("allow_charging",                     { val: o.alw, ack: true })); // write
-            await queue.add(() => this.setState("stop_state",                         { val: o.stp, ack: true })); // write
+            await queue.add(() => this.setState("reboot_counter",                     { val: parseInt(o.rbc, 10), ack: true })); // read
+            await queue.add(() => this.setState("reboot_timer",                       { val: parseInt(o.rbt, 10), ack: true })); // read
+            await queue.add(() => this.setState("car",                                { val: parseInt(o.car, 10), ack: true })); // read
+            await queue.add(() => this.setState("ampere",                             { val: parseInt(o.amp, 10), ack: true })); // write
+            await queue.add(() => this.setState("amperePV",                           { val: parseInt(o.amx, 10), ack: true })); // write
+            await queue.add(() => this.setState("error",                              { val: parseInt(o.err, 10), ack: true })); // read
+            await queue.add(() => this.setState("access_state",                       { val: parseInt(o.ast, 10), ack: true })); // write
+            await queue.add(() => this.setState("allow_charging",                     { val: parseInt(o.alw, 10), ack: true })); // write
+            await queue.add(() => this.setState("stop_state",                         { val: parseInt(o.stp, 10), ack: true })); // write
 
-            await queue.add(() => this.setState("phases",                             { val: o.pha, ack: true })); // read
+            await queue.add(() => this.setState("phases",                             { val: parseInt(o.pha, 10), ack: true })); // read
             // Split phases in single states
             await queue.add(() => this.setState("energy.phase1.preContactorActive",   { val: ((parseInt(o.pha, 10) & preContactorPhase1) == preContactorPhase1), ack: true})); //read
             await queue.add(() => this.setState("energy.phase1.postContactorActive",  { val: ((parseInt(o.pha, 10) & postContactorPhase1) == postContactorPhase1), ack: true})); //read
@@ -352,10 +368,10 @@ class GoE extends utils.Adapter {
             await queue.add(() => this.setState("energy.phase2.postContactorActive",  { val: ((parseInt(o.pha, 10) & postContactorPhase2) == postContactorPhase2), ack: true})); //read
             await queue.add(() => this.setState("energy.phase3.preContactorActive",   { val: ((parseInt(o.pha, 10) & preContactorPhase3) == preContactorPhase3), ack: true})); //read
             await queue.add(() => this.setState("energy.phase3.postContactorActive",  { val: ((parseInt(o.pha, 10) & postContactorPhase3) == postContactorPhase3), ack: true})); //read
-            await queue.add(() => this.setState("energy.phase1.voltage",              { val: o.nrg[0], ack: true })); // read
-            await queue.add(() => this.setState("energy.phase2.voltage",              { val: o.nrg[1], ack: true })); // read
-            await queue.add(() => this.setState("energy.phase3.voltage",              { val: o.nrg[2], ack: true })); // read
-            await queue.add(() => this.setState("energy.neutral.voltage",             { val: o.nrg[3], ack: true })); // read
+            await queue.add(() => this.setState("energy.phase1.voltage",              { val: parseInt(o.nrg[0], 10), ack: true })); // read
+            await queue.add(() => this.setState("energy.phase2.voltage",              { val: parseInt(o.nrg[1], 10), ack: true })); // read
+            await queue.add(() => this.setState("energy.phase3.voltage",              { val: parseInt(o.nrg[2], 10), ack: true })); // read
+            await queue.add(() => this.setState("energy.neutral.voltage",             { val: parseInt(o.nrg[3], 10), ack: true })); // read
             await queue.add(() => this.setState("energy.phase1.ampere",               { val: (o.nrg[4] / 10), ack: true })); // read
             await queue.add(() => this.setState("energy.phase2.ampere",               { val: (o.nrg[5] / 10), ack: true })); // read
             await queue.add(() => this.setState("energy.phase3.ampere",               { val: (o.nrg[6] / 10), ack: true })); // read
@@ -364,36 +380,36 @@ class GoE extends utils.Adapter {
             await queue.add(() => this.setState("energy.phase3.power",                { val: (o.nrg[9] / 10), ack: true })); // read
             await queue.add(() => this.setState("energy.neutral.power",               { val: (o.nrg[10] / 10), ack: true })); // read
             await queue.add(() => this.setState("energy.power",                       { val: (o.nrg[11] / 100), ack: true })); // read
-            await queue.add(() => this.setState("energy.phase1.power_coefficient",    { val: o.nrg[12], ack: true })); // read
-            await queue.add(() => this.setState("energy.phase2.power_coefficient",    { val: o.nrg[13], ack: true })); // read
-            await queue.add(() => this.setState("energy.phase3.power_coefficient",    { val: o.nrg[14], ack: true })); // read
-            await queue.add(() => this.setState("energy.neutral.power_coefficient",   { val: o.nrg[15], ack: true })); // read
-            await queue.add(() => this.setState("cable_ampere_code",                  { val: o.cbl, ack: true })); // read
-            await queue.add(() => this.setState("avail_ampere",                       { val: o.amt, ack: true }));
+            await queue.add(() => this.setState("energy.phase1.power_coefficient",    { val: parseInt(o.nrg[12], 10), ack: true })); // read
+            await queue.add(() => this.setState("energy.phase2.power_coefficient",    { val: parseInt(o.nrg[13], 10), ack: true })); // read
+            await queue.add(() => this.setState("energy.phase3.power_coefficient",    { val: parseInt(o.nrg[14], 10), ack: true })); // read
+            await queue.add(() => this.setState("energy.neutral.power_coefficient",   { val: parseInt(o.nrg[15], 10), ack: true })); // read
+            await queue.add(() => this.setState("cable_ampere_code",                  { val: parseInt(o.cbl), ack: true })); // read
+            await queue.add(() => this.setState("avail_ampere",                       { val: parseInt(o.amt, 10), ack: true }));
             await queue.add(() => this.setState("energy.total",                       { val: (o.eto / 10), ack: true })); // read
             // Wifi
-            await queue.add(() => this.setState("wifi.state",                         { val: o.wst, ack: true })); // read
+            await queue.add(() => this.setState("wifi.state",                         { val: parseInt(o.wst, 10), ack: true })); // read
             await queue.add(() => this.setState("transmit_interface",                 { val: o.txi, ack: true }));
             await queue.add(() => this.setState("wifi.ssid",                          { val: o.wss, ack: true })); // write
             await queue.add(() => this.setState("wifi.key",                           { val: o.wke, ack: true })); // write
-            await queue.add(() => this.setState("wifi.enabled",                       { val: o.wen, ack: true })); // write
-            await queue.add(() => this.setState("cloud_disabled",                     { val: o.cdi, ack: true }));
+            await queue.add(() => this.setState("wifi.enabled",                       { val: parseInt(o.wen, 10), ack: true })); // write
+            await queue.add(() => this.setState("cloud_disabled",                     { val: parseInt(o.cdi, 10), ack: true }));
             await queue.add(() => this.setState("wifi.hotspot_key",                   { val: o.wak, ack: true })); // write
-            await queue.add(() => this.setState("http_flags",                         { val: o.r1x, ack: true })); // write
-            await queue.add(() => this.setState("loaded_energy",                      { val: o.dws, ack: true })); // read
+            await queue.add(() => this.setState("http_flags",                         { val: parseInt(o.r1x, 10), ack: true })); // write
+            await queue.add(() => this.setState("loaded_energy",                      { val: parseInt(o.dws, 10), ack: true })); // read
             if(/^050/.test(o.fwv)) {
                 await queue.add(() => this.setState("loaded_energy_kwh",                  { val: o.dws / 100, ack: true}));
             } else {
                 await queue.add(() => this.setState("loaded_energy_kwh",                  { val: o.dws * 10 / 60 / 60 / 1000, ack: true}));
             }
             await queue.add(() => this.setState("max_load",                           { val: (o.dwo / 10), ack: true })); // write
-            await queue.add(() => this.setState("electricity_exchange.min_hours",     { val: o.aho, ack: true })); // write
-            await queue.add(() => this.setState("electricity_exchange.finish_hour",   { val: o.afi, ack: true })); // write
-            await queue.add(() => this.setState("electricity_exchange.price_zone",    { val: o.azo, ack: true }));
-            await queue.add(() => this.setState("max_ampere",                         { val: o.ama, ack: true }));
+            await queue.add(() => this.setState("electricity_exchange.min_hours",     { val: parseInt(o.aho, 10), ack: true })); // write
+            await queue.add(() => this.setState("electricity_exchange.finish_hour",   { val: parseInt(o.afi, 10), ack: true })); // write
+            await queue.add(() => this.setState("electricity_exchange.price_zone",    { val: parseInt(o.azo, 10), ack: true }));
+            await queue.add(() => this.setState("max_ampere",                         { val: parseInt(o.ama, 10), ack: true }));
             await queue.add(() => this.setState("firmware_version",                   { val: o.fwv, ack: true })); // read
             await queue.add(() => this.setState("serial_number",                      { val: o.sse, ack: true })); // read
-            await queue.add(() => this.setState("settings.color.led_brightness",      { val: o.lbr, ack: true })); // write
+            await queue.add(() => this.setState("settings.color.led_brightness",      { val: parseInt(o.lbr, 10), ack: true })); // write
             await queue.add(() => this.setState("settings.ampere_level1",             { val: parseInt(o.al1, 10), ack: true })); // write
             await queue.add(() => this.setState("settings.ampere_level2",             { val: parseInt(o.al2, 10), ack: true })); // write
             await queue.add(() => this.setState("settings.ampere_level3",             { val: parseInt(o.al3, 10), ack: true })); // write
@@ -437,7 +453,7 @@ class GoE extends utils.Adapter {
             await queue.add(() => this.setState("rfid.badges.9.name",                 { val: o.rn9, ack: true })); // write
             await queue.add(() => this.setState("rfid.badges.10.name",                { val: o.rn1, ack: true })); // write
             // MQTT Block
-            await queue.add(() => this.setState("mqtt.enabled",                       { val: o.mce, ack: true }));
+            await queue.add(() => this.setState("mqtt.enabled",                       { val: parseInt(o.mce, 10), ack: true }));
             await queue.add(() => this.setState("mqtt.server",                        { val: o.mcs, ack: true }));
             await queue.add(() => this.setState("mqtt.port",                          { val: o.mcp, ack: true }));
             await queue.add(() => this.setState("mqtt.user",                          { val: o.mcu, ack: true }));
@@ -480,6 +496,10 @@ class GoE extends utils.Adapter {
      * @param {string | number | boolean} value
      */
     setValue(id, value) {
+        const transaction = sentry.startTransaction({
+            op: "setValue",
+            name: "setValue(" + id + ", " + value + ")"
+        });
         this.log.info("Set value " + value + " of id " + id);
         axios.get("http://" + this.config.serverName + "/mqtt?payload=" + id + "=" + value)
             .then(o => {
@@ -490,9 +510,10 @@ class GoE extends utils.Adapter {
                 this.log.error(err.message + " at " + id + " / " + value);
                 sentry.captureException(err);
             });
+        transaction.finish();
     }
     /**
-     * Set the maximum ampere level to the device. But not Updates it more than x seconds. Setting ampUpdateInterval
+     * Set the maximum ampere level to the device by using watts. But not Updates it more than x seconds. Setting ampUpdateInterval
      * @param {number} watts
      */
     async updateAmpLevel(watts) {
@@ -500,6 +521,10 @@ class GoE extends utils.Adapter {
             this.ampTimer = setTimeout(() => {
                 this.ampTimer = null;
             }, this.config.ampUpdateInterval * 1000);
+            const transaction = sentry.startTransaction({
+                op: "updateAmpLevel",
+                name: "updateAmpLevel(" + watts + ")"
+            });
             try {
                 // San for active phases on Adapter
                 const prePhase1   = await this.getStateAsync("energy.phase1.preContactorActive");
@@ -561,10 +586,11 @@ class GoE extends utils.Adapter {
                 const fw = await this.getStateAsync("firmware_version");
                 let amp = "";
                 if(fw != undefined && fw != null && parseInt(fw.toString()) > 33) {
-                    amp = "amp";
-                } else {
                     // Use AMX insted of AMP. Becaus the EEPROM of amp is only 100.000 times writeable
+                    // Available by firmware > 033
                     amp = "amx";
+                } else {
+                    amp = "amp";
                 }
                 if(maxAmp < 6) {
                     // The smallest value is 6 amperes
@@ -581,6 +607,7 @@ class GoE extends utils.Adapter {
             } catch (e) {
                 this.log.error("Error during set MaxWatts: " + e.message);
             }
+            transaction.finish();
         } else {
             // Still existing Block-Timer
             this.log.warn("MaxWatts ignored. You are sending to fast! Update interval in settings is currently set to: " + this.config.ampUpdateInterval);
@@ -594,7 +621,10 @@ class GoE extends utils.Adapter {
             this.ampTimer = setTimeout(() => {
                 this.ampTimer = null;
             }, this.config.ampUpdateInterval * 1000);
-
+            const transaction = sentry.startTransaction({
+                op: "adjustAmpLevelInWatts",
+                name: "adjustAmpLevelInWatts(" + changeWatts + ")"
+            });
             try {
                 const avgVoltage1 = await this.getStateAsync("energy.phase1.voltage");
                 if(avgVoltage1 === null || avgVoltage1 === undefined || avgVoltage1.val === null) {
@@ -692,9 +722,68 @@ class GoE extends utils.Adapter {
                 this.log.error("Error during set adjust Watts: " + e.message);
                 sentry.captureException(e);
             }
+            transaction.finish();
         } else {
             // Still existing Block-Timer
             this.log.warn("MaxWatts ignored. You are sending to fast! Update interval in settings is currently set to: " + this.config.ampUpdateInterval);
+        }
+    }
+    /**
+     * Get the max Watts from foreign adapters
+     */
+    async calculateFromForeignObjects(adapterName = "unknown") {
+
+        const transaction = sentry.startTransaction({
+            op: "calculateFromForeignObjects",
+            name: "calculateFromForeignObjects(" + adapterName + ")"
+        });
+        try {
+            const usedPower = await this.getStateAsync("energy.power");
+            // Check if used Power has a value
+            if(usedPower === undefined || usedPower == null || usedPower.val == null) {
+                this.log.debug("No actual energy.power found. Abort recalculation by foreign adapter.");
+                return;
+            }
+
+            let availWatts = 0;
+            availWatts += (await this.getNumberFromForeignObjectId(this.config.solarPowerForeignObjectID));
+            if(availWatts >= this.config.bufferToSolar) {
+                availWatts -= this.config.bufferToSolar;
+            }
+            availWatts -= await this.getNumberFromForeignObjectId(this.config.houseConsumptionForeignObjectID);
+            let houseBattery = await this.getNumberFromForeignObjectId(this.config.houseBatteryForeignObjectID);
+            if(houseBattery > this.config.bufferToBattery) {
+                houseBattery -= this.config.bufferToBattery;
+            } else {
+                houseBattery = 0;
+            }
+            availWatts += houseBattery;
+            // If your home battery contains 3000 Wh use in one hour the whole energy to load.
+            //
+
+            this.log.debug("Start ajust by foreign Object with " + (availWatts - parseInt(usedPower.val.toString(), 10)) + " Watts");
+            this.adjustAmpLevelInWatts(availWatts - parseInt(usedPower.val.toString(), 10));
+        } catch (err) {
+            this.log.error("Error in calculateFromForeignObjects: " + JSON.stringify(err));
+        }
+        transaction.finish();
+    }
+    /**
+     * get a number from a foreign object id or reply with a default value
+     * @param {string} ObjectId
+     * @param {number} defaultValue
+     * @returns number
+     */
+    async getNumberFromForeignObjectId(ObjectId, defaultValue = 0) {
+        try {
+            const obj = await this.getForeignStateAsync(ObjectId);
+            if(obj != null && obj != undefined && obj.val != null) {
+                return parseInt(obj.val.toString(), 10);
+            } else {
+                return defaultValue;
+            }
+        } catch (err) {
+            return defaultValue;
         }
     }
     /**

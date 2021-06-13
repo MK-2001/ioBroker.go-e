@@ -8,3 +8,7 @@
 }
 
 /* Add your styles here */
+/* Selection Box added from https://forum.iobroker.net/topic/10186/adapterentwicklung-object-id-baum/6 */
+#dialog-select-member {
+    z-index: 9999 !important;
+}

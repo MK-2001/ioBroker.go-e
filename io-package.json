@@ -1,8 +1,11 @@
 {
     "common": {
         "name": "go-e",
-        "version": "1.0.10",
+        "version": "1.0.11",
         "news": {
+            "1.0.11":{
+                "en": "Added possibility to connect original Power Information from foreign adapters"
+            },
             "1.0.10": {
                 "en": "Make Label of card 1 & 2 optional."
             },
@@ -99,7 +102,12 @@
         "serverName": "go-eCharger",
         "serverInterval": 60,
         "ampUpdateInterval": 30,
-        "sentryEnabled":true
+        "sentryEnabled":true,
+        "solarPowerForeignObjectID": "",
+        "houseConsumptionForeignObjectID": "",
+        "houseBatteryForeignObjectID": "",
+        "bufferToSolar": 100,
+        "bufferToBattery": 1600
     },
     "objects": [],
     "instanceObjects": [
@@ -710,7 +718,7 @@
             "type": "state",
             "common": {
                 "name": "transmit interface (txi)",
-                "type": "number",
+                "type": "string",
                 "role": "",
                 "read":  true,
                 "write": false
@@ -896,7 +904,7 @@
             "type": "state",
             "common": {
                 "name": "Firmware Version (fwv)",
-                "type": "number",
+                "type": "string",
                 "role": "info.name",
                 "read":  true,
                 "write": false
