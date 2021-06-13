@@ -78,7 +78,7 @@ function initSelectId (cb) {
     if (selectId) return cb(selectId);
     socket.emit('getObjects', function (err, res) {
         if (!err && res) {
-            selectId = $('#dialog-select-member').selectId('init',  {
+            selectId = $("#dialog-select-member").selectId('init',  {
                 noMultiselect: true,
                 objects: res,
                 imgPath:       '../../lib/css/fancytree/',
