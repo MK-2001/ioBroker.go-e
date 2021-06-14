@@ -354,7 +354,12 @@ class GoE extends utils.Adapter {
             await queue.add(() => this.setState("reboot_timer",                       { val: parseInt(o.rbt, 10), ack: true })); // read
             await queue.add(() => this.setState("car",                                { val: parseInt(o.car, 10), ack: true })); // read
             await queue.add(() => this.setState("ampere",                             { val: parseInt(o.amp, 10), ack: true })); // write
-            await queue.add(() => this.setState("amperePV",                           { val: parseInt(o.amx, 10), ack: true })); // write
+            if(o.amx === undefined || o.amx == null) {
+                await queue.add(() => this.setState("amperePV",                       { val: parseInt(o.amp, 10), ack: true })); // COPY AMP Value to AMX
+            } else {
+                await queue.add(() => this.setState("amperePV",                       { val: parseInt(o.amx, 10), ack: true })); // write
+            }
+
             await queue.add(() => this.setState("error",                              { val: parseInt(o.err, 10), ack: true })); // read
             await queue.add(() => this.setState("access_state",                       { val: parseInt(o.ast, 10), ack: true })); // write
             await queue.add(() => this.setState("allow_charging",                     { val: parseInt(o.alw, 10), ack: true })); // write
