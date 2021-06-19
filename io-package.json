@@ -1,8 +1,11 @@
 {
     "common": {
         "name": "go-e",
-        "version": "1.0.13",
+        "version": "1.0.14",
         "news": {
+            "1.1.14": {
+                "en": "First adaption of V3 hardware from go-e"
+            },
             "1.0.13": {
                 "en": "Updated Packages; Enabled to give feedback to amp/amx if amx has been set."
             },
