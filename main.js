@@ -63,7 +63,7 @@ class GoE extends utils.Adapter {
                 // Set tracesSampleRate to 1.0 to capture 100%
                 // of transactions for performance monitoring.
                 // We recommend adjusting this value in production
-                tracesSampleRate: 1.0
+                tracesSampleRate: 0.05
             });
         }
 
@@ -354,7 +354,12 @@ class GoE extends utils.Adapter {
             await queue.add(() => this.setState("reboot_timer",                       { val: parseInt(o.rbt, 10), ack: true })); // read
             await queue.add(() => this.setState("car",                                { val: parseInt(o.car, 10), ack: true })); // read
             await queue.add(() => this.setState("ampere",                             { val: parseInt(o.amp, 10), ack: true })); // write
-            await queue.add(() => this.setState("amperePV",                           { val: parseInt(o.amx, 10), ack: true })); // write
+            if(o.amx === undefined || o.amx == null) {
+                await queue.add(() => this.setState("amperePV",                       { val: parseInt(o.amp, 10), ack: true })); // COPY AMP Value to AMX
+            } else {
+                await queue.add(() => this.setState("amperePV",                       { val: parseInt(o.amx, 10), ack: true })); // write
+            }
+
             await queue.add(() => this.setState("error",                              { val: parseInt(o.err, 10), ack: true })); // read
             await queue.add(() => this.setState("access_state",                       { val: parseInt(o.ast, 10), ack: true })); // write
             await queue.add(() => this.setState("allow_charging",                     { val: parseInt(o.alw, 10), ack: true })); // write
@@ -389,7 +394,9 @@ class GoE extends utils.Adapter {
             await queue.add(() => this.setState("energy.total",                       { val: (o.eto / 10), ack: true })); // read
             // Wifi
             await queue.add(() => this.setState("wifi.state",                         { val: parseInt(o.wst, 10), ack: true })); // read
-            await queue.add(() => this.setState("transmit_interface",                 { val: o.txi, ack: true }));
+            if(o.txi != undefined) {
+                await queue.add(() => this.setState("transmit_interface",                 { val: o.txi, ack: true }));
+            }
             await queue.add(() => this.setState("wifi.ssid",                          { val: o.wss, ack: true })); // write
             await queue.add(() => this.setState("wifi.key",                           { val: o.wke, ack: true })); // write
             await queue.add(() => this.setState("wifi.enabled",                       { val: parseInt(o.wen, 10), ack: true })); // write
@@ -453,13 +460,22 @@ class GoE extends utils.Adapter {
             await queue.add(() => this.setState("rfid.badges.9.name",                 { val: o.rn9, ack: true })); // write
             await queue.add(() => this.setState("rfid.badges.10.name",                { val: o.rn1, ack: true })); // write
             // MQTT Block
-            await queue.add(() => this.setState("mqtt.enabled",                       { val: parseInt(o.mce, 10), ack: true }));
+            if(o.mce != undefined) {
+                await queue.add(() => this.setState("mqtt.enabled",                       { val: parseInt(o.mce, 10), ack: true }));
+            }
             await queue.add(() => this.setState("mqtt.server",                        { val: o.mcs, ack: true }));
-            await queue.add(() => this.setState("mqtt.port",                          { val: o.mcp, ack: true }));
+            if(o.mcp != undefined) {
+                await queue.add(() => this.setState("mqtt.port",                          { val: o.mcp, ack: true }));
+            }
+
             await queue.add(() => this.setState("mqtt.user",                          { val: o.mcu, ack: true }));
             await queue.add(() => this.setState("mqtt.key",                           { val: o.mck, ack: true }));
-            await queue.add(() => this.setState("mqtt.connection",                    { val: o.mcc, ack: true }));
-            await queue.add(() => this.setState("temperatures.maintempereature",      { val: parseInt(o.tmp, 10), ack: true })); // read
+            if(o.mcc != undefined) {
+                await queue.add(() => this.setState("mqtt.connection",                    { val: o.mcc, ack: true }));
+            }
+            if(o.tmp != undefined) {
+                await queue.add(() => this.setState("temperatures.maintempereature",      { val: parseInt(o.tmp, 10), ack: true })); // read
+            }
             await queue.add(() => this.setState("temperatures.tempereatureArray",     { val: o.tma, ack: true }));
             try {
                 if(o.tma) {
@@ -485,6 +501,9 @@ class GoE extends utils.Adapter {
             await queue.add(() => this.setState("energy.norway_mode",                 { val: parseInt(o.nmo, 10), ack: true })); // write
             await queue.add(() => this.setState("scheduler_settings",                 { val: o.sch, ack: true }));
             await queue.add(() => this.setState("scheduler_double_press",             { val: parseInt(o.sdp, 10), ack: true })); //
+            if(o.lon != undefined && false) {
+                await queue.add(() => this.setState("lon",                            { val: o.lon, ack: true })); // Lastmanagement: erwartete Anzahl von Ladestationen (derzeit nicht unterstützt)
+            }
         } catch (e) {
             this.log.warn("Error in go.e: " + JSON.stringify(e.message) + "; Stack: " + e.stack);
             sentry.captureException(e);
@@ -496,10 +515,10 @@ class GoE extends utils.Adapter {
      * @param {string | number | boolean} value
      */
     setValue(id, value) {
-        const transaction = sentry.startTransaction({
-            op: "setValue",
-            name: "setValue(" + id + ", " + value + ")"
-        });
+        // const transaction = sentry.startTransaction({
+        //    op: "setValue",
+        //    name: "setValue(" + id + ", " + value + ")"
+        //});
         this.log.info("Set value " + value + " of id " + id);
         axios.get("http://" + this.config.serverName + "/mqtt?payload=" + id + "=" + value)
             .then(o => {
@@ -510,7 +529,7 @@ class GoE extends utils.Adapter {
                 this.log.error(err.message + " at " + id + " / " + value);
                 sentry.captureException(err);
             });
-        transaction.finish();
+        //transaction.finish();
     }
     /**
      * Set the maximum ampere level to the device by using watts. But not Updates it more than x seconds. Setting ampUpdateInterval
