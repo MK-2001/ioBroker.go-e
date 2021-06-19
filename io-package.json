@@ -3,7 +3,7 @@
         "name": "go-e",
         "version": "1.0.14",
         "news": {
-            "1.1.14": {
+            "1.0.14": {
                 "en": "First adaption of V3 hardware from go-e"
             },
             "1.0.13": {

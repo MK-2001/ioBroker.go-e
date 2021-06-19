@@ -1,3 +1,7 @@
+## 1.0.14
+* Enabled Hardware V3
+*
+
 ### 1.0.9
 * Catch warn message in read object
 * Added SENTRY to get more details for debbugging
