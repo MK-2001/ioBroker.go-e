@@ -22,7 +22,7 @@
     "@iobroker/adapter-core": "^2.5.0",
     "@sentry/node": "^6.7.1",
     "@sentry/tracing": "^6.7.1",
-    "axios": "^0.21.1",
+    "axios": "^0.21.3",
     "joi": "^17.4.0",
     "p-queue": "^6.6.2"
   },
