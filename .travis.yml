@@ -4,12 +4,13 @@ before_script:
 language: node_js
 node_js:
   - lts/*
+  - '12'
+  - '14'
+  - '16'
 os:
   - linux
-  # - osx
-  # - windows
 script:
-  - npm run test:package
-  - npm run test:unit
-  - export DEBUG=testing:*
-  - npm run test:integration
+  - 'npm run test:package'
+  - 'npm run test:unit'
+  - 'export DEBUG=testing:*'
+  - 'npm run test:integration'
