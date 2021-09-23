@@ -23,7 +23,7 @@
     "@iobroker/adapter-core": "^2.5.1",
     "@sentry/node": "^6.7.2",
     "@sentry/tracing": "^6.7.2",
-    "joi": "^17.4.1",
+    "joi": "^17.4.2",
     "p-queue": "^6.6.2"
   },
   "devDependencies": {
