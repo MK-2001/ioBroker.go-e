@@ -284,17 +284,22 @@ class GoE extends utils.Adapter {
             .then((o) => {
                 this.log.debug("Response: " + o.status + " - " + o.statusText + " with data as " + typeof o.data);
                 this.log.debug(JSON.stringify(o.data));
-                const validation = schema.validate(o.data,{abortEarly: false});
-                if (validation.error || validation.value === undefined) {
-                    if (validation.value === undefined) {
-                        this.log.error("API send no content");
-                    } else {
-                        sentry.captureException(validation.error);
-                        this.log.error("API response validation error: " + JSON.stringify(validation.error.details));
-                        this.log.info(JSON.stringify(validation.error._original));
-                    }
+                if(typeof o.data != "object") {
+                    sentry.captureException("Respose id type " + (typeof o.data) + "; " + JSON.stringify(o.data));
+                    this.log.error("Respose id type " + (typeof o.data) + "; " + JSON.stringify(o.data));
                 } else {
-                    this.processStatusObject(o.data);
+                    const validation = schema.validate(o.data,{abortEarly: false});
+                    if (validation.error || validation.value === undefined) {
+                        if (validation.value === undefined) {
+                            this.log.error("API send no content");
+                        } else {
+                            sentry.captureException(validation.error);
+                            this.log.error("API response validation error: " + JSON.stringify(validation.error.details));
+                            this.log.info(JSON.stringify(validation.error._original));
+                        }
+                    } else {
+                        this.processStatusObject(o.data);
+                    }
                 }
             })
             .catch(e => {
@@ -306,7 +311,7 @@ class GoE extends utils.Adapter {
                     this.log.warn("Cant connect to host " + this.config.serverName);
                 } else {
                     this.log.error(e.message);
-                    sentry.captureException(typeof e);
+                    sentry.captureException(e);
                 }
             })
             .then(() => {
