@@ -1,3 +1,6 @@
+## 1.0.16
+* Added switch to disable wrting of the temperatures array.
+
 ## 1.0.14
 * Enabled Hardware V3
 *

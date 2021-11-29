@@ -1,8 +1,11 @@
 {
     "common": {
         "name": "go-e",
-        "version": "1.0.15",
+        "version": "1.0.16",
         "news": {
+            "1.0.16": {
+                "en": "Added switch to disable writing of the temperatures array"
+            },
             "1.0.15": {
                 "en": "First adaption of V3 hardware from go-e"
             },
@@ -109,6 +112,7 @@
         "serverInterval": 60,
         "ampUpdateInterval": 30,
         "sentryEnabled":true,
+        "writeTemperatureArray": true,
         "solarPowerForeignObjectID": "",
         "houseConsumptionForeignObjectID": "",
         "houseBatteryForeignObjectID": "",

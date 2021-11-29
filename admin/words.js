@@ -121,5 +121,17 @@ systemDictionary = {
         "es": "Buffeer al nivel mínimo de batería en vatios hora [Wh]",
         "pl": "Bufor do minimum Poziom naładowania baterii w watogodzinach [Wh]",
         "zh-cn": "以瓦特小时为单位缓冲到最低电池电量 [Wh]"
+    },
+    "writeTemperatureArray": {
+        "en": "Write temperature Array",
+        "de": "Schreibe das Temperatur Array",
+        "ru": "Write temperature Array",
+        "pt": "Write temperature Array",
+        "nl": "Write temperature Array",
+        "fr": "Write temperature Array",
+        "it": "Write temperature Array",
+        "es": "Write temperature Array",
+        "pl": "Write temperature Array",
+        "zh-cn": "Write temperature Array"
     }
 };
