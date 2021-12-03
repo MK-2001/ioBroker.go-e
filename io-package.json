@@ -1,8 +1,11 @@
 {
     "common": {
         "name": "go-e",
-        "version": "1.0.16",
+        "version": "1.0.17",
         "news": {
+            "1.0.17": {
+                "en": "write different amont of temperature sensors"
+            },
             "1.0.16": {
                 "en": "Added switch to disable writing of the temperatures array"
             },

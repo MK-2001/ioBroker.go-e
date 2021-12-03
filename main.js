@@ -487,13 +487,8 @@ class GoE extends utils.Adapter {
             try {
                 if(o.tma) {
                     const tempArr = o.tma.toString().split(",");
-                    if(tempArr.length === 4) {
-                        await queue.add(() => this.setState("temperatures.tempereature1", { val: Number(tempArr[0]), ack: true}));
-                        await queue.add(() => this.setState("temperatures.tempereature2", { val: Number(tempArr[1]), ack: true}));
-                        await queue.add(() => this.setState("temperatures.tempereature3", { val: Number(tempArr[2]), ack: true}));
-                        await queue.add(() => this.setState("temperatures.tempereature4", { val: Number(tempArr[3]), ack: true}));
-                    } else {
-                        this.log.debug("Cant write temp single temps. Expected 3 elements got " + JSON.stringify(tempArr));
+                    for(let i = 0; i<tempArr.length; i++) {
+                        await queue.add(() => this.setState("temperatures.tempereature" + (i+1), { val: Number(tempArr[i]), ack: true}));
                     }
                 }
             } catch (e) {

@@ -1,5 +1,6 @@
-## 1.0.16
+## 1.0.17
 * Added switch to disable wrting of the temperatures array.
+* Writing different amount of temperature sensors
 
 ## 1.0.14
 * Enabled Hardware V3
