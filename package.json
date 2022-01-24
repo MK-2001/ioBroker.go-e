@@ -21,9 +21,9 @@
   "dependencies": {
     "axios": "^0.24.0",
     "@iobroker/adapter-core": "^2.5.1",
-    "@sentry/node": "^6.15.0",
+    "@sentry/node": "^6.16.0",
     "@sentry/tracing": "^6.16.0",
-    "joi": "^17.4.3",
+    "joi": "^17.5.0",
     "p-queue": "^6.6.2"
   },
   "devDependencies": {
