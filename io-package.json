@@ -1,8 +1,20 @@
 {
     "common": {
         "name": "go-e",
-        "version": "1.0.17",
+        "version": "1.0.18",
         "news": {
+            "1.0.18": {
+                "en": "First adaption of V3 hardware from go-e; Added switch to disable writing of the temperatures array; write different amont of temperature sensors; Added addtional attributes to ast; Updated several FOSS libs",
+                "de": "Erste Anpassung der V3-Hardware von go-e; Schalter hinzugefügt, um das Schreiben des Temperatur-Arrays zu deaktivieren; unterschiedliche Anzahl von Temperatursensoren schreiben; Zusätzliche Attribute zu ast hinzugefügt; Mehrere FOSS-Bibliotheken aktualisiert",
+                "ru": "Первая адаптация оборудования V3 от go-e; Добавлен переключатель для отключения записи массива температур; записать разное количество датчиков температуры; Добавлены дополнительные атрибуты для ast; Обновлено несколько библиотек FOSS.",
+                "pt": "Primeira adaptação do hardware V3 da go-e; Adicionado switch para desabilitar a escrita do array de temperaturas; escrever uma quantidade diferente de sensores de temperatura; Atributos adicionais adicionados ao ast; Atualizadas várias bibliotecas FOSS",
+                "nl": "Eerste aanpassing van V3-hardware van go-e; Schakelaar toegevoegd om het schrijven van de temperatuurarray uit te schakelen; schrijf verschillende temperatuursensoren; Extra attributen toegevoegd aan ast; Verschillende FOSS-bibliotheken bijgewerkt",
+                "fr": "Première adaptation du matériel V3 de go-e ; Ajout d'un commutateur pour désactiver l'écriture du tableau des températures ; écrire différentes quantités de capteurs de température ; Ajout d'attributs supplémentaires à ast ; Mise à jour de plusieurs bibliothèques FOSS",
+                "it": "Primo adattamento dell'hardware V3 da go-e; Aggiunto switch per disabilitare la scrittura dell'array temperature; scrivere diversi sensori di temperatura; Aggiunti attributi aggiuntivi ad ast; Aggiornate diverse librerie FOSS",
+                "es": "Primera adaptación del hardware V3 de go-e; Se agregó un interruptor para deshabilitar la escritura de la matriz de temperaturas; escriba diferentes cantidades de sensores de temperatura; Se agregaron atributos adicionales a ast; Se actualizaron varias librerías de FOSS",
+                "pl": "Pierwsza adaptacja sprzętu V3 od go-e; Dodano przełącznik wyłączający zapisywanie tablicy temperatur; napisz inny zestaw czujników temperatury; Dodano dodatkowe atrybuty do ast; Zaktualizowano kilka bibliotek FOSS",
+                "zh-cn": "首次适配 go-e 的 V3 硬件；添加开关以禁用温度数组的写入；编写不同数量的温度传感器；为 ast 添加了附加属性；更新了几个 FOSS 库"
+            },
             "1.0.17": {
                 "en": "write different amont of temperature sensors"
             },
@@ -433,7 +445,8 @@
                 "write": true,
                 "states": {
                     "0": "open",
-                    "1": "key required"
+                    "1": "key required",
+                    "2": "Strompreis"
                 }
             }
         },{

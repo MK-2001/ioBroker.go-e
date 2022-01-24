@@ -164,7 +164,7 @@ class GoE extends utils.Adapter {
                 switch (id) {
                     // Sort by alphabet of attribute
                     case this.namespace + ".access_state":
-                        if(parseInt(state.val.toString()) == 0 || parseInt(state.val.toString(), 10) == 1 ) {
+                        if(parseInt(state.val.toString()) == 0 || parseInt(state.val.toString(), 10) == 1 || parseInt(state.val.toString(), 10) == 2 ) {
                             this.setValue("ast", parseInt(state.val.toString(), 10));
                         } else {
                             this.log.warn("Could not set value " + state.val.toString() + " in " + id);
