@@ -482,13 +482,17 @@ class GoE extends utils.Adapter {
                 await queue.add(() => this.setState("temperatures.maintempereature",      { val: parseInt(o.tmp, 10), ack: true })); // read
             }
             if(this.config.writeTemperatureArray) {
-                await queue.add(() => this.setState("temperatures.tempereatureArray",     { val: o.tma, ack: true }));
+                await queue.add(() => this.setState("temperatures.tempereatureArray",     { val: o.tma.toString(), ack: true }));
             }
             try {
                 if(o.tma) {
                     const tempArr = o.tma.toString().split(",");
                     for(let i = 0; i<tempArr.length; i++) {
-                        await queue.add(() => this.setState("temperatures.tempereature" + (i+1), { val: Number(tempArr[i]), ack: true}));
+                        if ( !this.existsState("temperatures.tempereature" + (i+1) )) {
+                            this.createState("temperatures.tempereature" + (i+1), Number(tempArr[i]),{name: "Temperature Sensor " + (i+1),  type: 'number', role: 'value'}, function () {});
+                        } else {
+                            await queue.add(() => this.setState("temperatures.tempereature" + (i+1), { val: Number(tempArr[i]), ack: true}));
+                        }
                     }
                 }
             } catch (e) {
