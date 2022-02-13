@@ -20,7 +20,7 @@
   },
   "dependencies": {
     "@iobroker/adapter-core": "^2.5.1",
-    "@sentry/node": "^6.16.0",
+    "@sentry/node": "^6.16.1",
     "@sentry/tracing": "^6.16.1",
     "axios": "^0.25.0",
     "joi": "^17.5.0",
