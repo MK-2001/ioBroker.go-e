@@ -488,8 +488,21 @@ class GoE extends utils.Adapter {
                 if(o.tma) {
                     const tempArr = o.tma.toString().split(",");
                     for(let i = 0; i<tempArr.length; i++) {
-                        if ( !this.existsState("temperatures.tempereature" + (i+1) )) {
-                            this.createState("temperatures.tempereature" + (i+1), Number(tempArr[i]),{name: "Temperature Sensor " + (i+1),  type: 'number', role: 'value'}, function () {});
+
+
+                        if ( !this.getObjectAsync("temperatures.tempereature" + (i+1))) {
+                            const obj = {
+                                name:       "temperatures.tempereature" + (i+1),
+                                type:       "number",
+                                read:       true,
+                                write:      false,
+                                role:       "value.temperature",
+                                desc:       "Temperature Sensor"
+                            };
+
+                            this.createState("", "temperatures", "tempereature" + (i+1), obj, {id: "", property: ""} , (o, e) => {
+                                this.log.debug("Callback with " + JSON.stringify(o) + " Error: " + JSON.stringify(e));
+                            });
                         } else {
                             await queue.add(() => this.setState("temperatures.tempereature" + (i+1), { val: Number(tempArr[i]), ack: true}));
                         }

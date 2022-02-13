@@ -1,8 +1,11 @@
 {
     "common": {
         "name": "go-e",
-        "version": "1.0.18",
+        "version": "1.0.19",
         "news": {
+            "1.0.19": {
+                "en": "TempArray resize on FW 054 HW V2; Readme.Adaption; Dependency security updates;"
+            },
             "1.0.18": {
                 "en": "First adaption of V3 hardware from go-e; Added switch to disable writing of the temperatures array; write different amont of temperature sensors; Added addtional attributes to ast; Updated several FOSS libs",
                 "de": "Erste Anpassung der V3-Hardware von go-e; Schalter hinzugefügt, um das Schreiben des Temperatur-Arrays zu deaktivieren; unterschiedliche Anzahl von Temperatursensoren schreiben; Zusätzliche Attribute zu ast hinzugefügt; Mehrere FOSS-Bibliotheken aktualisiert",
