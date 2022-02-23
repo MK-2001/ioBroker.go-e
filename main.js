@@ -488,9 +488,9 @@ class GoE extends utils.Adapter {
                 if(o.tma) {
                     const tempArr = o.tma.toString().split(",");
                     for(let i = 0; i<tempArr.length; i++) {
-
-
-                        if ( !this.getObjectAsync("temperatures.tempereature" + (i+1))) {
+                        const tmpObj = await this.getObjectAsync("temperatures.tempereature" + (i+1));
+                        this.log.silly("temperatures.tempereature" + (i+1) + ": " + JSON.stringify(tmpObj));
+                        if ( tmpObj == null) {
                             const obj = {
                                 name:       "temperatures.tempereature" + (i+1),
                                 type:       "number",
@@ -499,11 +499,12 @@ class GoE extends utils.Adapter {
                                 role:       "value.temperature",
                                 desc:       "Temperature Sensor"
                             };
-
-                            this.createState("", "temperatures", "tempereature" + (i+1), obj, {id: "", property: ""} , (o, e) => {
+                            this.log.info("Object not found, try to create: temperatures.tempereature" + (i+1));
+                            this.createState("", "temperatures", "tempereature" + (i+1), obj, {id: "", property: ""} , (e, o) => {
                                 this.log.debug("Callback with " + JSON.stringify(o) + " Error: " + JSON.stringify(e));
                             });
                         } else {
+                            this.log.silly("Object found, try to update: temperatures.tempereature" + (i+1));
                             await queue.add(() => this.setState("temperatures.tempereature" + (i+1), { val: Number(tempArr[i]), ack: true}));
                         }
                     }
