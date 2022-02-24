@@ -481,7 +481,7 @@ class GoE extends utils.Adapter {
             if(o.tmp != undefined) {
                 await queue.add(() => this.setState("temperatures.maintempereature",      { val: parseInt(o.tmp, 10), ack: true })); // read
             }
-            if(this.config.writeTemperatureArray) {
+            if(this.config.writeTemperatureArray && o.tma !== undefined) {
                 await queue.add(() => this.setState("temperatures.tempereatureArray",     { val: o.tma.toString(), ack: true }));
             }
             try {
