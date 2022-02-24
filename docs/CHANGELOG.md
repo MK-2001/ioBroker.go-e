@@ -1,7 +1,7 @@
-## 1.0.19
+## 1.0.21
 * Dependency updates: axio, sentry
 * Temperature array 4 > 6 with HW2 FW 054.
-
+* Removed Bug for an not existing temperature array (#120)
 ## 1.0.18
 * Stable Version
 * Added switch to disable wrting of the temperatures array.

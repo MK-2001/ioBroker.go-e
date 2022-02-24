@@ -1,9 +1,9 @@
 {
     "common": {
         "name": "go-e",
-        "version": "1.0.19",
+        "version": "1.0.21",
         "news": {
-            "1.0.19": {
+            "1.0.21": {
                 "en": "TempArray resize on FW 054 HW V2; Readme.Adaption; Dependency security updates;"
             },
             "1.0.18": {
