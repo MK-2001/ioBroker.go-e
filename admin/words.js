@@ -134,16 +134,8 @@ systemDictionary = {
         "pl": "Write temperature Array",
         "zh-cn": "Write temperature Array"
     },
-    "foreignObjectAckTrue": {
-        "en": "Only acknowledged states",
-        "de": "Nur bestätigte Änderungen (ack=true)"
-    },
-    "foreignObjectAckFalse": {
-        "en": "Only NOT acknowledge changes",
-        "de": "Nur unbestätigte Änderungen (ack=false)"
-    },
-    "foreignObjectAck": {
-        "en": "Select the value changes which should be considered from foreign objects:",
-        "de": "Selektiere welche Werteänderungen von externen Adapter beachtet werden sollen:"
+    "onlyAck": {
+        "en": "Ack?",
+        "de": "Ack?"
     }
 };

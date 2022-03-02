@@ -132,11 +132,13 @@
         "sentryEnabled":true,
         "writeTemperatureArray": true,
         "solarPowerForeignObjectID": "",
+        "solarPowerForeignObjectAck": false,
         "houseConsumptionForeignObjectID": "",
+        "houseConsumptionForeignObjectAck": false,
         "houseBatteryForeignObjectID": "",
+        "houseBatteryForeignObjectAck": false,
         "bufferToSolar": 100,
-        "bufferToBattery": 1600,
-        "foreignObjectAck": false
+        "bufferToBattery": 1600
     },
     "objects": [],
     "instanceObjects": [

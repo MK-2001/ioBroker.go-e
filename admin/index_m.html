@@ -90,31 +90,42 @@
                 <h5>Foreign Objects</h5>
                 <p>In these settings you can select Object from foreign Adapters. This makes may be an own script not nessesscary anymore. This Adapter is currently consuming only ack = false states.</p>
             </div>
-            <div class="col s12">
-                <p class="translate" for="foreignObjectAck">foreignObjectAck</p>
-                <input class="value" id="foreignObjectAckTrue" name="foreignObjectAck" value="true" />
-                <label id="foreignObjectAckTrueLbl" for="foreignObjectAckTrue" class="translate">foreignObjectAckTrue</label>
-                <input class="value" id="foreignObjectAckFalse" name="foreignObjectAck" value="false" />
-                <label id="foreignObjectAckFalseLbl" for="foreignObjectAckFalse" class="translate">foreignObjectAckFalse</label>
-            </div>
             <div class="col s5 input-field">
-                <input class="value" id="solarPowerForeignObjectID"/>
-                <label id="solarPowerLbl" for="solarPowerForeignObjectID" class="translate">solarPowerForeignObjectID</label>
-                <button id="solarPowerForeignSearch">...</button>
+                <div class="col s4 input-field">
+                    <input class="value" id="solarPowerForeignObjectID"/>
+                    <label id="solarPowerLbl" for="solarPowerForeignObjectID" class="translate">solarPowerForeignObjectID</label>
+                    <button id="solarPowerForeignSearch">...</button>
+                </div>
+                <div class="col s1 input-field">
+                    <input type="checkbox" class="value" id="solarPowerForeignObjectAck" />
+                    <label for="onlyAck" class="translate">onlyAck</label>
+                </div>
             </div>
             <div class="col s5 input-field">
                 <input type="text" class="value" id="bufferToSolar" />
                 <label id="bufferToSolarLbl" for="bufferToSolar" class="translate">bufferToSolar</label>
             </div>
             <div class="col s5 input-field">
-                <input class="value" id="houseConsumptionForeignObjectID"/>
-                <label id="houseConsumptionLbl" for="houseConsumptionForeignObjectID" class="translate">houseConsumptionForeignObjectID</label>
-                <button id="houseConsumptionForeignSearch">...</button>
+                <div class="col s4 input-field">
+                    <input class="value" id="houseConsumptionForeignObjectID"/>
+                    <label id="houseConsumptionLbl" for="houseConsumptionForeignObjectID" class="translate">houseConsumptionForeignObjectID</label>
+                    <button id="houseConsumptionForeignSearch">...</button>
+                </div>
+                <div class="col s1 input-field">
+                    <input type="checkbox" class="value" id="houseConsumptionForeignObjectAck" />
+                    <label for="onlyAck" class="translate">onlyAck</label>
+                </div>
             </div>
             <div class="col s5 input-field">
-                <input class="value" id="houseBatteryForeignObjectID"/>
-                <label id="houseBatteryLbl" for="houseBatteryForeignObjectID" class="translate">houseBatteryForeignObjectID</label>
-                <button id="houseBatteryForeignSearch">...</button>
+                <div class="col s4 input-field">
+                    <input class="value" id="houseBatteryForeignObjectID"/>
+                    <label id="houseBatteryLbl" for="houseBatteryForeignObjectID" class="translate">houseBatteryForeignObjectID</label>
+                    <button id="houseBatteryForeignSearch">...</button>
+                </div>
+                <div class="col s1 input-field">
+                    <input type="checkbox" class="value" id="houseBatteryForeignObjectAck" />
+                    <label for="onlyAck" class="translate">onlyAck</label>
+                </div>
             </div>
             <div class="col s5 input-field">
                 <input type="text" class="value" id="bufferToBattery" />
