@@ -245,11 +245,29 @@ class GoE extends utils.Adapter {
                     case this.config.solarPowerForeignObjectID:
                     case this.config.houseBatteryForeignObjectID:
                     case this.config.houseConsumptionForeignObjectID:
-                        this.calculateFromForeignObjects(id);
+                        if(this.config.foreignObjectAck) {
+                            this.calculateFromForeignObjects(id);
+                        } else {
+                            this.log.silly("foreignObjectAck is false; Ignore external change");
+                        }
                         break;
                     default:
                         this.log.error("Not developed function to write " + id + " with state " + state.val.toString());
                 }
+            } else {
+                // Ack = false
+                switch (id) {
+                    case this.config.solarPowerForeignObjectID:
+                    case this.config.houseBatteryForeignObjectID:
+                    case this.config.houseConsumptionForeignObjectID:
+                        if(!this.config.foreignObjectAck) {
+                            this.calculateFromForeignObjects(id);
+                        } else {
+                            this.log.silly("foreignObjectAck is true; Ignore external change");
+                        }
+                        break;
+                }
+
             }
         } else {
             // The state was deleted
