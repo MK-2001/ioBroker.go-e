@@ -248,7 +248,7 @@ class GoE extends utils.Adapter {
                         this.calculateFromForeignObjects(id);
                         break;
                     default:
-                        this.log.error("Not deveoped function to write " + id + " with state " + state);
+                        this.log.error("Not developed function to write " + id + " with state " + state.val.toString());
                 }
             }
         } else {
@@ -276,7 +276,9 @@ class GoE extends utils.Adapter {
     //     }
     // }
 
-    // go-eCharger functions
+    /**
+     * This function get the JSON Object from the go-E Charger status API
+     */
     async getStateFromDevice() {
         this.log.debug("Starte Abfrage an: http://" + this.config.serverName + "/status");
         axios.defaults.baseURL = "http://" + this.config.serverName;
