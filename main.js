@@ -41,6 +41,9 @@ class GoE extends utils.Adapter {
             al5: "settings.ampere_level5",
             lbr: "settings.color.led_brightness"
         };
+
+        // Ack alignment object
+        this.ackObj = {};
     }
 
     /**
@@ -91,14 +94,17 @@ class GoE extends utils.Adapter {
         // get updates from a foreign adapter if it is set in Settings
         if(this.config.houseBatteryForeignObjectID) {
             this.subscribeForeignStates(this.config.houseBatteryForeignObjectID);
+            this.ackObj[this.config.houseBatteryForeignObjectID] = this.config.houseBatteryForeignObjectAck;
             this.log.debug("Subscribe foreign object " + this.config.houseBatteryForeignObjectID);
         }
         if(this.config.houseConsumptionForeignObjectID) {
             this.subscribeForeignStates(this.config.houseConsumptionForeignObjectID);
+            this.ackObj[this.config.houseConsumptionForeignObjectID] = this.config.houseConsumptionForeignObjectAck;
             this.log.debug("Subscribe foreign object " + this.config.houseConsumptionForeignObjectID);
         }
         if(this.config.solarPowerForeignObjectID) {
             this.subscribeForeignStates(this.config.solarPowerForeignObjectID);
+            this.ackObj[this.config.solarPowerForeignObjectID] = this.config.solarPowerForeignObjectAck;
             this.log.debug("Subscribe foreign object " + this.config.solarPowerForeignObjectID);
         }
         // Get all Information for the first time.
@@ -245,11 +251,8 @@ class GoE extends utils.Adapter {
                     case this.config.solarPowerForeignObjectID:
                     case this.config.houseBatteryForeignObjectID:
                     case this.config.houseConsumptionForeignObjectID:
-                        if(this.config.foreignObjectAck) {
+                        if(this.ackObj[id])
                             this.calculateFromForeignObjects(id);
-                        } else {
-                            this.log.silly("foreignObjectAck is false; Ignore external change");
-                        }
                         break;
                     default:
                         this.log.error("Not developed function to write " + id + " with state " + state.val.toString());
@@ -260,11 +263,7 @@ class GoE extends utils.Adapter {
                     case this.config.solarPowerForeignObjectID:
                     case this.config.houseBatteryForeignObjectID:
                     case this.config.houseConsumptionForeignObjectID:
-                        if(!this.config.foreignObjectAck) {
-                            this.calculateFromForeignObjects(id);
-                        } else {
-                            this.log.silly("foreignObjectAck is true; Ignore external change");
-                        }
+                        this.calculateFromForeignObjects(id);
                         break;
                 }
 
@@ -790,11 +789,11 @@ class GoE extends utils.Adapter {
     /**
      * Get the max Watts from foreign adapters
      */
-    async calculateFromForeignObjects(adapterName = "unknown") {
-
+    async calculateFromForeignObjects(stateObjectId = "[unknown State ID]") {
+        // Determine if Ack or Unacknowledged items will be considered
         const transaction = sentry.startTransaction({
             op: "calculateFromForeignObjects",
-            name: "calculateFromForeignObjects(" + adapterName + ")"
+            name: "calculateFromForeignObjects(" + stateObjectId + ")"
         });
         try {
             const usedPower = await this.getStateAsync("energy.power");
