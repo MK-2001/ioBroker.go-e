@@ -790,7 +790,6 @@ class GoE extends utils.Adapter {
      * Get the max Watts from foreign adapters
      */
     async calculateFromForeignObjects(stateObjectId = "[unknown State ID]") {
-        // Determine if Ack or Unacknowledged items will be considered
         const transaction = sentry.startTransaction({
             op: "calculateFromForeignObjects",
             name: "calculateFromForeignObjects(" + stateObjectId + ")"
