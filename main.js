@@ -107,6 +107,7 @@ class GoE extends utils.Adapter {
             this.ackObj[this.config.solarPowerForeignObjectID] = this.config.solarPowerForeignObjectAck;
             this.log.debug("Subscribe foreign object " + this.config.solarPowerForeignObjectID);
         }
+        this.log.silly("Ack-Obj: " + JSON.stringify(this.ackObj));
         // Get all Information for the first time.
         await this.getStateFromDevice();
         // Start the Adapter to sync in the interval
@@ -159,7 +160,7 @@ class GoE extends utils.Adapter {
     onStateChange(id, state) {
         if (state) {
             // The state was changed
-            this.log.debug(`state ${id} changed: ${state.val} (ack = ${state.ack}) namespace: ` + this.namespace);
+            this.log.silly(`state ${id} changed: ${state.val} (ack = ${state.ack}) namespace: ` + this.namespace);
             if (!state.ack) {
                 // If it is already acknoladged, we dont have to send it to the go-eCharger device. Or have to handle the change.
                 // Handle null values with the rejection
@@ -251,19 +252,28 @@ class GoE extends utils.Adapter {
                     case this.config.solarPowerForeignObjectID:
                     case this.config.houseBatteryForeignObjectID:
                     case this.config.houseConsumptionForeignObjectID:
-                        if(this.ackObj[id])
+                        if(this.ackObj[id] === false) {
+                            this.log.silly("Will work on " + id + " becase ack is " + state.ack + " and should be " + this.ackObj[id]);
                             this.calculateFromForeignObjects(id);
+                        } else {
+                            this.log.silly("Will NOT work on " + id + " becase ack is " + state.ack + " and should be " + this.ackObj[id]);
+                        }
                         break;
                     default:
                         this.log.error("Not developed function to write " + id + " with state " + state.val.toString());
                 }
             } else {
-                // Ack = false
+                // Ack = true
                 switch (id) {
                     case this.config.solarPowerForeignObjectID:
                     case this.config.houseBatteryForeignObjectID:
                     case this.config.houseConsumptionForeignObjectID:
-                        this.calculateFromForeignObjects(id);
+                        if(this.ackObj[id] === true) {
+                            this.log.silly("Will work on " + id + " becase ack is " + state.ack + " and should be " + this.ackObj[id]);
+                            this.calculateFromForeignObjects(id);
+                        } else {
+                            this.log.silly("Will NOT work on " + id + " becase ack is " + state.ack + " and should be " + this.ackObj[id]);
+                        }
                         break;
                 }
 
