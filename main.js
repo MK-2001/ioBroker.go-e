@@ -675,7 +675,7 @@ class GoE extends utils.Adapter {
             } catch (e) {
                 this.log.error("Error during set MaxWatts: " + e.message);
             }
-            transaction.finish();
+            transaction ? transaction.finish();
         } else {
             // Still existing Block-Timer
             this.log.warn("MaxWatts ignored. You are sending to fast! Update interval in settings is currently set to: " + this.config.ampUpdateInterval);
