@@ -137,5 +137,9 @@ systemDictionary = {
     "onlyAck": {
         "en": "Ack?",
         "de": "Ack?"
+    },
+    "apiVersion": {
+        "en": "If you have Hardware in Version 2 you need API-Version 1. If you installed Hardware Version 3 or later you can activate API V2 in the go-eCharger - App.",
+        "de": "Wenn du HW V2 besitzt, muss du die Einstellung bei API V1 belassen. Ab HW Version 3 kann auch die API V2 zusätzlich aktiviert werden."
     }
 };
