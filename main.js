@@ -512,33 +512,33 @@ class GoE extends utils.Adapter {
                 await queue.add(() => this.setState("mqtt.connection",                    { val: o.mcc, ack: true }));
             }
             if(o.tmp != undefined) {
-                await queue.add(() => this.setState("temperatures.maintempereature",      { val: parseInt(o.tmp, 10), ack: true })); // read
+                await queue.add(() => this.setState("temperatures.maintemperature",      { val: parseInt(o.tmp, 10), ack: true })); // read
             }
             if(this.config.writeTemperatureArray && o.tma !== undefined) {
-                await queue.add(() => this.setState("temperatures.tempereatureArray",     { val: o.tma.toString(), ack: true }));
+                await queue.add(() => this.setState("temperatures.temperatureArray",     { val: o.tma.toString(), ack: true }));
             }
             try {
                 if(o.tma) {
                     const tempArr = o.tma.toString().split(",");
                     for(let i = 0; i<tempArr.length; i++) {
-                        const tmpObj = await this.getObjectAsync("temperatures.tempereature" + (i+1));
-                        this.log.silly("temperatures.tempereature" + (i+1) + ": " + JSON.stringify(tmpObj));
+                        const tmpObj = await this.getObjectAsync("temperatures.temperature" + (i+1));
+                        this.log.silly("temperatures.temperature" + (i+1) + ": " + JSON.stringify(tmpObj));
                         if ( tmpObj == null) {
                             const obj = {
-                                name:       "temperatures.tempereature" + (i+1),
+                                name:       "temperatures.temperature" + (i+1),
                                 type:       "number",
                                 read:       true,
                                 write:      false,
                                 role:       "value.temperature",
                                 desc:       "Temperature Sensor"
                             };
-                            this.log.info("Object not found, try to create: temperatures.tempereature" + (i+1));
-                            this.createState("", "temperatures", "tempereature" + (i+1), obj, {id: "", property: ""} , (e, o) => {
+                            this.log.info("Object not found, try to create: temperatures.temperature" + (i+1));
+                            this.createState("", "temperatures", "temperature" + (i+1), obj, {id: "", property: ""} , (e, o) => {
                                 this.log.debug("Callback with " + JSON.stringify(o) + " Error: " + JSON.stringify(e));
                             });
                         } else {
-                            this.log.silly("Object found, try to update: temperatures.tempereature" + (i+1));
-                            await queue.add(() => this.setState("temperatures.tempereature" + (i+1), { val: Number(tempArr[i]), ack: true}));
+                            this.log.silly("Object found, try to update: temperatures.temperature" + (i+1));
+                            await queue.add(() => this.setState("temperatures.temperature" + (i+1), { val: Number(tempArr[i]), ack: true}));
                         }
                     }
                 }
