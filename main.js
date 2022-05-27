@@ -307,6 +307,10 @@ class GoE extends utils.Adapter {
      * This function get the JSON Object from the go-E Charger status API
      */
     async getStateFromDevice() {
+        let apiEndpoint = ""
+        if(this.config.apiVersion == 2) {
+
+        }
         this.log.debug("Starte Abfrage an: http://" + this.config.serverName + "/status");
         axios.defaults.baseURL = "http://" + this.config.serverName;
         await axios.get("/status")
