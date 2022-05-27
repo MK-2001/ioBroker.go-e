@@ -833,7 +833,12 @@ class GoE extends utils.Adapter {
         } catch (err) {
             this.log.error("Error in calculateFromForeignObjects: " + JSON.stringify(err));
         }
-        transaction.finish();
+        try {
+            transaction.finish();
+        } catch(e) {
+            // Do nothing
+        }
+
     }
     /**
      * get a number from a foreign object id or reply with a default value
