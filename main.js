@@ -42,6 +42,14 @@ class GoE extends utils.Adapter {
             lbr: "settings.color.led_brightness"
         };
 
+        // Translation Object API v2
+        this.translationObjectV2 = {
+            alw: {name: "allow_charging"},
+            rbc: {name: "reboot_counter"},
+            rbt: {name: "reboot_timer"},
+            car: {name: "car"},
+            amp: {name: "ampere"}
+        };
         // Ack alignment object
         this.ackObj = {};
     }
@@ -307,11 +315,11 @@ class GoE extends utils.Adapter {
      * This function get the JSON Object from the go-E Charger status API
      */
     async getStateFromDevice() {
-        let apiEndpoint = ""
+        let apiEndpoint = "/status";
         if(this.config.apiVersion == 2) {
-
+            apiEndpoint = "/api/status?filter=" + this.translationObjectV2.keys().join(",");
         }
-        this.log.debug("Starte Abfrage an: http://" + this.config.serverName + "/status");
+        this.log.debug("Starte Abfrage an: http://" + this.config.serverName + apiEndpoint);
         axios.defaults.baseURL = "http://" + this.config.serverName;
         await axios.get("/status")
             .then((o) => {
@@ -334,6 +342,7 @@ class GoE extends utils.Adapter {
                         this.processStatusObject(o.data);
                     }
                 }
+                this.setState("info.connection", true, true);
             })
             .catch(e => {
                 if(e.code ==  "ENOTFOUND") {
@@ -346,9 +355,6 @@ class GoE extends utils.Adapter {
                     this.log.error(e.message);
                     sentry.captureException(e);
                 }
-            })
-            .then(() => {
-                this.setState("info.connection", true, true);
             });
     }
 
@@ -388,19 +394,19 @@ class GoE extends utils.Adapter {
                 sentry.captureException(e);
             }
 
-            await queue.add(() => this.setState("reboot_counter",                     { val: parseInt(o.rbc, 10), ack: true })); // read
-            await queue.add(() => this.setState("reboot_timer",                       { val: parseInt(o.rbt, 10), ack: true })); // read
-            await queue.add(() => this.setState("car",                                { val: parseInt(o.car, 10), ack: true })); // read
-            await queue.add(() => this.setState("ampere",                             { val: parseInt(o.amp, 10), ack: true })); // write
+            await queue.add(() => this.setState("reboot_counter",                     { val: parseInt(o.rbc, 10), ack: true })); // read, V1, V2
+            await queue.add(() => this.setState("reboot_timer",                       { val: parseInt(o.rbt, 10), ack: true })); // read, V1, V2
+            await queue.add(() => this.setState("car",                                { val: parseInt(o.car, 10), ack: true })); // read, V1, V2
+            await queue.add(() => this.setState("ampere",                             { val: parseInt(o.amp, 10), ack: true })); // write, V1, V2
             if(o.amx === undefined || o.amx == null) {
-                await queue.add(() => this.setState("amperePV",                       { val: parseInt(o.amp, 10), ack: true })); // COPY AMP Value to AMX
+                await queue.add(() => this.setState("amperePV",                       { val: parseInt(o.amp, 10), ack: true })); // COPY AMP Value to AMX V1
             } else {
-                await queue.add(() => this.setState("amperePV",                       { val: parseInt(o.amx, 10), ack: true })); // write
+                await queue.add(() => this.setState("amperePV",                       { val: parseInt(o.amx, 10), ack: true })); // write, V1
             }
 
             await queue.add(() => this.setState("error",                              { val: parseInt(o.err, 10), ack: true })); // read
             await queue.add(() => this.setState("access_state",                       { val: parseInt(o.ast, 10), ack: true })); // write
-            await queue.add(() => this.setState("allow_charging",                     { val: parseInt(o.alw, 10), ack: true })); // write
+            await queue.add(() => this.setState("allow_charging",                     { val: parseInt(o.alw, 10), ack: true })); // write, V2
             await queue.add(() => this.setState("stop_state",                         { val: parseInt(o.stp, 10), ack: true })); // write
 
             await queue.add(() => this.setState("phases",                             { val: parseInt(o.pha, 10), ack: true })); // read
@@ -557,7 +563,7 @@ class GoE extends utils.Adapter {
             if(o.lon != undefined && false) {
                 await queue.add(() => this.setState("lon",                            { val: o.lon, ack: true })); // Lastmanagement: erwartete Anzahl von Ladestationen (derzeit nicht unterstützt)
             }
-        } catch (e) {
+        } catch(e) {
             this.log.warn("Error in go.e: " + JSON.stringify(e.message) + "; Stack: " + e.stack);
             sentry.captureException(e);
         }
