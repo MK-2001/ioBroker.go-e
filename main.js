@@ -790,7 +790,12 @@ class GoE extends utils.Adapter {
                 this.log.error("Error during set adjust Watts: " + e.message);
                 sentry.captureException(e);
             }
-            transaction.finish();
+            try {
+                transaction.finish();
+            } catch(e) {
+                // do nothing;
+            }
+
         } else {
             // Still existing Block-Timer
             this.log.warn("MaxWatts ignored. You are sending to fast! Update interval in settings is currently set to: " + this.config.ampUpdateInterval);
