@@ -1,6 +1,6 @@
 {
   "name": "iobroker.go-e",
-  "version": "1.0.22",
+  "version": "1.0.25",
   "description": "go-e ist die Aufforderung, sich elektrisch zu bewegen. e-Mobilität ist unser Antrieb, wobei unsere Kernkompetenz die Ladetechnik für Elektroautos ist. Von der einzelnen Ladestation für e-Autos über Photovoltaik-Anbindung bis hin zum Lastmanagement von ganzen Gebäuden, sind wir Anbieter gesamtheitlicher Systemlösungen für sämtliche Anforderungen der modernen e-Mobilität.",
   "author": {
     "name": "MK-2001",
@@ -22,7 +22,7 @@
     "@sentry/node": "^6.18.2",
     "@iobroker/adapter-core": "^2.6.0",
     "@sentry/tracing": "^6.18.2",
-    "axios": "^0.26.0",
+    "axios": "^0.27.2",
     "joi": "^17.6.0",
     "p-queue": "^6.6.2"
   },

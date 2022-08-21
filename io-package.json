@@ -1,10 +1,10 @@
 {
     "common": {
         "name": "go-e",
-        "version": "1.0.22",
+        "version": "1.0.25",
         "news": {
-            "1.0.22": {
-                "en": "TempArray resize on FW 054 HW V2; Readme.Adaption; Dependency security updates; Added the options to consider acknowledged value changes of foreign adapters; Added choice of ack of foreign adapters (#125)"
+            "1.0.25": {
+                "en": "TempArray resize on FW 054 HW V2; Readme.Adaption; Dependency security updates; Added the options to consider acknowledged value changes of foreign adapters; Added choice of ack of foreign adapters (#125)\n Minor bug for sentry; Error in tme object; Bug in Sentry. Added Catch."
             },
             "1.0.18": {
                 "en": "First adaption of V3 hardware from go-e; Added switch to disable writing of the temperatures array; write different amont of temperature sensors; Added addtional attributes to ast; Updated several FOSS libs",
