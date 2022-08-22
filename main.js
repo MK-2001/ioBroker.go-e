@@ -12,6 +12,7 @@ const utils = require("@iobroker/adapter-core");
 const axios = require("axios").default;
 const {default: PQueue} = require("p-queue");
 const sentry = require("@sentry/node");
+const { object } = require("joi");
 const schema = require("./lib/schema.js").schema;
 
 class GoE extends utils.Adapter {
@@ -50,6 +51,9 @@ class GoE extends utils.Adapter {
             car: {name: "car"},
             amp: {name: "ampere"}
         };
+        // Write it to possible values
+        this.config.possibleAttributes = Object.keys(this.translationObjectV2);
+
         // Ack alignment object
         this.ackObj = {};
     }
@@ -348,12 +352,21 @@ class GoE extends utils.Adapter {
                 if(e.code ==  "ENOTFOUND") {
                     this.setState("info.connection", false, true);
                     this.log.warn("Host not found: " + this.config.serverName);
+                } else if(e.code == "EAI_AGAIN") {
+                    this.setState("info.connection", false, true);
+                    this.log.warn("Network/DNS broken to: " + this.config.serverName);
                 } else if(e.code == "ECONNRESET") {
                     this.setState("info.connection", false, true);
                     this.log.warn("Cant connect to host " + this.config.serverName);
+                } else if(e.code == "EHOSTUNREACH") {
+                    this.setState("info.connection", false, true);
+                    this.log.warn("Can not route to the host " + this.config.serverName);
+                } else if (e.response.status === 404) {
+                    this.setState("info.connection", false, true);
+                    this.log.warn("Adapter not ready " + this.config.serverName);
                 } else {
                     this.log.error(e.message);
-                    sentry.captureException(e);
+                    // sentry.captureException(e);
                 }
             });
     }
@@ -565,7 +578,7 @@ class GoE extends utils.Adapter {
             }
         } catch(e) {
             this.log.warn("Error in go.e: " + JSON.stringify(e.message) + "; Stack: " + e.stack);
-            sentry.captureException(e);
+            sentry.captureException(JSON.stringify(e));
         }
     }
     /**

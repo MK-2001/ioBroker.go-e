@@ -139,7 +139,9 @@
         "houseBatteryForeignObjectAck": false,
         "bufferToSolar": 100,
         "bufferToBattery": 1600,
-        "apiVersion": 1
+        "apiVersion": 1,
+        "selectedAttributes": ["alw", "car", "amp"],
+        "possibleAttributes": ["alw", "car", "amp"]
     },
     "objects": [],
     "instanceObjects": [
