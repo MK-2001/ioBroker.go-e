@@ -22,19 +22,14 @@ function load(settings, onChange) {
     if (M) M.updateTextFields();
     // https://stackoverflow.com/questions/1187518/how-to-get-the-difference-between-two-arrays-in-javascript
     let intersection = settings["possibleAttributes"].filter(x => settings["selectedAttributes"].includes(x));
-    let difference = settings["possibleAttributes"].filter(x => !settings["selectedAttributes"].includes(x));
-    $.each(intersection, function(value) {
+    $.each(settings["possibleAttributes"], function(key, value) {
         $('#selectedAttributes')
             .append($("<option></option>")
                 .attr("value", value)
-                .text(value));
+                .text(value)
+                .attr("selected", settings["selectedAttributes"].includes(value)));
     });
-    $.each(difference, function(value) {
-        $('#unselectedAttributes')
-            .append($("<option></option>")
-                .attr("value", value)
-                .text(value));
-    });
+
     // Selection Box added from https://forum.iobroker.net/topic/10186/adapterentwicklung-object-id-baum/6
 
     $('#solarPowerForeignSearch').click(function () {

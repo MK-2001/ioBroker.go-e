@@ -51,8 +51,7 @@ class GoE extends utils.Adapter {
             car: {name: "car"},
             amp: {name: "ampere"}
         };
-        // Write it to possible values
-        this.config.possibleAttributes = Object.keys(this.translationObjectV2);
+
 
         // Ack alignment object
         this.ackObj = {};
@@ -63,6 +62,9 @@ class GoE extends utils.Adapter {
      */
     async onReady() {
         // Initialize your adapter here
+        // Write it to possible values
+        this.log.info("Update selectable values from " + JSON.stringify(this.config.possibleAttributes) + " to " + Object.keys(this.translationObjectV2));
+        this.config.possibleAttributes = Object.keys(this.translationObjectV2);
 
         // The adapters config (in the instance object everything under the attribute "native") is accessible via
         // this.config:
