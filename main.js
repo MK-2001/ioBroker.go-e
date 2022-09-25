@@ -363,7 +363,7 @@ class GoE extends utils.Adapter {
                 } else if(e.code == "EHOSTUNREACH") {
                     this.setState("info.connection", false, true);
                     this.log.warn("Can not route to the host " + this.config.serverName);
-                } else if (e.response.status === 404) {
+                } else if (e.response && e.response.status === 404) {
                     this.setState("info.connection", false, true);
                     this.log.warn("Adapter not ready " + this.config.serverName);
                 } else {
