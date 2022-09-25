@@ -353,16 +353,19 @@ class GoE extends utils.Adapter {
             .catch(e => {
                 if(e.code ==  "ENOTFOUND") {
                     this.setState("info.connection", false, true);
-                    this.log.warn("Host not found: " + this.config.serverName);
+                    this.log.info("Host not found: " + this.config.serverName);
                 } else if(e.code == "EAI_AGAIN") {
                     this.setState("info.connection", false, true);
-                    this.log.warn("Network/DNS broken to: " + this.config.serverName);
+                    this.log.info("Network/DNS broken to: " + this.config.serverName);
                 } else if(e.code == "ECONNRESET") {
                     this.setState("info.connection", false, true);
-                    this.log.warn("Cant connect to host " + this.config.serverName);
+                    this.log.info("Cant connect to host " + this.config.serverName);
                 } else if(e.code == "EHOSTUNREACH") {
                     this.setState("info.connection", false, true);
-                    this.log.warn("Can not route to the host " + this.config.serverName);
+                    this.log.info("Can not route to the host " + this.config.serverName);
+                } else if(e.code == "ETIMEDOUT") {
+                    this.setState("info.connection", false, true);
+                    this.log.info("Did not got response in time from " + this.config.serverName);
                 } else if (e.response && e.response.status === 404) {
                     this.setState("info.connection", false, true);
                     this.log.warn("Adapter not ready " + this.config.serverName);
