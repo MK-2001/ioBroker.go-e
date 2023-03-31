@@ -1,3 +1,13 @@
+## 1.0.26
+* Added Object solarLoadOnly
+* Enabled useage of Foreign Object
+* detailes description in documentation with examples
+* Added switch to negate given foreign values
+* Updated Admin interface to get a more structured view
+* Catch Networking errors like DNS, Adapter down, etc.
+* added possibility to use v2 api (not fully supported yet)
+* Updated FOSS
+
 ## 1.0.21
 * Dependency updates: axio, sentry
 * Temperature array 4 > 6 with HW2 FW 054.
