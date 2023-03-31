@@ -87,18 +87,10 @@ systemDictionary = {
         "zh-cn": "以瓦特为单位的当前家庭功耗的对象 ID [W]"
     },
     "houseBatteryForeignObjectID": {
-        "en": "object-id for current home battery state of charge in watt hours [Wh]",
-        "de": "Objekt-ID für aktuellen Ladezustand der Heimbatterie in Wattstunden [Wh]",
-        "ru": "идентификатор объекта для текущего уровня заряда домашнего аккумулятора в ватт-часах [Вт-ч]",
-        "pt": "object-id para o estado atual de carga da bateria doméstica em watt-hora [Wh]",
-        "nl": "object-id voor de huidige oplaadstatus van de thuisbatterij in wattuur [Wh]",
-        "fr": "object-id pour l'état de charge actuel de la batterie domestique en wattheures [Wh]",
-        "it": "id oggetto per lo stato di carica attuale della batteria domestica in wattora [Wh]",
-        "es": "ID de objeto para el estado de carga actual de la batería doméstica en vatios hora [Wh]",
-        "pl": "Object-id dla aktualnego stanu naładowania akumulatora domowego w watogodzinach [Wh]",
-        "zh-cn": "以瓦特小时为单位的当前家用电池充电状态的对象 ID [Wh]"
-    },
-    "bufferToSolar": {
+        "en": "object-id for current powerflow of battery in watts hours [W]",
+        "de": "Objekt-ID für den aktuellen Stromfluss der Heimbatterie in Watt [W]"
+
+    }, "bufferToSolar": {
         "en": "Buffer to the outcome from solar panel to the usage of loading process",
         "de": "Puffer zwischen Solarpanel-Ertrag und der Nutzung für den Ladevorgang in Watt [W]",
         "ru": "Буфер результата от солнечной панели к использованию процесса загрузки",
@@ -134,8 +126,28 @@ systemDictionary = {
         "pl": "Write temperature Array",
         "zh-cn": "Write temperature Array"
     },
-    "onlyAck": {
+    "solarPowerForeignObjectAck": {
         "en": "Ack?",
         "de": "Ack?"
+    },
+    "houseBatteryForeignObjectAck": {
+        "en": "Ack?",
+        "de": "Ack?"
+    },
+    "houseConsumptionForeignObjectAck": {
+        "en": "Ack?",
+        "de": "Ack?"
+    },
+    "solarPowerForeignObjectNegate": {
+        "en": "Negate?",
+        "de": "negieren?"
+    },
+    "houseBatteryForeignObjectNegate": {
+        "en": "Negate?",
+        "de": "negieren?"
+    },
+    "apiVersion": {
+        "en": "If you have Hardware in Version 2 you need API-Version 1. If you installed Hardware Version 3 or later you can activate API V2 in the go-eCharger - App.",
+        "de": "Wenn du HW V2 besitzt, muss du die Einstellung bei API V1 belassen. Ab HW Version 3 kann auch die API V2 alternativ aktivieren."
     }
 };

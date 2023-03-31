@@ -58,6 +58,7 @@ In this paragraph are listet additional functionalities which can be used for an
   - led_brightness
 - [stop_state](#stop-state)
 - [unlock_state](#unlock-state)
+- [Foreign Objects](#foreign-objects)
 
 ## Access State
 
@@ -150,9 +151,28 @@ Automatic shutdown. Stops the loading Process automated after the giver amount o
 0: deactivated
 2: switch off after kWh
 
-## Cable Unlock Mode (Unlock STate)
+## Cable Unlock Mode (Unlock State)
 
 Cable lock adjustment. This attribute defins when the cable locks and releases.
 0: lock as long as the car is plugged in (default)
 1: Automatically unlock after charging
 2: Always leave the cable locked
+
+## Foreign Objects
+If you use from other vendors adapters adapters to read the current energy situation of consumtion or PV generating you can use these objects directly. For that you do not have to use own additional scripts.
+
+We are using here the Adapter of Fronius. But it could be used any object you have.
+
+### Available Solar Power
+This attibute explains this adapter how much power it can use to load the car.
+
+Example:
+|go-e Adapter name | Foreign Adapter Attribute | Example Value | Settings onlyAck | Settings Negate? | Notes |
+|:-- |:-- |:--:|:--:|:--:|:-- |
+| solarPowerForeignObjectID | fronius.0.powerflow.P_Grid | -1000.0 | true | true | Fronius gives the values which is send to the grig negative. For that you have to put on the `Negative?` setting. Fronius is sending the values with `ack:true`, so enable the `Only ack?` setting. |
+| houseConsumptionForeignObjectID | *empty* | - | - | - | Fronius does not provide a seperated PV_Production value. It is already covered in PV_GRID; see above |
+| houseConsumptionForeignObjectID | fronius.0.powerflow.P_Akku | -1000.0 | true | true | If you want to prioritize the loading of the car before you want to load your home battery, you can add the akku load as well |
+| bufferToSolar | *fixed value* | 100 | - | - | This is the buffer, to not consume energy from the grid, when the sun is leaving. It should cover the 60s refresh timeframe. |
+
+It should result in automatism like this graph:
+![PV Car Loading on bad weather](./PV_LoadBadWeather.png)
