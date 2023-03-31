@@ -601,7 +601,7 @@ class GoE extends utils.Adapter {
         this.log.info("Set value " + value + " of id " + id);
         axios.get("http://" + this.config.serverName + "/mqtt?payload=" + id + "=" + value)
             .then(o => {
-                this.log.info(o.status + " with message: " + o.statusText);
+                this.log.debug(o.status + " with message: " + o.statusText);
                 this.processStatusObject(o.data);
             })
             .catch(err => {
