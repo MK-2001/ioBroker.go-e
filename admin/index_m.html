@@ -24,7 +24,11 @@
     <link rel="stylesheet" type="text/css" href="style.css" />
     <script type="text/javascript" src="words.js"></script>
     <script type="text/javascript" src="index_m.js"></script>
-
+    <style>
+        .no-space-grid {
+            margin-bottom: 0px;
+        }
+    </style>
 </head>
 
 <body>
@@ -60,92 +64,143 @@
                 <h5>General Settings</h5>
                 <p>All required settings to operate the adapter</p>
             </div>
-            <div class="col s5 input-field">
+        </div>
+        <div class="row">
+            <div class="col s12 input-field">
+                <input type="checkbox" class="value" id="sentryEnabled" />
+                <label for="sentryEnabled" class="translate">sentryEnabled</label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s12 m6 input-field">
                 <input type="text" class="value" id="serverName" />
                 <label for="serverName" class="translate">serverName</label>
             </div>
-            <div class="col s5 input-field">
-                <input type="radio" name="apiVersion" id="apiVersion" value="1" /> API-V1
-                <input type="radio" name="apiVersion" id="apiVersion" value="2" /> API-V2
-                <input type="text" class="value" id="apiVersion" />
+            <div class="col s12 m6">
+                <select class="value" id="apiVersion">
+                    <option value="1">API V1</option>
+                    <option value="2">API V2</option>
+                </select>
                 <label for="apiVersion" class="translate">apiVersion</label>
             </div>
-            <div class="col s5 input-field">
+            <div class="col s12 m6">
                 <input type="text" class="value" id="serverInterval" />
                 <label for="serverInterval" class="translate">serverInterval</label>
             </div>
-            <div class="col s5 input-field">
+            <div class="col s12 m6">
                 <input type="text" class="value" id="ampUpdateInterval" />
                 <label for="ampUpdateInterval" class="translate">ampUpdateInterval</label>
-            </div>
-            <div class="col s5 input-field">
-                <input type="checkbox" class="value" id="sentryEnabled" />
-                <label for="sentryEnabled" class="translate">sentryEnabled</label>
             </div>
             <div class="col s5 input-field">
                 <input type="checkbox" class="value" id="writeTemperatureArray" />
                 <label for="writeTemperatureArray" class="translate">writeTemperatureArray</label>
             </div>
-            <!-- div class="col s5 input-field">
-                <input type="checkbox" class="value" id="stopIfLessAmperes" />
-                <label for="stopIfLessAmperes" class="translate">stopIfLessAmperes</label>
-            </div -->
         </div>
+
         <div class="row">
             <div class="col s12">
                 <h5>Foreign Objects</h5>
                 <p>In these settings you can select Object from foreign Adapters. This makes may be an own script not nessesscary anymore. This Adapter is currently consuming only ack = false states.</p>
             </div>
-            <div class="col s5 input-field">
-                <div class="col s9 input-field">
-                    <label id="solarPowerLbl" for="solarPowerForeignObjectID" class="translate">solarPowerForeignObjectID</label>
-                    <br /><br />
-                    <input class="value" id="solarPowerForeignObjectID"/>
-                </div>
-                <div class="col s1 input-field">
-                    <button id="solarPowerForeignSearch">...</button>
-                </div>
-                <div class="col s2 input-field">
-                    <input type="checkbox" class="value" id="solarPowerForeignObjectAck" />
-                    <label for="onlyAck" class="translate">onlyAck</label>
+        </div>
+        <div class="row">
+            <div class="col s12 m6">
+                <div class="row">
+                    <div class="col s10 input-field">
+                        <div class="row">
+                            <div class="col s11">
+                                <input class="value" id="solarPowerForeignObjectID"/>
+                            </div>
+                            <div class="col s1">
+                                <button id="solarPowerForeignSearch">...</button>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col s12">
+                                <label id="solarPowerLbl" for="solarPowerForeignObjectID" class="translate">solarPowerForeignObjectID</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col s2">
+                        <div class="row no-space-grid">
+                            <div class="col s12">
+                                <input type="checkbox" class="value" id="solarPowerForeignObjectAck" />
+                                <label for="solarPowerForeignObjectAck" class="translate">onlyAck</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col s2">
+                        <div class="row no-space-grid">
+                            <div class="col s12">
+                                <input type="checkbox" class="value" id="solarPowerForeignObjectNegate" />
+                                <label for="solarPowerForeignObjectNegate" class="translate">Negate</label>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div class="col s5 input-field">
+            <div class="col s12 m6">
                 <input type="text" class="value" id="bufferToSolar" />
                 <label id="bufferToSolarLbl" for="bufferToSolar" class="translate">bufferToSolar</label>
             </div>
-            <div class="col s5 input-field">
-                <div class="col s9 input-field">
-                    <label id="houseConsumptionLbl" for="houseConsumptionForeignObjectID" class="translate">houseConsumptionForeignObjectID</label>
-                    <br /><br />
-                    <input class="value" id="houseConsumptionForeignObjectID"/>
-                </div>
-                <div class="col s1 input-field">
-                    <button id="houseConsumptionForeignSearch">...</button>
-                </div>
-                <div class="col s2 input-field">
-                    <input type="checkbox" class="value" id="houseConsumptionForeignObjectAck" />
-                    <label for="onlyAck" class="translate">onlyAck</label>
-                </div>
-            </div>
-            <div class="col s5 input-field">
-                <div class="col s10 input-field">
-                    <label id="houseBatteryLbl" for="houseBatteryForeignObjectID" class="translate">houseBatteryForeignObjectID</label>
-                    <br /><br />
-                    <input class="value" id="houseBatteryForeignObjectID"/>
-                </div>
-                <div class="col s1 input-field">
-                    <button id="houseBatteryForeignSearch">...</button>
-                </div>
-                <div class="col s2 input-field">
-                    <input type="checkbox" class="value" id="houseBatteryForeignObjectAck" />
-                    <label for="onlyAck" class="translate">onlyAck</label>
+            <div class="col s12 m6">
+                <div class="row">
+                    <div class="col s10">
+                        <div class="row">
+                            <div class="col s11">
+                                <input class="value" id="houseConsumptionForeignObjectID"/>
+                            </div>
+                            <div class="col s1">
+                                <button id="houseConsumptionForeignSearch">...</button>
+                            </div>
+                            <div class="col s12">
+                                <label id="houseConsumptionLbl" for="houseConsumptionForeignObjectID" class="translate">houseConsumptionForeignObjectID</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col s2">
+                        <input type="checkbox" class="value" id="houseConsumptionForeignObjectAck" />
+                        <label for="onlyAck" class="translate">onlyAck</label>
+                    </div>
                 </div>
             </div>
-            <div class="col s5 input-field">
+            <div class="col s12 m6">
+                <div class="row">
+                    <div class="col s10">
+                        <div class="row">
+                            <div class="col s11">
+                                <input class="value" id="houseBatteryForeignObjectID"/>
+                            </div>
+                            <div class="col s1">
+                                <button id="houseBatteryForeignSearch">...</button>
+                            </div>
+                            <div class="col s12">
+                                <label id="houseBatteryLbl" for="houseBatteryForeignObjectID" class="translate">houseBatteryForeignObjectID</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col s2">
+                        <div class="row no-space-grid">
+                            <div class="col s12">
+                                <input type="checkbox" class="value" id="houseBatteryForeignObjectAck" />
+                                <label for="onlyAck" class="translate">onlyAck</label>
+                            </div>
+                        </div>
+                        <div class="row no-space-grid">
+                            <div class="col s12">
+                                <input type="checkbox" class="value" id="houseBatteryForeignObjectNegate" />
+                                <label for="houseBatteryForeignObjectNegate" class="translate">Negate</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col s12 m6">
                 <input type="text" class="value" id="bufferToBattery" />
                 <label id="bufferToBatteryLbl" for="bufferToBattery" class="translate">bufferToBattery</label>
             </div>
+        </div>
+        <div class="row">
             <div class="col s12">
                 <p>The script is using the following formular:</p>
                 <pre>(solarPower - bufferToSolar) {must be lager than 0} - houseConsumtion + (houseBattery - bufferToBattery) {must be larger than 0}</pre>
@@ -159,7 +214,7 @@
             </div>
         </div>
         <div class="row">
-            <div class="col s5">
+            <div class="col s12 m6">
                 <select id="selectedAttributes" multiple>
 
                 </select>
