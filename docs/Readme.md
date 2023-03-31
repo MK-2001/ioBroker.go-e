@@ -174,3 +174,5 @@ Example:
 | houseConsumptionForeignObjectID | fronius.0.powerflow.P_Akku | -1000.0 | true | true | If you want to prioritize the loading of the car before you want to load your home battery, you can add the akku load as well |
 | bufferToSolar | *fixed value* | 100 | - | - | This is the buffer, to not consume energy from the grid, when the sun is leaving. It should cover the 60s refresh timeframe. |
 
+It should result in automatism like this graph:
+![PV Car Loading on bad weather](./PV_LoadBadWeather.png)
