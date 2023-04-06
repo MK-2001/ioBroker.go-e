@@ -647,7 +647,7 @@
         }
       },
       {
-        "_id": "temperatures.maintempereature",
+        "_id": "temperatures.maintemperature",
         "type": "state",
         "common": {
           "name": "Controller temperature (tmp)",
