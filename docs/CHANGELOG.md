@@ -1,3 +1,6 @@
+# 1.0.27
+* (Casten, fuchs-1978, dft601) Object not found error #158
+
 ## 1.0.26
 * Added Object solarLoadOnly
 * Enabled useage of Foreign Object
