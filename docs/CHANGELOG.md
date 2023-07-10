@@ -1,3 +1,6 @@
+# 1.0.28
+* Added properties to schema.js for firmware 042
+
 # 1.0.27
 * (Casten, fuchs-1978, dft601) Object not found error #158
 
