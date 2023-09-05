@@ -328,7 +328,7 @@ class GoE extends utils.Adapter {
     async getStateFromDevice() {
         let apiEndpoint = "/status";
         if(this.config.apiVersion == 2) {
-            apiEndpoint = "/api/status?filter=" + this.translationObjectV2.keys().join(",");
+            apiEndpoint = "/api/status?filter=" + Object.keys(this.translationObjectV2).join(",");
         }
         this.log.debug("Starte Abfrage an: http://" + this.config.serverName + apiEndpoint);
         axios.defaults.baseURL = "http://" + this.config.serverName;
