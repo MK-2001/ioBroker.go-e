@@ -24,17 +24,17 @@ jobs:
       - run: npm i
         name: Build 
       - run: |
-          npm pack --json | jq -r '.[0] | "filename=" + .filename + "\nid=" + .id' | sed 's/\\n/\n/g' >> "$GITHUB_OUTPUT"
+          npm pack --json | jq -r '.[0] | "filename=" + .filename + "\nid=" + .id + "\nversion=" + .version' | sed 's/\\n/\n/g' >> "$GITHUB_OUTPUT"
         name: Pack NPM File
         id: npmpack
       - name: List files in the repository
         run: |
           ls ${{ gitea.workspace }}
       - name: Output information
-        run: echo "All = ${{ steps.npmpack.outputs }}" && echo "Filename = ${{ steps.npmpack.outputs.filename }}" && echo "ID = ${{ steps.npmpack.outputs.id }}" && if [ -z "${{ steps.npmpack.outputs.filename }}" ]; then exit 1; else echo "filename fine"; fi
+        run: echo "Filename = ${{ steps.npmpack.outputs.filename }}" && echo "ID = ${{ steps.npmpack.outputs.id }}" && echo "Version = ${{ steps.npmpack.outputs.version }}" && if [ -z "${{ steps.npmpack.outputs.filename }}" ]; then echo "Filename wrong!" && exit 1; else echo "filename fine"; fi && if [ -z "${{ steps.npmpack.outputs.version }}" ]; then echo "Version wrong!" && exit 1; else echo "Version fine"; fi
       - name: Move files 
         run: |
-          cp -f ${{ gitea.workspace }}/${{ steps.deploy-npm.outputs.filename }} /deploy/iobroker/data/install/
+          cp -f ${{ gitea.workspace }}/${{ steps.npmpack.outputs.filename }} /deploy/iobroker/data/install/
       - name: Install on ioBroker
         run: |
-          docker exec -it iobroker "iobroker upgrade -y go-e@${{ steps.deploy-npm.outputs.id }} /opt/iobroker/install/${{ steps.deploy-npm.outputs.filename }}"
+          docker exec -it iobroker "iobroker upgrade -y go-e@${{ steps.npmpack.outputs.version }} /opt/iobroker/install/${{ steps.npmpack.outputs.filename }}"
