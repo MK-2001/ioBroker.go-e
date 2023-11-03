@@ -155,8 +155,7 @@
         "alw",
         "car",
         "amp"
-      ],
-      "deployCommitID": "setByGitHubActions"
+      ]
     },
     "objects": [],
     "instanceObjects": [
