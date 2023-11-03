@@ -23,5 +23,12 @@ jobs:
       - uses: http://gitea.com/actions/checkout@v3
       - run: npm i
         name: Build 
-      - run: npm pack
+      - run: |
+          npm pack --json | jq ".[0].filename" | (echo -n "output1=" && cat) >> "$GITHUB_OUTPUT"
         name: Pack NPM File
+      - name: List files in the repository
+        run: |
+          ls ${{ gitea.workspace }}
+      - name: Move files 
+        run: |
+          cp ${{ gitea.workspace }}/${{ steps.deploy-npm.outputs.output1 }}
