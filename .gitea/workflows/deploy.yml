@@ -23,6 +23,8 @@ jobs:
       - uses: http://gitea.com/actions/checkout@v3
       - run: npm i
         name: Build 
+      - name: set CommitID to Version
+        run: sed -i -e 's/setByGitHubActions/${{GITHUB_SHA::6}}/g' ${{ gitea.workspace }}/io-package.json
       - run: |
           npm pack --json | jq -r '.[0] | "filename=" + .filename + "\nid=" + .id + "\nversion=" + .version' | sed 's/\\n/\n/g' >> "$GITHUB_OUTPUT"
         name: Pack NPM File
@@ -38,6 +40,9 @@ jobs:
       - name: Install on ioBroker
         run: |
           docker exec -it iobroker /bin/bash -c "iobroker url /opt/iobroker/install/${{ steps.npmpack.outputs.filename }}"
+      - name: Upload new Admin files
+        run : |
+          docker exec -it iobroker /bin/bash -c "iobroker upload go-e"
       - name: Restart the adapter
         run: |
           docker exec -it iobroker /bin/bash -c "iobroker restart go-e.0"

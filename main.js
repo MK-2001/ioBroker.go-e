@@ -62,6 +62,7 @@ class GoE extends utils.Adapter {
     async onReady() {
         // Initialize your adapter here
         // Write it to possible values
+        this.log.info("Adapter is staring in Version " + this.config.deployCommitID);
         this.log.info("Update selectable values from " + JSON.stringify(this.config.possibleAttributes) + " to " + Object.keys(this.translationObjectV2));
         this.config.possibleAttributes = Object.keys(this.translationObjectV2);
 
