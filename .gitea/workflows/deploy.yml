@@ -16,15 +16,11 @@ jobs:
       - run: npm ci
       - run: npm test
 
-  publish-npm:
+  deploy-npm:
     needs: build
     runs-on: docker
     steps:
       - uses: http://gitea.com/actions/checkout@v3
-      - uses: http://gitea.com/actions/setup-node@v1
-        with:
-          node-version: 12
-          registry-url: https://registry.npmjs.org/
       - run: npm i
         name: Build 
       - run: npm pack
