@@ -24,11 +24,16 @@ jobs:
       - run: npm i
         name: Build 
       - run: |
-          npm pack --json | jq ".[0].filename" | (echo -n "output1=" && cat) >> "$GITHUB_OUTPUT"
+          npm pack --json | jq '.[0] | "filename=" + .filename + ",id=" + .id' >> "$GITHUB_OUTPUT"
         name: Pack NPM File
       - name: List files in the repository
         run: |
           ls ${{ gitea.workspace }}
+      - name: Output information
+        run: echo "Filename = ${{ steps.deploy-npm.outputs.filename }}" && echo "ID = ${{ steps.deploy-npm.outputs.id }}"
       - name: Move files 
         run: |
-          cp ${{ gitea.workspace }}/${{ steps.deploy-npm.outputs.output1 }}
+          cp -f ${{ gitea.workspace }}/${{ steps.deploy-npm.outputs.filename }} /deploy/iobroker/data/install/
+      - name: Install on ioBroker
+        run: |
+          docker exec -it iobroker "iobroker upgrade -y go-e@${{ steps.deploy-npm.outputs.id }} /opt/iobroker/install/${{ steps.deploy-npm.outputs.filename }}"
