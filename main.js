@@ -733,7 +733,7 @@ class GoE extends utils.Adapter {
                 op: "adjustAmpLevelInWatts",
                 name: "adjustAmpLevelInWatts(" + changeWatts + ")"
             });
-            const abortOnLowEnegery = true;
+            const abortOnLowEnegery = this.config.loadWith6AAtLeast;
             try {
                 const avgVoltage1 = await this.getStateAsync("energy.phase1.voltage");
                 if(avgVoltage1 === null || avgVoltage1 === undefined || avgVoltage1.val === null) {

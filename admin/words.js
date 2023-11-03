@@ -149,5 +149,9 @@ systemDictionary = {
     "apiVersion": {
         "en": "If you have Hardware in Version 2 you need API-Version 1. If you installed Hardware Version 3 or later you can activate API V2 in the go-eCharger - App.",
         "de": "Wenn du HW V2 besitzt, muss du die Einstellung bei API V1 belassen. Ab HW Version 3 kann auch die API V2 alternativ aktivieren."
+    },
+    "loadWith6AAtLeast": {
+        "en": "Behavior when enabled if not enougth pv power is available: 3Phases => 1Phase => continue with 1P & 6Amperes",
+        "de": "Verhalten bei aktiviert: 3Phasen => 1Phase => min. 1P & 6Ampere; Bei deaktiviert: 3Phasen => 1Phase => Stopp;"
     }
 };

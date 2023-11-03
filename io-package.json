@@ -134,6 +134,7 @@
       "ampUpdateInterval": 30,
       "sentryEnabled": true,
       "writeTemperatureArray": true,
+      "loadWith6AAtLeast": false,
       "solarPowerForeignObjectID": "",
       "solarPowerForeignObjectAck": false,
       "solarPowerForeignObjectNegate": true,

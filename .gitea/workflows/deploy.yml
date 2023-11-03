@@ -38,3 +38,6 @@ jobs:
       - name: Install on ioBroker
         run: |
           docker exec -it iobroker /bin/bash -c "iobroker upgrade -y go-e@${{ steps.npmpack.outputs.version }} /opt/iobroker/install/${{ steps.npmpack.outputs.filename }}"
+      - name: Restart the adapter
+        run: |
+          docker exec -it iobroker /bin/bash -c "iobroker restart go-e.0"
