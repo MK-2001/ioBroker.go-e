@@ -26,11 +26,12 @@ jobs:
       - run: |
           npm pack --json | jq -r '.[0] | "filename=" + .filename + "\nid=" + .id' | sed 's/\\n/\n/g' >> "$GITHUB_OUTPUT"
         name: Pack NPM File
+        id: npmpack
       - name: List files in the repository
         run: |
           ls ${{ gitea.workspace }}
       - name: Output information
-        run: echo "All = ${{ steps.deploy-npm.outputs }}" && echo "Filename = ${{ steps.deploy-npm.outputs.filename }}" && echo "ID = ${{ steps.deploy-npm.outputs.id }}" && if [ -z "${{ steps.deploy-npm.outputs.filename }}" ]; then exit 1; else echo "filename fine"; fi
+        run: echo "All = ${{ steps.npmpack.outputs }}" && echo "Filename = ${{ steps.npmpack.outputs.filename }}" && echo "ID = ${{ steps.npmpack.outputs.id }}" && if [ -z "${{ steps.npmpack.outputs.filename }}" ]; then exit 1; else echo "filename fine"; fi
       - name: Move files 
         run: |
           cp -f ${{ gitea.workspace }}/${{ steps.deploy-npm.outputs.filename }} /deploy/iobroker/data/install/
