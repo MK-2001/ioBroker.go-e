@@ -403,6 +403,8 @@ class GoE extends utils.Adapter {
 
             try {
                 // TME provides 2208201643
+                // sometimes it provides "0302-300526" see #171
+                // TODO: No glue what this is about.
                 // Realdate: 22th August 2020 at 16:43 (CET)
                 const reggie = /(\d{2})(\d{2})(\d{2})(\d{2})(\d{2})/
                     // @ts-ignore
@@ -410,8 +412,8 @@ class GoE extends utils.Adapter {
                     , dateObject = new Date(parseInt(year, 10)+2000, parseInt(month, 10)-1, parseInt(day, 10), parseInt(hours, 10), parseInt(minutes, 10), 0);
                 await queue.add(() => this.setState("synctime",                           { val: dateObject.toISOString(), ack: true }));
             } catch (e) {
-                this.log.warn("Cloud not store synctime, because of error " + e.message);
-                sentry.captureException(e);
+                this.log.info("Cloud not store synctime, because of error " + e.message);
+                // sentry.captureException(e);
             }
 
             await queue.add(() => this.setState("reboot_counter",                     { val: parseInt(o.rbc, 10), ack: true })); // read, V1, V2
