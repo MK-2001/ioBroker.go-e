@@ -12,7 +12,7 @@ jobs:
   build:
     runs-on: docker
     steps:
-      - uses: actions/checkout@v3
+      - uses: http://gitea.com/actions/checkout@v3
       - run: npm ci
       - run: npm test
 
@@ -20,8 +20,8 @@ jobs:
     needs: build
     runs-on: docker
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v1
+      - uses: http://gitea.com/actions/checkout@v3
+      - uses: http://gitea.com/actions/setup-node@v1
         with:
           node-version: 12
           registry-url: https://registry.npmjs.org/
