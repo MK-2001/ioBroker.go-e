@@ -30,7 +30,7 @@ jobs:
         run: |
           ls ${{ gitea.workspace }}
       - name: Output information
-        run: echo "Filename = ${{ steps.deploy-npm.outputs.filename }}" && echo "ID = ${{ steps.deploy-npm.outputs.id }}" && if [ -z "${{ steps.deploy-npm.outputs.filename }}" ]; then exit 1; else echo "filename fine"; fi
+        run: echo "All = ${{ steps.deploy-npm.outputs }}" && echo "Filename = ${{ steps.deploy-npm.outputs.filename }}" && echo "ID = ${{ steps.deploy-npm.outputs.id }}" && if [ -z "${{ steps.deploy-npm.outputs.filename }}" ]; then exit 1; else echo "filename fine"; fi
       - name: Move files 
         run: |
           cp -f ${{ gitea.workspace }}/${{ steps.deploy-npm.outputs.filename }} /deploy/iobroker/data/install/
