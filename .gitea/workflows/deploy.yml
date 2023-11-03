@@ -37,4 +37,4 @@ jobs:
           cp -f ${{ gitea.workspace }}/${{ steps.npmpack.outputs.filename }} /deploy/iobroker/data/install/
       - name: Install on ioBroker
         run: |
-          docker exec -it iobroker "iobroker upgrade -y go-e@${{ steps.npmpack.outputs.version }} /opt/iobroker/install/${{ steps.npmpack.outputs.filename }}"
+          docker exec -it iobroker /bin/bash -c "iobroker upgrade -y go-e@${{ steps.npmpack.outputs.version }} /opt/iobroker/install/${{ steps.npmpack.outputs.filename }}"
