@@ -236,7 +236,9 @@ class GoE extends utils.Adapter {
                         break;
                     case this.namespace + ".settings.color.charging":
                         // @ts-ignore // Check off null is done
-                        this.setValue("cch", /^#?([a-f\d]{6})$/i.exec(state.val.toString()) !== null ? parseInt(/^#?([a-f\d]{6})$/i.exec(state.val.toString())[1], 16) : 0);
+                        // this.setValue("cch", /^#?([a-f\d]{6})$/i.exec(state.val.toString()) !== null ? parseInt(/^#?([a-f\d]{6})$/i.exec(state.val.toString())[1], 16) : 0);
+                        // bug in versions starting 042; have to use V2
+                        this.setValueV2("cch", encodeURIComponent(/^#?([a-f\d]{6})$/i.exec(state.val.toString()) !== null ? state.val.toString() : "#FFFFFF"));
                         break;
                     case this.namespace + ".settings.color.finish":
                         // @ts-ignore // Check off null is done
@@ -406,10 +408,11 @@ class GoE extends utils.Adapter {
                 // sometimes it provides "0302-300526" see #171
                 // TODO: No glue what this is about.
                 // Realdate: 22th August 2020 at 16:43 (CET)
-                const reggie = /(\d{2})(\d{2})(\d{2})(\d{2})(\d{2})/
-                    // @ts-ignore
-                    , [, day, month, year, hours, minutes] = reggie.exec(o.tme)
-                    , dateObject = new Date(parseInt(year, 10)+2000, parseInt(month, 10)-1, parseInt(day, 10), parseInt(hours, 10), parseInt(minutes, 10), 0);
+                this.log.debug(" Synctime: " + o.tme);
+                const reggie = /(\d{2})(\d{2})(\d{2})(\d{2})(\d{2})/;
+                // @ts-ignore
+                const [, day, month, year, hours, minutes] = reggie.exec(o.tme);
+                const dateObject = new Date(parseInt(year, 10)+2000, parseInt(month, 10)-1, parseInt(day, 10), parseInt(hours, 10), parseInt(minutes, 10), 0);
                 await queue.add(() => this.setState("synctime",                           { val: dateObject.toISOString(), ack: true }));
             } catch (e) {
                 this.log.info("Cloud not store synctime, because of error " + e.message);
@@ -613,6 +616,29 @@ class GoE extends utils.Adapter {
         //transaction.finish();
     }
 
+    /**
+     * Set values via API Version 2
+     * @param {string} id
+     * @param {string | number | boolean} value
+     */
+    setValueV2(id, value) {
+        this.log.info("Set value V2 " + value + " of id " + id);
+        if(typeof value === "string") {
+            value = '"' + value + '"';
+        }
+        this.log.debug("call " + "http://" + this.config.serverName + "/api/set?" + id + "=" + value);
+        axios.get("http://" + this.config.serverName + "/api/set?" + id + "=" + value)
+            .then(o => {
+                this.log.debug(o.status + " with message: " + o.statusText);
+                // this.processStatusObject(o.data);
+                // Response of V2 does not have all data.
+            })
+            .catch(err => {
+                this.log.error(err.message + " at " + id + " / " + value + " with error message " + JSON.stringify(err));
+                sentry.captureException(err);
+            });
+    }
+    
     /**
      * Set max amp to amx or amp based on firmware
      * @param {string} maxAmp
