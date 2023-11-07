@@ -59,6 +59,7 @@ In this paragraph are listet additional functionalities which can be used for an
 - [stop_state](#stop-state)
 - [unlock_state](#unlock-state)
 - [Foreign Objects](#foreign-objects)
+- [LoadAtLeast6A](#load-at-least-6a)
 
 ## Access State
 
@@ -176,3 +177,7 @@ Example:
 
 It should result in automatism like this graph:
 ![PV Car Loading on bad weather](./PV_LoadBadWeather.png)
+
+# Load At Least 6A
+This option set the behavior of the adapter to continue loading the car with reduced speed, even if there is not enougth solar power available.
+
