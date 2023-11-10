@@ -23,6 +23,7 @@ jobs:
       - uses: http://gitea.com/actions/checkout@v3
       - run: npm i
         name: Build 
+      - run: npm version prepatch | sed -e 's/^/newVersion="/' | sed -e 's/$/"/'
       - name: set CommitID to Version
         run: |
           sed -i -e "s/setByGitHubActions/${{ gitea.sha }}/" ${{ gitea.workspace }}/main.js && echo "=== IO-Package FILE ===" && cat ${{ gitea.workspace }}/io-package.json
