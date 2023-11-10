@@ -1,10 +1,10 @@
 {
     "common": {
       "name": "go-e",
-      "version": "1.0.28",
+      "version": "1.0.29",
       "news": {
-        "1.0.28": {
-          "en": "Solved Bugs from GitHub Issues 171, 162, ...; Fixed Bug in Lights; updated Admin screen;"
+        "1.0.29": {
+          "en": "Solved Bugs from GitHub Issues 171, 162, ...; Fixed Bug in Lights; updated Admin screen; Logic fixtures"
         },
         "1.0.27": {
             "en": "Enabled foreign Object usage; Full Changelog online: https://github.com/MK-2001/ioBroker.go-e/blob/main/docs/CHANGELOG.md; Issue for Object not found."

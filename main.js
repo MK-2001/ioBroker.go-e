@@ -639,7 +639,7 @@ class GoE extends utils.Adapter {
                 sentry.captureException(err);
             });
     }
-    
+
     /**
      * Set max amp to amx or amp based on firmware
      * @param {string} maxAmp
@@ -762,7 +762,7 @@ class GoE extends utils.Adapter {
                 op: "adjustAmpLevelInWatts",
                 name: "adjustAmpLevelInWatts(" + changeWatts + ")"
             });
-            const abortOnLowEnegery = this.config.loadWith6AAtLeast;
+            const loadWith6AAtLeast = this.config.loadWith6AAtLeast;
             try {
                 const avgVoltage1 = await this.getStateAsync("energy.phase1.voltage");
                 if(avgVoltage1 === null || avgVoltage1 === undefined || avgVoltage1.val === null) {
@@ -851,8 +851,12 @@ class GoE extends utils.Adapter {
                 this.log.debug("Current used " + Math.round(usedWatts) +  " Watts with " + usedAmperes + " Ampere (sum) by " + usedPhases + " Phases and adjusting this with  " + changeWatts + " watts by " + (usedVolts / usedPhases) + " Volts (avg) to new max of " + maxAmp + " Amperes per Phase");
 
                 if(maxAmp < 6) {
-                    if(abortOnLowEnegery && allowCharge.val !== 0) {
+                    // Allow charge (Ist Auto angehängt und freigabe vorhanden.)
+                    // loadWith6AAtLeast => true; nicht abschalten
+                    if(!loadWith6AAtLeast && allowCharge.val !== 0) {
                         this.setValue("alw", 0);
+                    } else {
+                        this.log.debug("Continue because loadWith6AAtLeast is activated.")
                     }
                 } else {
                     this.setAmp(maxAmp);
