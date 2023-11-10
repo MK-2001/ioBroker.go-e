@@ -151,7 +151,7 @@ systemDictionary = {
         "de": "Wenn du HW V2 besitzt, muss du die Einstellung bei API V1 belassen. Ab HW Version 3 kann auch die API V2 alternativ aktivieren."
     },
     "loadWith6AAtLeast": {
-        "en": "Load with at least 6A:\nBehavior when enabled if not enougth pv power is available: 3Phases => 1Phase => continue with 1P & 6Amperes",
-        "de": "Laden mit min 6A:\nVerhalten bei aktiviert: 3Phasen => 1Phase => min. 1P & 6Ampere; Bei deaktiviert: 3Phasen => 1Phase => Stopp;"
+        "en": "Load with at least 6A:<br />Behavior when enabled if not enougth pv power is available: 3Phases => 1Phase => continue with 1P & 6Amperes",
+        "de": "Laden mit min 6A:<br />Verhalten bei aktiviert: 3Phasen => 1Phase => min. 1P & 6Ampere; Bei deaktiviert: 3Phasen => 1Phase => Stopp;"
     }
 };
