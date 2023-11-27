@@ -231,7 +231,7 @@
         }
       ],
       "adminUI": {
-        "config":"json"
+        "config":"none"
       }
     },
     "native": {
