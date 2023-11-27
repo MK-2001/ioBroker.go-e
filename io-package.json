@@ -4,13 +4,43 @@
       "version": "1.0.29",
       "news": {
         "1.0.29": {
-          "en": "Solved Bugs from GitHub Issues 171, 162, ...; Fixed Bug in Lights; updated Admin screen; Logic fixtures"
+          "en": "Solved Bugs from GitHub Issues 171, 162, ...; Fixed Bug in Lights; updated Admin screen; Logic fixtures",
+          "de": "Gelöste Bugs von GitHub Issues 171, 162, ...; Fixed Bug in Lights; aktualisierter Admin-Bildschirm; Logik-Features",
+          "ru": "Решенные баги от GitHub Задачи 171, 162, ...; Исправлены баг в огнях; обновленный экран Admin; Логические приспособления",
+          "pt": "Bugs resolvidos de problemas GitHub 171, 162, ...; Bug fixo em luzes; tela de administrador atualizada; luminárias de lógica",
+          "nl": "Opgelost Bugs van GitHub Issues 171, 162, gefixeerde Bug in Lights, geüpte administratie",
+          "fr": "Correction de bugs de GitHub Numéros 171, 162, ...; Correction de bug dans les lumières; mise à jour de l'écran d'administration; Installations logiques",
+          "it": "Bug risolti da GitHub Emissioni 171, 162, ...; Bug fisso in luci; schermata di amministrazione aggiornata; Logica fissa",
+          "es": "Errores resueltos de problemas GitHub 171, 162, ...; Error fijo en las luces; pantalla de Admin actualizada; accesorios lógicos",
+          "pl": "Sprzedany Bugs z GitHub Issues 171, 162, ...; Fixed Bug in Lights; aktualizowany ekran Admin",
+          "uk": "Вирішений Буги з GitHub Випуски 171, 162, ...; Виправлений Буг у вогні; оновлений екран Admin; Логічні світильники",
+          "zh-cn": "Bugs from GitHub Issues 171, 162, ......; Fixed Bug inraw; 更新的摘要;后勤固定装置"
         },
         "1.0.27": {
-            "en": "Enabled foreign Object usage; Full Changelog online: https://github.com/MK-2001/ioBroker.go-e/blob/main/docs/CHANGELOG.md; Issue for Object not found."
+          "en": "Enabled foreign Object usage; Full Changelog online: https://github.com/MK-2001/ioBroker.go-e/blob/main/docs/CHANGELOG.md; Issue for Object not found.",
+          "de": "Aktiviert fremd Objektnutzung; Full Changelog online: https://github.com/MK-2001/ioBroker.go-e/blob/main/docs/CHANGELOG.md; Thema für Objekt nicht gefunden.",
+          "ru": "Включено иностранных Использование объекта; Полный список изменений онлайн: https://github.com/MK-2001/ioBroker.go-e/blob/main/docs/CHANGELOG.md; Номер объекта не найден.",
+          "pt": "Impulsionado estrangeiro Uso de objetos; Full Changelog online: https://github.com/MK-2001/ioBroker.go-e/blob/main/docs/CHANGELOG.md; Problema para o objeto não encontrado.",
+          "nl": "Quality over Quantity (QoQ) Releases Vertaling: Quality over Quantity (QoQ) Releases Vertaling: Issue for Object niet gevonden.",
+          "fr": "Enabled foreign Utilisation des objets; Full Changelog en ligne: https://github.com/MK-2001/ioBroker.go-e/blob/main/docs/CHANGELOG.md; Question pour objet non trouvé.",
+          "it": "Abilitato straniero Uso degli oggetti; Full Changelog online: https://github.com/MK-2001/ioBroker.go-e/blob/main/docs/CHANGELOG.md; Problema per oggetto non trovato.",
+          "es": "Enabled foreign Uso de objetos; Full Changelog en línea: https://github.com/MK-2001/ioBroker.go-e/blob/main/docs/CHANGELOG.md; Edición para Objetos no encontrados.",
+          "pl": "Cudzoziemca Używanie obiektów; Full Changelog online: https:/github.com/MK-2001/ioBroker.go-e/blob/dom/docs/CHANGELOG.md; ang.) Zagadnienia obiektów nie odnaleziono.",
+          "uk": "Увімкнути іноземну Використання об'єкта; Full Changelog онлайн: https://github.com/MK-2001/ioBroker.go-e/blob/main/docs/CHANGELOG.md; Не знайдено проблеми об'єкта.",
+          "zh-cn": "外国 目标使用;网上全面变化:http://github.com/MK-2001/ioBroker.go-e/blob/main/docs/CHANGELOG.md; 未发现的物体问题。."
         },
         "1.0.25": {
-          "en": "TempArray resize on FW 054 HW V2; Readme.Adaption; Dependency security updates; Added the options to consider acknowledged value changes of foreign adapters; Added choice of ack of foreign adapters (#125)\n Minor bug for sentry; Error in tme object; Bug in Sentry. Added Catch."
+          "en": "TempArray resize on FW 054 HW V2; Readme.Adaption; Dependency security updates; Added the options to consider acknowledged value changes of foreign adapters; Added choice of ack of foreign adapters (#125)\\n Minor bug for sentry; Error in tme object; Bug in Sentry. Added Catch.",
+          "de": "TempArray Größe auf FW 054 HW V2; Readme. Anpassung; Änderung der Abhängigkeitssicherheit; Hinzugefügte die Optionen, um anerkannte Wertänderungen von ausländischen Adaptern zu berücksichtigen; Hinzugefügte Auswahl von ack von ausländischen Adaptern #(125)\\n Minor Bug für gesendete; Fehler in tme-Objekt; Bug in Sentry. Hinzugefügt Fang.",
+          "ru": "TempArray размер на FW 054 HW V2; Readme. Адаптация; Обновления безопасности в зависимости; Добавлены опции для рассмотрения признанных изменений стоимости зарубежных адаптеров; Добавлен выбор ack зарубежных адаптеров #(125)\\n Незначительная ошибка для скорби; Ошибка в объекте tme; Bug in Sentry. Добавлен Catch.",
+          "pt": "TempArray redimensionar em FW 054 HW V2; Readme. Adaptação; atualizações de segurança de dependência; Adicionado as opções para considerar reconhecidas mudanças de valor de adaptadores estrangeiros; Adicionado a escolha de umack de adaptadores estrangeiros #(125)\\n Menor bug para sentinela; Erro no objeto tme; Bug em Sentry. Adicionado o Catch.",
+          "nl": "Vertaling: Adaptie, afhankelijkheidsbeveiliging updates. Voegde de opties toe om de waarde van buitenlandse adapters te erkennen, gaf de keuze van buitenlandse adapters toe. Toegevoegd Catch.",
+          "fr": "TempArray resize on FW 054 HW V2; Readme. Adaptation; Mise à jour de la sécurité de la dépendance; Ajout des options pour tenir compte des modifications de valeur reconnues des adaptateurs étrangers ; Ajout du choix d'un paquet d'adaptateurs étrangers #(125)\\n Mineur bug for sentry; Erreur dans l'objet tme; Bug in Sentry. Ajoute Catch.",
+          "it": "TempArray ridimensiona su FW 054 HW V2; Readme. adattamento; aggiornamenti di sicurezza di dipendenza; Aggiunta le opzioni per prendere in considerazione i cambiamenti di valore riconosciuti di adattatori stranieri; Aggiunta la scelta di ack di adattatori stranieri #(125)\\n bug minore per la sentinella; Errore in oggetto tme; Bug in Sentry. Aggiunta Catch.",
+          "es": "TempArray resize on FW 054 HW V2; Readme. Adaptación; actualizaciones de seguridad de dependencia; Agregó las opciones para considerar cambios de valor reconocidos de los adaptadores extranjeros; Añadido la opción de unack de adaptadores extranjeros #(125)\\n Error menor para el centinela; Error en objeto tme; Bug in Sentry. Agregado.",
+          "pl": "TempArray resizuje FW 054 HW V2; Readme. Adaption, Dependency Security updates (ang.). Dodał możliwość uznania zmian wartości obcych adapterów; Dodał wybór odznaczeń cudzoziemców #(125)\\n Minor bug for sentry; Error in tme object; Bug in Sentry. Added Catch (ang.).",
+          "uk": "Розмір TempArray на FW 054 HW V2; Readme. Адаптація; оновлення безпеки залежностей; Додано параметри, щоб розглянути визначені зміни значень іноземних адаптерів; Додано вибір приманки іноземних адаптерів #(125)\\n Помилки мінор для відправки; помилка в об'єкті tme; Помилки в смт. Додано Кітч.",
+          "zh-cn": "Temp Arrayize on FW 054 HWV2; 阅读。 接受; 属安全最新情况; 增加考虑外国适应人员的公认价值变化的备选办法; 增加外国适应人员包装的选择(125) 发放的采矿者; 投掷石头; 投掷石灰色; 投掷石头。 添加了Catch。."
         },
         "1.0.18": {
           "en": "First adaption of V3 hardware from go-e; Added switch to disable writing of the temperatures array; write different amont of temperature sensors; Added addtional attributes to ast; Updated several FOSS libs",
@@ -76,18 +106,18 @@
           "de": "https://translator.iobroker.in"
         }
       },
-      "title": "go-eCharger wallbox integration",
       "titleLang": {
         "en": "go-eCharger wallbox integration",
-        "de": "go-eCharger Wallbox integration",
-        "ru": "go-eCharger Wallbox integration",
-        "pt": "go-eCharger Wallbox integration",
-        "nl": "go-eCharger Wallbox integration",
-        "fr": "go-eCharger Wallbox integration",
-        "it": "go-eCharger Wallbox integration",
-        "es": "go-eCharger Wallbox integration",
-        "pl": "go-eCharger Wallbox integration",
-        "zh-cn": "go-eCharger Wallbox integration"
+        "de": "go-eCharger Wallbox Integration",
+        "ru": "go-eCharger интеграция настенных коробок",
+        "pt": "integração da caixa de parede do go-eCharger",
+        "nl": "charger muur integratie",
+        "fr": "intégration des boîtes murales",
+        "it": "integrazione di go-eCharger wallbox",
+        "es": "go-eCharger wallbox integration",
+        "pl": "goeCharger ściana",
+        "uk": "інтеграція з скринькою go-eCharger",
+        "zh-cn": "隔离墙的整合"
       },
       "desc": {
         "en": "go-e is an invitation to move electrically. E-mobility is our drive, whereby our core competence is the charging technology for electric cars. From the individual charging station for e-cars to photovoltaic connections to load management of entire buildings, we are providers of holistic system solutions for all requirements of modern e-mobility.",
@@ -99,6 +129,7 @@
         "it": "go-e è un invito a muoversi elettricamente. La mobilità elettrica è la nostra spinta, per cui la nostra competenza principale è la tecnologia di ricarica per le auto elettriche. Dalla singola stazione di ricarica per auto elettriche alle connessioni fotovoltaiche alla gestione del carico di interi edifici, siamo fornitori di soluzioni di sistema olistiche per tutti i requisiti della moderna mobilità elettrica.",
         "es": "go-e es una invitación para moverse eléctricamente. La movilidad eléctrica es nuestro motor, por lo que nuestra competencia principal es la tecnología de carga para automóviles eléctricos. Desde la estación de carga individual para automóviles electrónicos hasta conexiones fotovoltaicas y la gestión de carga de edificios completos, somos proveedores de soluciones de sistemas holísticos para todos los requisitos de la movilidad eléctrica moderna.",
         "pl": "go-e to zaproszenie do poruszania się elektrycznie. E-mobilność jest naszą siłą napędową, a naszą podstawową kompetencją jest technologia ładowania samochodów elektrycznych. Od indywidualnej stacji ładowania samochodów elektrycznych po połączenia fotowoltaiczne i zarządzanie obciążeniem całych budynków - jesteśmy dostawcami kompleksowych rozwiązań systemowych dla wszystkich wymagań nowoczesnej e-mobilności.",
+        "uk": "go-e запрошення на переміщення електрично. E-mobility - наш привід, де наша основна компетентність - технологія зарядки електромобілів. Від індивідуальної станції зарядки для електронних вагонів до фотоелектричних з'єднань для управління навантаженнями всіх будівель, ми є постачальниками системних рішень для всіх вимог сучасної рівноваги.",
         "zh-cn": "go-e是電動移動的邀請。 電動汽車是我們的動力，而我們的核心競爭力是電動汽車的充電技術。 從用於電動汽車的單個充電站到光伏連接，再到整個建築物的負載管理，我們都是滿足現代電動汽車所有要求的整體系統解決方案提供商。"
       },
       "authors": [
@@ -128,8 +159,7 @@
         {
           "js-controller": ">=2.0.0"
         }
-      ],
-      "installedFrom": "/opt/iobroker/install/iobroker.go-e-1.0.25.tgz"
+      ]
     },
     "native": {
       "serverName": "go-eCharger",

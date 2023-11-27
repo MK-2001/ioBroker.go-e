@@ -87,10 +87,18 @@ systemDictionary = {
         "zh-cn": "以瓦特为单位的当前家庭功耗的对象 ID [W]"
     },
     "houseBatteryForeignObjectID": {
-        "en": "object-id for current powerflow of battery in watts hours [W]",
-        "de": "Objekt-ID für den aktuellen Stromfluss der Heimbatterie in Watt [W]"
-
-    }, "bufferToSolar": {
+        "en": "object-id for current powerflow of battery in watts [W]",
+        "de": "objekt-ID für Stromfluss der Batterie in Watt [W]",
+        "ru": "объект-id для текущего потока батареи в ватт [W]",
+        "pt": "objeto-id para o fluxo de energia atual da bateria em watts [W]",
+        "nl": "object-id for huidige stroom van batterij in watten",
+        "fr": "objet-id pour le débit de courant de la batterie en watts [W]",
+        "it": "oggetto-id per il flusso di corrente della batteria in watt [W]",
+        "es": "objeto-id para el flujo de energía actual de la batería en vatios [W]",
+        "pl": "obiekty dla prądu zasilania baterii w watach WW",
+        "uk": "об'єкт-id для поточного живлення акумулятора в ват [W]",
+        "zh-cn": "[W]"
+      }, "bufferToSolar": {
         "en": "Buffer to the outcome from solar panel to the usage of loading process",
         "de": "Puffer zwischen Solarpanel-Ertrag und der Nutzung für den Ladevorgang in Watt [W]",
         "ru": "Буфер результата от солнечной панели к использованию процесса загрузки",
@@ -128,30 +136,93 @@ systemDictionary = {
     },
     "solarPowerForeignObjectAck": {
         "en": "Ack?",
-        "de": "Ack?"
-    },
+        "de": "Ack?",
+        "ru": "Ак?",
+        "pt": "Ack?",
+        "nl": "Ack?",
+        "fr": "Ack ?",
+        "it": "Ack?",
+        "es": "¿Ack?",
+        "pl": "Jak?",
+        "uk": "Ака?",
+        "zh-cn": "评 注?"
+      },
     "houseBatteryForeignObjectAck": {
         "en": "Ack?",
-        "de": "Ack?"
-    },
+        "de": "Ack?",
+        "ru": "Ак?",
+        "pt": "Ack?",
+        "nl": "Ack?",
+        "fr": "Ack ?",
+        "it": "Ack?",
+        "es": "¿Ack?",
+        "pl": "Jak?",
+        "uk": "Ака?",
+        "zh-cn": "评 注?"
+      },
     "houseConsumptionForeignObjectAck": {
         "en": "Ack?",
-        "de": "Ack?"
-    },
+        "de": "Ack?",
+        "ru": "Ак?",
+        "pt": "Ack?",
+        "nl": "Ack?",
+        "fr": "Ack ?",
+        "it": "Ack?",
+        "es": "¿Ack?",
+        "pl": "Jak?",
+        "uk": "Ака?",
+        "zh-cn": "评 注?"
+      },
     "solarPowerForeignObjectNegate": {
         "en": "Negate?",
-        "de": "negieren?"
-    },
+        "de": "Verhandeln?",
+        "ru": "Обратиться?",
+        "pt": "Negate?",
+        "nl": "Negate?",
+        "fr": "Negate ?",
+        "it": "Negate?",
+        "es": "¿Negate?",
+        "pl": "Negaty?",
+        "uk": "Негай?",
+        "zh-cn": "吗?"
+      },
     "houseBatteryForeignObjectNegate": {
         "en": "Negate?",
-        "de": "negieren?"
-    },
+        "de": "Verhandeln?",
+        "ru": "Обратиться?",
+        "pt": "Negate?",
+        "nl": "Negate?",
+        "fr": "Negate ?",
+        "it": "Negate?",
+        "es": "¿Negate?",
+        "pl": "Negaty?",
+        "uk": "Негай?",
+        "zh-cn": "吗?"
+      },
     "apiVersion": {
         "en": "If you have Hardware in Version 2 you need API-Version 1. If you installed Hardware Version 3 or later you can activate API V2 in the go-eCharger - App.",
-        "de": "Wenn du HW V2 besitzt, muss du die Einstellung bei API V1 belassen. Ab HW Version 3 kann auch die API V2 alternativ aktivieren."
-    },
+        "de": "Wenn du HW V2 besitzt, muss du die Einstellung bei API V1 belassen. Ab HW Version 3 kann auch die API V2 alternativ aktivieren.",
+        "ru": "Если у вас есть оборудование в версии 2 вам нужен API-версия 1. Если вы установили Hardware Version 3 или более поздней версии, вы можете активировать API V2 в go-eCharger - App.",
+        "pt": "Se você tem Hardware na versão 2 você precisa API-Version 1. Se você instalou a Versão de Hardware 3 ou posterior, você pode ativar a API V2 no go-eCharger - App.",
+        "nl": "Als je Hardware in Version 2 hebt, heb je API-Version 1 nodig. Als je Hardware Version 3 of later geïnstalleerd hebt, kun je API V2 activeren in de Go-echarger App.",
+        "fr": "Si vous avez du matériel dans la version 2 vous avez besoin d'API-Version 1. Si vous avez installé Hardware Version 3 ou plus, vous pouvez activer API V2 dans l'application Go-eCharger.",
+        "it": "Se hai Hardware nella versione 2 hai bisogno di API-Version 1. Se hai installato Hardware Version 3 o versioni successive puoi attivare API V2 nel go-eCharger - App.",
+        "es": "Si tiene Hardware en la versión 2 necesita API-Version 1. Si instala Hardware versión 3 o posterior, puede activar API V2 en el go-eCharger - App.",
+        "pl": "Jeśli będziesz w wersji 2 potrzebował API-Version 1. Jeśli zainstalowano wersję Hardware 3 lub później może aktywować API V2 w go-eCharger.",
+        "uk": "Якщо у вас є обладнання в версії 2 вам потрібен API-Version 1. Якщо ви встановили версію обладнання 3 або пізніше ви можете активувати API V2 в go-eCharger - додаток.",
+        "zh-cn": "如果你在万国宫有Hardware,需要1。 如果你安装了Hardware Version 3或以后,你可以在即将到来的Charger中打动APIV2。."
+      },
     "loadWith6AAtLeast": {
         "en": "Load with at least 6A:<br />Behavior when enabled if not enougth pv power is available: 3Phases => 1Phase => continue with 1P & 6Amperes",
-        "de": "Laden mit min 6A:<br />Verhalten bei aktiviert: 3Phasen => 1Phase => min. 1P & 6Ampere; Bei deaktiviert: 3Phasen => 1Phase => Stopp;"
-    }
+        "de": "Laden mit min 6A:<br />Verhalten bei aktiviert: 3Phasen => 1Phase => min. 1P & 6Ampere; Bei deaktiviert: 3Phasen => 1Phase => Stopp;",
+        "ru": "Загрузка с по крайней мере 6A:<br >/Behavior когда включено если не enougth pv сила доступна: 3Phases => 1Phase => продолжить с 1P & 6Amperes",
+        "pt": "Carga com pelo menos 6A:<br >/Comportamento quando ativado se não enougth pv power está disponível: 3Phases => 1Phase => continuar com 1P & 6Amperes",
+        "nl": "Laad met op z'n minst 6ABHUvior als je in staat bent, als de pv-kracht niet bereikbaar is. 1Phase Vertaling:",
+        "fr": "Charge d'au moins 6A: salutaire vic/Behavior lorsque activé si pas enougth puissance pv est disponible: 3Phases = Cancer 1Phase = Cancer continuer avec 1P & 6Amperes",
+        "it": "Carico con almeno 6A: >/Behavior quando abilitato se non enougth pv è disponibile: 3Phases => 1Phase = > continuare con 1P & 6Ampere",
+        "es": "Carga con al menos 6A: seleccionabr b/Behavior cuando se habilita si no enougth pv power está disponible: 3Phases = confianza 1Phase = confianza continuar con 1P & 6Amperes",
+        "pl": "Load z przynajmniej 6A:<br > >/Behavior, jeśli nie jest dopuszczalna moc pv jest dostępna: 3Phases =>>>>>>>>>>>>>>>>>>>>>>>>>>>>> <<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>><<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> 1Phase Aktualnie gra w 1P & 6Amperes",
+        "uk": "Навантаження з принаймні 6A: <br >/Behavior при включенні, якщо не занурення живлення pv доступна: 3Phases => 1Пхасе => продовжити з 1P & 6Amperes",
+        "zh-cn": "至少有6A的贷款:<br >/Behavior,如果无法获得无enougth pv电力:3Phases=> 1 Phase= > 继续有1个P和6个Amper"
+      }
 };
