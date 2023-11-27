@@ -255,7 +255,7 @@
       ],
       "noConfig": true,
       "adminUI": {
-        "config":"html"
+        "config": "materialize"
       }
     },
     "native": {
