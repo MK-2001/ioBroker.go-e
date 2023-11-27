@@ -71,6 +71,9 @@ https://go-e.co/support/
 
 [Additional moved here](./CHANGELOG_OLD.md)
 
+## Translations
+The most of the translations are coming from https://translator-ui.iobroker.in feel free to contribute, if something went wrong during the translations.
+
 ## License
                                  Apache License
                            Version 2.0, January 2004
