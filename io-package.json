@@ -159,7 +159,10 @@
         {
           "js-controller": ">=2.0.0"
         }
-      ]
+      ],
+      "adminUI": {
+        "config":"json"
+      }
     },
     "native": {
       "serverName": "go-eCharger",
