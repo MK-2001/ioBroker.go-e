@@ -87,10 +87,18 @@ systemDictionary = {
         "zh-cn": "以瓦特为单位的当前家庭功耗的对象 ID [W]"
     },
     "houseBatteryForeignObjectID": {
-        "en": "object-id for current powerflow of battery in watts hours [W]",
-        "de": "Objekt-ID für den aktuellen Stromfluss der Heimbatterie in Watt [W]"
-
-    }, "bufferToSolar": {
+        "en": "object-id for current powerflow of battery in watts [W]",
+        "de": "objekt-ID für Stromfluss der Batterie in Watt [W]",
+        "ru": "объект-id для текущего потока батареи в ватт [W]",
+        "pt": "objeto-id para o fluxo de energia atual da bateria em watts [W]",
+        "nl": "object-id for huidige stroom van batterij in watten",
+        "fr": "objet-id pour le débit de courant de la batterie en watts [W]",
+        "it": "oggetto-id per il flusso di corrente della batteria in watt [W]",
+        "es": "objeto-id para el flujo de energía actual de la batería en vatios [W]",
+        "pl": "obiekty dla prądu zasilania baterii w watach WW",
+        "uk": "об'єкт-id для поточного живлення акумулятора в ват [W]",
+        "zh-cn": "[W]"
+      }, "bufferToSolar": {
         "en": "Buffer to the outcome from solar panel to the usage of loading process",
         "de": "Puffer zwischen Solarpanel-Ertrag und der Nutzung für den Ladevorgang in Watt [W]",
         "ru": "Буфер результата от солнечной панели к использованию процесса загрузки",
