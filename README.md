@@ -51,6 +51,7 @@ https://go-e.co/support/
 
 ## Changelog
 
+* 1.0.29: Bugfixes.
 * 1.0.27: Enabled foreign Object usage; Full Changelog online: https://github.com/MK-2001/ioBroker.go-e/blob/main/docs/CHANGELOG.md; Issue for Object not found.
 * 1.0.25": TempArray resize on FW 054 HW V2; Readme.Adaption; Dependency security updates; Added the options to consider acknowledged value changes of foreign adapters; Added choice of ack of foreign adapters (#125)\\n Minor bug for sentry; Error in tme object; Bug in Sentry. Added Catch.
 * 1.0.18: First adaption of V3 hardware from go-e; Added switch to disable writing of the temperatures array; write different amont of temperature sensors; Added addtional attributes to ast; Updated several FOSS libs
@@ -263,4 +264,4 @@ https://go-e.co/support/
    limitations under the License.
 
 ## Copyright
-Copyright (c) 2022 MK-2001 go-e@itinsi.de
+Copyright (c) 2023 MK-2001 go-e@itinsi.de
