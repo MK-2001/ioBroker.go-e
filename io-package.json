@@ -52,28 +52,99 @@
           "it": "Primo adattamento dell'hardware V3 da go-e; Aggiunto switch per disabilitare la scrittura dell'array temperature; scrivere diversi sensori di temperatura; Aggiunti attributi aggiuntivi ad ast; Aggiornate diverse librerie FOSS",
           "es": "Primera adaptación del hardware V3 de go-e; Se agregó un interruptor para deshabilitar la escritura de la matriz de temperaturas; escriba diferentes cantidades de sensores de temperatura; Se agregaron atributos adicionales a ast; Se actualizaron varias librerías de FOSS",
           "pl": "Pierwsza adaptacja sprzętu V3 od go-e; Dodano przełącznik wyłączający zapisywanie tablicy temperatur; napisz inny zestaw czujników temperatury; Dodano dodatkowe atrybuty do ast; Zaktualizowano kilka bibliotek FOSS",
+          "uk": "nan",
           "zh-cn": "首次适配 go-e 的 V3 硬件；添加开关以禁用温度数组的写入；编写不同数量的温度传感器；为 ast 添加了附加属性；更新了几个 FOSS 库"
         },
         "1.0.17": {
-          "en": "write different amont of temperature sensors"
+          "en": "write different amount of temperature sensors",
+          "de": "unterschiedliche menge an temperatursensoren schreiben",
+          "ru": "написать различное количество датчиков температуры",
+          "pt": "escrever diferente quantidade de sensores de temperatura",
+          "nl": "schrijf verschillende temperatuursensoren",
+          "fr": "écrire différentes quantités de capteurs de température",
+          "it": "scrivere diversa quantità di sensori di temperatura",
+          "es": "escribir diferentes cantidades de sensores de temperatura",
+          "pl": "napisuje różne ilości czujników temperatury",
+          "uk": "написати різну кількість датчиків температури",
+          "zh-cn": "撰写不同温度传感器"
         },
         "1.0.16": {
-          "en": "Added switch to disable writing of the temperatures array"
+          "en": "Added switch to disable writing of the temperatures array",
+          "de": "Hinzugefügt Schalter, um das Schreiben der Temperatur-Array deaktivieren",
+          "ru": "Добавлен переключатель для отключения написания массива температур",
+          "pt": "Adicionado interruptor para desativar a escrita do array de temperaturas",
+          "nl": "Verschild om de techniek van de temperatuur uit te schakelen",
+          "fr": "Changement ajouté à l'écriture désactive du tableau de températures",
+          "it": "Aggiunto interruttore per disabilitare la scrittura della gamma di temperature",
+          "es": "Interruptor añadido a la escritura deshabilitación de la matriz de temperaturas",
+          "pl": "Złączanie do pisowni w celu zdyskwalifikowania pisemnych danych o temperaturze",
+          "uk": "Додано перемикач для дискретного написання діапазону температур",
+          "zh-cn": "增加温度幅度的可变的文字"
         },
         "1.0.15": {
-          "en": "First adaption of V3 hardware from go-e"
+          "en": "First adaption of V3 hardware from go-e",
+          "de": "Erste Anpassung der V3-Hardware von go-e",
+          "ru": "Первая адаптация V3 оборудования от go-e",
+          "pt": "Primeira adaptação de hardware V3 de go-e",
+          "nl": "Eerste aanpassing van V3 hardware van go-",
+          "fr": "Première adaptation du matériel V3 de go-e",
+          "it": "Prima adattamento dell'hardware V3 da go-e",
+          "es": "Primera adaptación de hardware V3 desde go-e",
+          "pl": "Pierwsza adaptacja V3",
+          "uk": "Перша адаптація обладнання V3 від go-e",
+          "zh-cn": "第五3硬件的第一变量"
         },
         "1.0.13": {
-          "en": "Updated Packages; Enabled to give feedback to amp/amx if amx has been set."
+          "en": "Updated Packages; Enabled to give feedback to amp/amx if amx has been set.",
+          "de": "Aktualisierte Pakete; Aktiviert, um Feedback an amp/amx zu geben, wenn amx gesetzt wurde.",
+          "ru": "Обновленные пакеты; Позволяют дать обратную связь amp/amx если amx был установлен.",
+          "pt": "Pacotes atualizados; habilitado a dar feedback para amp / amx se o amx foi definido.",
+          "nl": "Verouderde Packages, in staat om feedback te geven aan amp/amx als Amx is ingesteld.",
+          "fr": "Forfaits mis à jour; Activer pour donner des commentaires à amp/amx si amx a été défini.",
+          "it": "Pacchetti aggiornati; abilitato per dare un feedback amp/amx se amx è stato impostato.",
+          "es": "Paquetes actualizados; Permitidos para dar retroalimentación a amp/amx si se ha establecido amx.",
+          "pl": "Updated Packages; Enabled to give feedback to amx.",
+          "uk": "Оновлені пакети; Увімкнено дати зворотний зв'язок з амперами / акс, якщо було встановлено амкс.",
+          "zh-cn": "最新包装;如果已经确定,便可向批发/黑体提供反馈。."
         },
         "1.0.11": {
-          "en": "Added possibility to connect original Power Information from foreign adapters"
+          "en": "Added possibility to connect original Power Information from foreign adapters",
+          "de": "Zusätzliche Möglichkeit, original Power Information von ausländischen Adaptern zu verbinden",
+          "ru": "Добавлена возможность подключения оригинальной Power Information от зарубежных адаптеров",
+          "pt": "Adicionado possibilidade de conectar informações originais do poder de adaptadores estrangeiros",
+          "nl": "Verbinden met de originele Power Informatie van buitenlandse adapters",
+          "fr": "Possibilité de connecter des informations de puissance originales à des adaptateurs étrangers",
+          "it": "Aggiunta possibilità di collegare originale Power Information da adattatori stranieri",
+          "es": "Se agregó la posibilidad de conectar la información original del poder de los adaptadores extranjeros",
+          "pl": "Wstępna możliwość połączenia oryginalnej informacji z zagranicznymi adapterami",
+          "uk": "Додана можливість підключення оригінальної інформації про електроенергію з іноземних адаптерів",
+          "zh-cn": "增加将外国适应者原始电力信息连接起来的可能性"
         },
         "1.0.10": {
-          "en": "Make Label of card 1 & 2 optional."
+          "en": "Make Label of card 1 & 2 optional.",
+          "de": "Beschriftung der Karte 1 & 2 optional.",
+          "ru": "Сделайте этикетку карты 1 & 2 необязательный.",
+          "pt": "Faça a etiqueta do cartão 1 & 2 opcional.",
+          "nl": "Maak Label van kaart 1 optie 2.",
+          "fr": "Marquer la carte 1 & 2 en option.",
+          "it": "Etichetta di carta 1 & 2 opzionale.",
+          "es": "Hacer Label de la tarjeta 1 & 2 opcional.",
+          "pl": "Make Label of the card 1 & 2 (ang.).",
+          "uk": "Зробіть етикетку картки 1 & 2 додатково.",
+          "zh-cn": "马克·拉贝尔博士1和2名任择。."
         },
         "1.0.9": {
-          "en": "Better handling with validation error regarding https://github.com/MK-2001/ioBroker.go-e/issues/54"
+          "en": "Better handling with validation error regarding https://github.com/MK-2001/ioBroker.go-e/issues/54",
+          "de": "Bessere Handhabung mit Validierungsfehler bezüglich https://github.com/MK-2001/ioBroker.go-e/issues/54",
+          "ru": "Улучшенная обработка с ошибкой проверки относительно https://github.com/MK-2001/ioBroker.go-e/issues/54",
+          "pt": "Melhor manuseio com erro de validação em relação https://github.com/MK-2001/ioBroker.go-e/issues/54",
+          "nl": "Beter omgaan met bevestigingsfout. Quality over Quantity (QoQ) Releases Vertaling:",
+          "fr": "Meilleure manipulation avec erreur de validation https://github.com/MK-2001/ioBroker.go-e/issues/54",
+          "it": "Migliore gestione con errore di validazione per quanto riguarda https://github.com/MK-2001/ioBroker.go-e/issues/54",
+          "es": "Mejor manejo con error de validación https://github.com/MK-2001/ioBroker.go-e/issues/54",
+          "pl": "Lepsza obsługa błędów walidacyjnych dotyczących błędu potwierdzenia. https:/github.com/MK-2001/ioBroker.go-e/issues/54 (ang.)",
+          "uk": "Краще обслуговування з помилкою перевірки https://github.com/MK-2001/ioBroker.go-e/products/54",
+          "zh-cn": "更好地处理验证错误 http://github.com/MK-2001/ioBroker.go-e/issues/54"
         },
         "1.0.8": {
           "en": "* Catch warn message in read object\n* Added SENTRY to get more details for debbugging\n* Only work with JSON compatible answers from your adapter\n* Updated writable objects attribut #47 Thanks to GoClyde\n* Enabled Sentry for debugging\n* Added documentation for API v1 of go-e.co (Unsupported v2, yet)\n* Added joi validation to validate response from the hardware adapter\n* Update color in settings used a watch on a wrong io-object\n* Error handling on status update got improved\n* udpate dependencies",
@@ -85,10 +156,21 @@
           "it": "* Cattura il messaggio di avviso nell'oggetto letto\n* Aggiunto SENTRY per ottenere maggiori dettagli per il debug\n* Funziona solo con risposte compatibili JSON dal tuo adattatore\n* Attributo #47 aggiornato degli oggetti scrivibili Grazie a GoClyde\n* Sentry abilitato per il debug\n* Aggiunta documentazione per API v1 di go-e.co (non ancora supportata v2)\n* Aggiunta la convalida joi per convalidare la risposta dall'adattatore hardware\n* Aggiorna il colore nelle impostazioni usato un orologio su un oggetto io sbagliato\n* La gestione degli errori sull'aggiornamento dello stato è stata migliorata\n* aggiorna le dipendenze",
           "es": "* Captura el mensaje de advertencia en el objeto leído\n* Se agregó SENTRY para obtener más detalles para la depuración\n* Solo trabaje con respuestas compatibles con JSON desde su adaptador\n* Atributo # 47 de objetos de escritura actualizado gracias a GoClyde\n* Sentry habilitado para depuración\n* Se agregó documentación para API v1 de go-e.co (aún no compatible con v2)\n* Se agregó validación joi para validar la respuesta del adaptador de hardware\n* Actualizar el color en la configuración utilizó un reloj en un objeto io incorrecto\n* Se mejoró el manejo de errores en la actualización de estado\n* udpate dependencias",
           "pl": "* Złap wiadomość ostrzegawczą w odczytanym obiekcie\n* Dodano SENTRY, aby uzyskać więcej szczegółów dotyczących debugowania\n* Pracuj tylko z odpowiedziami zgodnymi z JSON z twojego adaptera\n* Zaktualizowany atrybut obiektów do zapisu #47 Dzięki GoClyde\n* Włączono Sentry do debugowania\n* Dodano dokumentację API v1 go-e.co (jeszcze nieobsługiwana wersja v2)\n* Dodano weryfikację joi w celu sprawdzenia odpowiedzi z adaptera sprzętowego\n* Zaktualizuj kolor w ustawieniach używał zegarka na niewłaściwym obiekcie io\n* Poprawiono obsługę błędów podczas aktualizacji statusu\n* uaktualnienia zależności",
+          "uk": "nan",
           "zh-cn": "* 在读取对象中捕获警告消息\n* 添加 SENTRY 以获取更多调试细节\n* 仅适用于来自您的适配器的 JSON 兼容答案\n* 更新了可写对象属性 #47 感谢 GoClyde\n* 启用 Sentry 进行调试\n* 为 go-e.co 的 API v1 添加了文档（尚不支持 v2）\n* 添加了 joi 验证以验证来自硬件适配器的响应\n* 在错误的 io 对象上使用手表的设置中更新颜色\n* 状态更新的错误处理得到改进\n* 更新依赖"
         },
         "1.0.6": {
-          "de": "Sentry enabled"
+          "en": "Sentry enabled",
+          "de": "Sentry aktiviert",
+          "ru": "Сфера включена",
+          "pt": "Enviado habilitado",
+          "nl": "Vertaling:",
+          "fr": "Sentry enabled",
+          "it": "Sentry abilitato",
+          "es": "Sentry enabled",
+          "pl": "Pozwolić",
+          "uk": "Увімкнено",
+          "zh-cn": "获准参加"
         },
         "1.0.0": {
           "en": "First Stable release and tests wit PV with these functions:\naccess_state\nallow_charging\nampere\namperePV\nenergy\nadjustAmpLevelInWatts\nmax_watts\nmax_load\nsettings\nampere_level1\nampere_level2\nampere_level3\nampere_level4\nampere_level5\ncolor\nidle\nchargeing\nfinish\nled_save_energy\nled_brightness\nstop_state\nunlock_state",
@@ -100,10 +182,21 @@
           "it": "Primo rilascio stabile e test con PV con queste funzioni:\naccess_state\nallow_charging\nampere\namperePV\nenergia\nAdjustAmpLevelInWatts\nmax_watts\ncarico massimo\nimpostazioni\nampere_level1\nampere_level2\nampere_level3\nampere_level4\nampere_level5\ncolore\ninattivo\nin carica\nfinire\nled_save_energy\nled_brightness\nstop_state\nunlock_state",
           "es": "Primera versión estable y pruebas con PV con estas funciones:\naccess_state\nallow_charging\namperio\namperio PV\nenergía\nAdjustAmpLevelInWatts\nmax_watts\ncarga maxima\najustes\nampere_level1\nampere_level2\nampere_level3\nampere_level4\nampere_level5\ncolor\nocioso\ncargando\nterminar\nled_save_energy\nled_brightness\nstop_state\nunlock_state",
           "pl": "Pierwsza stabilna wersja i testy z PV z następującymi funkcjami:\nstan_dostępu\nallow_charging\namper\namperePV\nenergia\nadjustAmpLevelInWatts\nmax_watts\nmax_load\nustawienia\nampere_level1\nampere_level2\nampere_level3\nampere_level4\nampere_level5\nkolor\nbezczynny\nładowanie\nkoniec\nled_save_energy\nled_brightness\nstop_state\nunlock_state",
+          "uk": "nan",
           "zh-cn": "First稳定版并通过以下功能对PV进行测试：\naccess_state\nallow_charging\n安培\n电流\n能源\nAdjustAmpLevelInWatts\nmax_watts\n最大负荷\n设定\nampe_level1\nampe_level2\nampe_level3\nampe_level4\nampe_level5\n颜色\n闲\n充电中\n完\nled_save_energy\nled_brightness\n停止状态\nunlock_state"
         },
         "0.9.0": {
-          "de": "https://translator.iobroker.in"
+          "en": "https://translator.iobroker.in",
+          "de": "http://translator.iobroker.in",
+          "ru": "https://translator.iobroker.in",
+          "pt": "https://translator.iobroker.in",
+          "nl": "_",
+          "fr": "https://translator.iobroker.in",
+          "it": "https://translator.iobroker.in",
+          "es": "https://translator.iobroker.in",
+          "pl": "https://translator.iobroker.in (ang.)",
+          "uk": "https://translator.iobroker.in",
+          "zh-cn": "http://translator.iobroker.in"
         }
       },
       "titleLang": {
@@ -161,7 +254,7 @@
         }
       ],
       "adminUI": {
-        "config":"json"
+        "config":"html"
       }
     },
     "native": {
