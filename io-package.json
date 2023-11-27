@@ -253,6 +253,7 @@
           "js-controller": ">=2.0.0"
         }
       ],
+      "noConfig": true,
       "adminUI": {
         "config":"html"
       }
