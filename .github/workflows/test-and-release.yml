@@ -5,7 +5,7 @@ name: Test and Release
 on:
   push:
     branches:
-      - "master"
+      - "main"
     tags:
       # normal versions
       - "v[0-9]+.[0-9]+.[0-9]+"
@@ -50,8 +50,9 @@ jobs:
           os: ${{ matrix.os }}
           # Uncomment the following line if your adapter cannot be installed using 'npm ci'
           # install-command: 'npm install'
+          build: true
 
-# TODO: To enable automatic npm releases, create a token on npmjs.org
+# TODO: To enable automatic npm releases, create a token on npmjs.org 
 # Enter this token as a GitHub secret (with name NPM_TOKEN) in the repository options
 # Then uncomment the following block:
 
@@ -74,9 +75,10 @@ jobs:
 #    steps:
 #      - uses: ioBroker/testing-action-deploy@v1
 #        with:
-#          node-version: '16.x'
+#          node-version: '18.x'
 #          # Uncomment the following line if your adapter cannot be installed using 'npm ci'
 #          # install-command: 'npm install'
+#          build: true
 #          npm-token: ${{ secrets.NPM_TOKEN }}
 #          github-token: ${{ secrets.GITHUB_TOKEN }}
 #
@@ -86,7 +88,8 @@ jobs:
 #          # Then uncomment and customize the following block:
 #          sentry: true
 #          sentry-token: ${{ secrets.SENTRY_AUTH_TOKEN }}
-#          sentry-project: "iobroker-keenergy"
-#          sentry-version-prefix: "iobroker.keenergy"
+#          sentry-project: "iobroker-empty"
+#          sentry-version-prefix: "iobroker.empty"
+#          sentry-sourcemap-paths: "admin/build/"
 #          # If your sentry project is linked to a GitHub repository, you can enable the following option
 #          # sentry-github-integration: true

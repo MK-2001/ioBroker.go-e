@@ -7,8 +7,9 @@ updates:
       time: "04:00"
       timezone: Europe/Berlin
     open-pull-requests-limit: 5
+    target-branch: "onprem"
     assignees:
-      - jb-tool
+      - MK-2001
     versioning-strategy: increase
 
   - package-ecosystem: github-actions
@@ -18,5 +19,6 @@ updates:
       time: "04:00"
       timezone: Europe/Berlin
     open-pull-requests-limit: 5
+    target-branch: "onprem"
     assignees:
-      - jb-tool
+      - MK-2001
