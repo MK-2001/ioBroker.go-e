@@ -33,7 +33,7 @@
     "@types/gulp": "^4.0.17",
     "@types/mocha": "^7.0.2",
     "@types/node": "^20.10.0",
-    "@types/proxyquire": "^1.3.28",
+    "@types/proxyquire": "^1.3.31",
     "@types/sinon": "^9.0.11",
     "@types/sinon-chai": "^3.2.12",
     "chai": "^4.3.4",
