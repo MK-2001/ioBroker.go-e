@@ -21,7 +21,7 @@
   "dependencies": {
     "@sentry/node": "^7.81.1",
     "@iobroker/adapter-core": "^2.6.0",
-    "@sentry/tracing": "^6.18.2",
+    "@sentry/tracing": "^7.112.2",
     "axios": "^1.6.0",
     "joi": "^17.6.0",
     "p-queue": "^6.6.2"
