@@ -747,7 +747,7 @@ class GoE extends utils.Adapter {
             transaction ? transaction.finish() : "";
         } else {
             // Still existing Block-Timer
-            this.log.debug("MaxWatts ignored. You are sending to fast! Update interval in settings is currently set to: " + this.config.ampUpdateInterval);
+            this.log.silly("MaxWatts ignored. You are sending to fast! Update interval in settings is currently set to: " + this.config.ampUpdateInterval);
         }
     }
     /**
@@ -876,7 +876,7 @@ class GoE extends utils.Adapter {
 
         } else {
             // Still existing Block-Timer
-            this.log.debug("MaxWatts ignored. You are sending to fast! Update interval in settings is currently set to: " + this.config.ampUpdateInterval);
+            this.log.silly("MaxWatts ignored. You are sending to fast! Update interval in settings is currently set to: " + this.config.ampUpdateInterval);
         }
     }
     /**
@@ -902,16 +902,18 @@ class GoE extends utils.Adapter {
                 return;
             }
 
-            let availWatts = 0;
-            availWatts += (await this.getNumberFromForeignObjectId(this.config.solarPowerForeignObjectID));
+            let availWatts1 = 0;
+            availWatts1 = availWatts1 + (await this.getNumberFromForeignObjectId(this.config.solarPowerForeignObjectID));
             if(this.config.solarPowerForeignObjectNegate) {
-                availWatts = availWatts * -1;
-                this.log.silly("Negate watts of Solar new: " + availWatts);
+                availWatts1 = availWatts1 * -1;
+                this.log.silly("Negate watts of Solar new: " + availWatts1);
             }
-            if(availWatts >= this.config.bufferToSolar) {
-                availWatts -= this.config.bufferToSolar;
+            let availWatts2 = availWatts1;
+            if(availWatts1 >= this.config.bufferToSolar) {
+                availWatts2 -= this.config.bufferToSolar;
             }
-            availWatts -= await this.getNumberFromForeignObjectId(this.config.houseConsumptionForeignObjectID);
+            let houseConsumption = await this.getNumberFromForeignObjectId(this.config.houseConsumptionForeignObjectID);
+            let availWatts3 = availWatts2 - houseConsumption;
 
             // houseBatteryForeignObjectID - Ladestrom der Hausbatterie
             // Wenn dieses Fremdobjekt angegeben wird, ist die Priorisierung auf das Laden des Fzg. gesetzt.
@@ -925,11 +927,11 @@ class GoE extends utils.Adapter {
             //} else {
             //    houseBattery = 0;
             //}
-            availWatts += houseBattery;
+            let availWatts = availWatts3 + houseBattery;
             // If your home battery contains 3000 Wh use in one hour the whole energy to load.
             //
 
-            this.log.debug("Start ajust by foreign Object with " + (availWatts - parseInt(usedPower.val.toString(), 10)) + " Watts");
+            this.log.debug("Start ajust by foreign Object with " + (availWatts - parseInt(usedPower.val.toString(), 10)) + ` Watts. (${availWatts1} solarPower - ${this.config.bufferToSolar} Buffer - ${houseConsumption} House consumption + ${houseBattery} House battery)`);
             this.adjustAmpLevelInWatts(availWatts - parseInt(usedPower.val.toString(), 10));
         } catch (err) {
             this.log.error("Error in calculateFromForeignObjects: " + JSON.stringify(err.message));
