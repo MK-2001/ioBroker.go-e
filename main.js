@@ -858,10 +858,11 @@ class GoE extends utils.Adapter {
                 if(maxAmp < 6) {
                     // Allow charge (Ist Auto angehängt und freigabe vorhanden.)
                     // loadWith6AAtLeast => true; nicht abschalten
-                    if(!loadWith6AAtLeast && allowCharge.val !== 0) {
-                        this.setValue("alw", 0);
+                    if(!loadWith6AAtLeast) {
+                        if( allowCharge.val !== 0)
+                            this.setValue("alw", 0);
                     } else {
-                        this.log.debug("Continue because loadWith6AAtLeast is activated.")
+                        this.log.debug("Continue because loadWith6AAtLeast is activated.");
                     }
                 } else {
                     this.setAmp(maxAmp);
