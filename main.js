@@ -811,7 +811,7 @@ class GoE extends utils.Adapter {
                 }
                 // car.val == 2 => Fahrzeug aktiv am laden
                 // car.val == 4  && alw.val == 0 => Fahrszeug pasiert zum laden
-                     //  false  || ( true && true)
+                //  false  || ( true && true)
                 if(!(car.val == 2 || (car.val == 4 && allowCharge.val === 0))) {
                     this.log.debug("Ignore to change ampere level by watts, because there is no car loading. Car: " + car.val + "; alw: " + allowCharge.val);
                     return;
