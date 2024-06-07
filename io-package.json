@@ -3,6 +3,9 @@
       "name": "go-e",
       "version": "1.0.29",
       "news": {
+        "1.0.30": {
+          "en": "added max ampere in settings"
+        },
         "1.0.29": {
           "en": "Solved Bugs from GitHub Issues 171, 162, ...; Fixed Bug in Lights; updated Admin screen; Logic fixtures",
           "de": "Gelöste Bugs von GitHub Issues 171, 162, ...; Fixed Bug in Lights; aktualisierter Admin-Bildschirm; Logik-Features",
@@ -284,7 +287,8 @@
         "alw",
         "car",
         "amp"
-      ]
+      ],
+      "maxAmp": 16
     },
     "objects": [],
     "instanceObjects": [

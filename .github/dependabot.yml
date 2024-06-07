@@ -21,4 +21,4 @@ updates:
     open-pull-requests-limit: 5
     target-branch: "onprem"
     assignees:
-      - MK-2001
+      - MK-2001 

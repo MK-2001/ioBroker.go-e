@@ -642,11 +642,16 @@ class GoE extends utils.Adapter {
 
     /**
      * Set max amp to amx or amp based on firmware
-     * @param {string} maxAmp
+     * @param {number} maxAmp
      */
     async setAmp(maxAmp) {
         // Get Firmware Version if amx is available
         const fw = await this.getStateAsync("firmware_version");
+        let maxSetAmp = this.config.maxAmp;
+        if(!maxSetAmp) {
+            this.log.warn("Maximum Amperes not set in settings. Use of 16 amperes instead.");
+            maxSetAmp = 16;
+        }
         let amp = "";
         if(fw != undefined && fw != null && parseInt(fw.toString()) > 33) {
             // Use AMX insted of AMP. Becaus the EEPROM of amp is only 100.000 times writeable
@@ -658,14 +663,14 @@ class GoE extends utils.Adapter {
         if(maxAmp < 6) {
             // The smallest value is 6 amperes
             this.setValue(amp, 6);
-            this.log.debug("set maxAmperes (" + amp + ") by maxWatts: 6 amperes");
-        } else if(maxAmp < 32) {
+            this.log.debug("set maxAmperes (" + amp + "): 6 amperes");
+        } else if(maxAmp < maxSetAmp) {
             this.setValue(amp, maxAmp);
-            this.log.debug("set maxAmperes (" + amp + ") by maxWatts: " + maxAmp + " amperes" );
+            this.log.debug("set maxAmperes (" + amp + "): " + maxAmp + " amperes" );
         } else {
             // The maximum is 32 Amperes
-            this.setValue(amp, 32);
-            this.log.debug("set maxAmperes (" + amp + ") by maxWatts: 32 amperes");
+            this.setValue(amp, maxSetAmp);
+            this.log.debug("set maxAmperes (" + amp + "): " + maxSetAmp + " amperes");
         }
     }
 
