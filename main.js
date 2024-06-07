@@ -642,11 +642,16 @@ class GoE extends utils.Adapter {
 
     /**
      * Set max amp to amx or amp based on firmware
-     * @param {string} maxAmp
+     * @param {number} maxAmp
      */
     async setAmp(maxAmp) {
         // Get Firmware Version if amx is available
         const fw = await this.getStateAsync("firmware_version");
+        let maxSetAmp = this.config.maxAmp;
+        if(!maxSetAmp) {
+            this.log.warn("Maximum Amperes not set in settings. Use of 16 amperes instead.");
+            maxSetAmp = 16;
+        }
         let amp = "";
         if(fw != undefined && fw != null && parseInt(fw.toString()) > 33) {
             // Use AMX insted of AMP. Becaus the EEPROM of amp is only 100.000 times writeable
@@ -658,14 +663,14 @@ class GoE extends utils.Adapter {
         if(maxAmp < 6) {
             // The smallest value is 6 amperes
             this.setValue(amp, 6);
-            this.log.debug("set maxAmperes (" + amp + ") by maxWatts: 6 amperes");
-        } else if(maxAmp < 32) {
+            this.log.debug("set maxAmperes (" + amp + "): 6 amperes");
+        } else if(maxAmp < maxSetAmp) {
             this.setValue(amp, maxAmp);
-            this.log.debug("set maxAmperes (" + amp + ") by maxWatts: " + maxAmp + " amperes" );
+            this.log.debug("set maxAmperes (" + amp + "): " + maxAmp + " amperes" );
         } else {
             // The maximum is 32 Amperes
-            this.setValue(amp, 32);
-            this.log.debug("set maxAmperes (" + amp + ") by maxWatts: 32 amperes");
+            this.setValue(amp, maxSetAmp);
+            this.log.debug("set maxAmperes (" + amp + "): " + maxSetAmp + " amperes");
         }
     }
 
@@ -747,7 +752,7 @@ class GoE extends utils.Adapter {
             transaction ? transaction.finish() : "";
         } else {
             // Still existing Block-Timer
-            this.log.debug("MaxWatts ignored. You are sending to fast! Update interval in settings is currently set to: " + this.config.ampUpdateInterval);
+            this.log.silly("MaxWatts ignored. You are sending to fast! Update interval in settings is currently set to: " + this.config.ampUpdateInterval);
         }
     }
     /**
@@ -876,7 +881,7 @@ class GoE extends utils.Adapter {
 
         } else {
             // Still existing Block-Timer
-            this.log.debug("MaxWatts ignored. You are sending to fast! Update interval in settings is currently set to: " + this.config.ampUpdateInterval);
+            this.log.silly("MaxWatts ignored. You are sending to fast! Update interval in settings is currently set to: " + this.config.ampUpdateInterval);
         }
     }
     /**
@@ -902,16 +907,18 @@ class GoE extends utils.Adapter {
                 return;
             }
 
-            let availWatts = 0;
-            availWatts += (await this.getNumberFromForeignObjectId(this.config.solarPowerForeignObjectID));
+            let availWatts1 = 0;
+            availWatts1 = availWatts1 + (await this.getNumberFromForeignObjectId(this.config.solarPowerForeignObjectID));
             if(this.config.solarPowerForeignObjectNegate) {
-                availWatts = availWatts * -1;
-                this.log.silly("Negate watts of Solar new: " + availWatts);
+                availWatts1 = availWatts1 * -1;
+                this.log.silly("Negate watts of Solar new: " + availWatts1);
             }
-            if(availWatts >= this.config.bufferToSolar) {
-                availWatts -= this.config.bufferToSolar;
+            let availWatts2 = availWatts1;
+            if(availWatts1 >= this.config.bufferToSolar) {
+                availWatts2 -= this.config.bufferToSolar;
             }
-            availWatts -= await this.getNumberFromForeignObjectId(this.config.houseConsumptionForeignObjectID);
+            let houseConsumption = await this.getNumberFromForeignObjectId(this.config.houseConsumptionForeignObjectID);
+            let availWatts3 = availWatts2 - houseConsumption;
 
             // houseBatteryForeignObjectID - Ladestrom der Hausbatterie
             // Wenn dieses Fremdobjekt angegeben wird, ist die Priorisierung auf das Laden des Fzg. gesetzt.
@@ -925,11 +932,11 @@ class GoE extends utils.Adapter {
             //} else {
             //    houseBattery = 0;
             //}
-            availWatts += houseBattery;
+            let availWatts = availWatts3 + houseBattery;
             // If your home battery contains 3000 Wh use in one hour the whole energy to load.
             //
 
-            this.log.debug("Start ajust by foreign Object with " + (availWatts - parseInt(usedPower.val.toString(), 10)) + " Watts");
+            this.log.debug("Start ajust by foreign Object with " + (availWatts - parseInt(usedPower.val.toString(), 10)) + ` Watts. (${availWatts1} solarPower - ${this.config.bufferToSolar} Buffer - ${houseConsumption} House consumption + ${houseBattery} House battery)`);
             this.adjustAmpLevelInWatts(availWatts - parseInt(usedPower.val.toString(), 10));
         } catch (err) {
             this.log.error("Error in calculateFromForeignObjects: " + JSON.stringify(err.message));
