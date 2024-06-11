@@ -105,6 +105,7 @@ class GoE extends utils.Adapter {
         this.subscribeStates("solarLoadOnly");
         this.subscribeStates("stop_state");
         this.subscribeStates("unlock_state");
+        this.subscribeStates("phaseSwitchMode");
 
         // get updates from a foreign adapter if it is set in Settings
         if(this.config.houseBatteryForeignObjectID) {
@@ -272,6 +273,13 @@ class GoE extends utils.Adapter {
                             this.log.warn("Could not set value " + state.val.toString() + " into " + id);
                         }
 
+                        break;
+                    case this.namespace + ".phaseSwitchMode":
+                        if(parseInt(state.val.toString()) === 0 || parseInt(state.val.toString()) === 1 || parseInt(state.val.toString()) == 2 ) {
+                            this.setValueV2("psm", parseInt(state.val.toString()));
+                        } else {
+                            this.log.warn("Could not set value " + state.val.toString() + " into " + id + " (psm)");
+                        }
                         break;
                     case this.config.solarPowerForeignObjectID:
                     case this.config.houseBatteryForeignObjectID:
