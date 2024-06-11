@@ -383,6 +383,7 @@ class GoE extends utils.Adapter {
                 }
             });
         // Get additional parameters from API v2
+        this.log.debug(`Starte Abfrage an: http://${this.config.serverName}/api/status?filter=psm`);
         axios.get("/api/status?filter=psm")
             .then((o) => {
                 this.log.silly("Response: " + o.status + " - " + o.statusText + " with data as " + typeof o.data);
