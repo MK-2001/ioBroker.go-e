@@ -26,7 +26,7 @@ jobs:
       - name: set CommitID to Version
         run: |
           echo "CommtID ${{ gitea.sha }}"
-          sed -i -e "s/setByGitHubActions/${{ gitea.sha }}/" ${{ gitea.workspace }}/main.js && echo "=== IO-Package FILE ===" && cat ${{ gitea.workspace }}/io-package.json
+          sed -i -e "s/setByGitHubActions/${{ gitea.sha }}/" ${{ gitea.workspace }}/main.js && echo "=== mainjs FILE ===" && cat ${{ gitea.workspace }}/main.js
       - run: |
           npm pack --json | jq -r '.[0] | "filename=" + .filename + "\nid=" + .id + "\nversion=" + .version' | sed 's/\\n/\n/g' >> "$GITHUB_OUTPUT"
         name: Pack NPM File
