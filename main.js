@@ -177,9 +177,9 @@ class GoE extends utils.Adapter {
     onStateChange(id, state) {
         if (state) {
             // The state was changed
-            this.log.silly(`state ${id} changed: ${state.val} (ack = ${state.ack}) namespace: ` + this.namespace);
             if (!state.ack) {
                 // If it is already acknoladged, we dont have to send it to the go-eCharger device. Or have to handle the change.
+                this.log.silly(`state ${id} changed: ${state.val} (ack = ${state.ack}) namespace: ` + this.namespace);
                 // Handle null values with the rejection
                 if(state.val === null) {
                     this.log.warn("Not able to handle null Values in " + id);
@@ -292,6 +292,7 @@ class GoE extends utils.Adapter {
                     case this.config.solarPowerForeignObjectID:
                     case this.config.houseBatteryForeignObjectID:
                     case this.config.houseConsumptionForeignObjectID:
+                        this.log.silly(`state ${id} changed: ${state.val} (ack = ${state.ack}) namespace: ` + this.namespace);
                         if(this.ackObj[id] === true) {
                             this.log.silly("Will work on " + id + " becase ack is " + state.ack + " and should be " + this.ackObj[id]);
                             this.calculateFromForeignObjects(id);
