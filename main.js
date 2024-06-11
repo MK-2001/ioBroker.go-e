@@ -673,7 +673,7 @@ class GoE extends utils.Adapter {
             maxSetAmp = 16;
         }
         let amp = "";
-        if(fw != undefined && fw != null && parseInt(fw.toString()) > 33) {
+        if(fw != undefined && fw != null && fw.val != null && parseInt(fw.val.toString()) > 33) {
             // Use AMX insted of AMP. Becaus the EEPROM of amp is only 100.000 times writeable
             // Available by firmware > 033
             amp = "amx";
