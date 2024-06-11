@@ -24,8 +24,8 @@ For more details please visit https://go-e.co/
 This Adapter is currently only running with API v1. The new API v2 support is currently pending.
 Please make sure that in the App you turned on the API v1.
 
-Dieser Adapter unterstützt derzeit nur die API v1. Die Entwicklung auf die API v2 steht in der Warteschlange. Bitte stelle sicher, dass in der APP die API v1 aktiviert wurde.
-![API_v1](./docs/active_v1.jpg)
+Dieser Adapter unterstützt derzeit die API v1 und benötigt zur vollen funktionalität auch die V2. Bitte stelle sicher, dass in der APP die API v1 und v2 aktiviert wurde.
+
 ## go-eCharger adapter for ioBroker
 **EN**
 go-e is an invitation to move electrically. E-mobility is our drive, whereby our core competence is the charging technology for electric cars. From the individual charging station for e-cars to photovoltaic connections to load management of entire buildings, we are providers of holistic system solutions for all requirements of modern e-mobility.
@@ -50,6 +50,13 @@ Official Product Support:
 https://go-e.co/support/
 
 ## Changelog
+
+### 1.0.30
+* added max ampere in settings
+* Added level to switch 1-phase to 3 pahases
+* enables phasesSwitchMode
+* Only possible if V2 is enabled
+* some bugs
 
 ### 1.0.29
 * Bugfixes.

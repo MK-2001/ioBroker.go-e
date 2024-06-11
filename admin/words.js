@@ -226,11 +226,29 @@ systemDictionary = {
         "zh-cn": "至少有6A的贷款:<br >/Behavior,如果无法获得无enougth pv电力:3Phases=> 1 Phase= > 继续有1个P和6个Amper"
     },
     "maxAmp": {
-        "de": "Maxium Amperes when loading.",
-        "en": "Maxium Amperes when loading."
+        "en": "Maximum Amperes when loading.",
+        "de": "Maximale Ampere beim Laden.",
+        "ru": "Максимальный Ампер при загрузке.",
+        "pt": "Amperes máximos ao carregar.",
+        "nl": "Maximale ampère bij laden.",
+        "fr": "Ampères maximales lors du chargement.",
+        "it": "Ampere massimo al caricamento.",
+        "es": "Maximum Amperes cuando se carga.",
+        "pl": "Maksymalne Amperes podczas załadunku.",
+        "uk": "Максимальні Ампери при навантаженні.",
+        "zh-cn": "装入时最大安珀 ."
     },
     "phaseSwitchWatts": {
+        "en": "level to switch from 1-phase to 3-phases mode",
         "de": "Überschuss-Schwelle für den Wechsel von 1-Phasig auf 3-Phasig (Watt)",
-        "en": "level to switch from 1-phase to 3-phases mode"
+        "ru": "уровень для перехода от 1-фазного к 3-фазному режиму",
+        "pt": "nível para alternar do modo de 1 fase para 3 fases",
+        "nl": "niveau om over te schakelen van 1-fase naar 3-fasenmodus",
+        "fr": "niveau pour passer du mode 1-phase à 3-phases",
+        "it": "livello per passare da 1-fase a 3 fasi",
+        "es": "nivel para cambiar de 1 fase a 3 fases",
+        "pl": "poziom przełączania z trybu 1 fazy na tryb 3 fazy",
+        "uk": "рівень переходу від 1-фазного до 3-фазного режиму",
+        "zh-cn": "级别从 1 级改为 3 级"
     }
 };
