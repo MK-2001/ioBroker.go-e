@@ -342,7 +342,7 @@ class GoE extends utils.Adapter {
             .then((o) => {
                 this.log.silly("Response: " + o.status + " - " + o.statusText + " with data as " + typeof o.data);
                 this.log.debug(JSON.stringify(o.data));
-                if(typeof o.data != "object") {
+                if(typeof o.data == "object") {
                     this.setState("phaseSwitchMode", { "val": parseInt(o["psm"]), ack: true });
                 }
             })
