@@ -940,7 +940,7 @@ class GoE extends utils.Adapter {
             const solarOnly = await this.getStateAsync("solarLoadOnly");
             if (solarOnly === undefined || solarOnly == null || solarOnly.val == null || solarOnly.val !== true) {
                 this.log.silly("Solar calculation disabled");
-                if(!solarOnly.ack)
+                if(solarOnly === undefined || solarOnly == null || solarOnly.val == null || !solarOnly.ack)
                     this.setState("solarLoadOnly", { val: false, ack: true });
                 return;
             }

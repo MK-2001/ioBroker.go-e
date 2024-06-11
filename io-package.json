@@ -2100,7 +2100,7 @@
       },
       {
         "_id": "phaseSwitchMode",
-        "type": "channel",
+        "type": "state",
         "common": {
           "name": "Phase switch Mode",
           "role": "",
