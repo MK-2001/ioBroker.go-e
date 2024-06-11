@@ -289,7 +289,7 @@
         "amp"
       ],
       "maxAmp": 16,
-      "phaseSwitchWatts": 4200  
+      "phaseSwitchWatts": 4200
     },
     "objects": [],
     "instanceObjects": [
@@ -569,7 +569,8 @@
           "type": "boolean",
           "role": "value.internal",
           "read": true,
-          "write": true
+          "write": true,
+          "def": true
         }
       },
       {
