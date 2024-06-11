@@ -105,6 +105,7 @@ class GoE extends utils.Adapter {
         this.subscribeStates("solarLoadOnly");
         this.subscribeStates("stop_state");
         this.subscribeStates("unlock_state");
+        this.subscribeStates("phaseSwitchMode");
 
         // get updates from a foreign adapter if it is set in Settings
         if(this.config.houseBatteryForeignObjectID) {
@@ -123,6 +124,8 @@ class GoE extends utils.Adapter {
             this.log.debug("Subscribe foreign object " + this.config.solarPowerForeignObjectID);
         }
         this.log.silly("Ack-Obj: " + JSON.stringify(this.ackObj));
+        // setup axios
+        axios.defaults.baseURL = "http://" + this.config.serverName;
         // Get all Information for the first time.
         await this.getStateFromDevice();
         // Start the Adapter to sync in the interval
@@ -175,9 +178,9 @@ class GoE extends utils.Adapter {
     onStateChange(id, state) {
         if (state) {
             // The state was changed
-            this.log.silly(`state ${id} changed: ${state.val} (ack = ${state.ack}) namespace: ` + this.namespace);
             if (!state.ack) {
                 // If it is already acknoladged, we dont have to send it to the go-eCharger device. Or have to handle the change.
+                this.log.silly(`state ${id} changed: ${state.val} (ack = ${state.ack}) namespace: ` + this.namespace);
                 // Handle null values with the rejection
                 if(state.val === null) {
                     this.log.warn("Not able to handle null Values in " + id);
@@ -271,6 +274,13 @@ class GoE extends utils.Adapter {
                         }
 
                         break;
+                    case this.namespace + ".phaseSwitchMode":
+                        if(parseInt(state.val.toString()) === 0 || parseInt(state.val.toString()) === 1 || parseInt(state.val.toString()) == 2 ) {
+                            this.setValueV2("psm", parseInt(state.val.toString()));
+                        } else {
+                            this.log.warn("Could not set value " + state.val.toString() + " into " + id + " (psm)");
+                        }
+                        break;
                     case this.config.solarPowerForeignObjectID:
                     case this.config.houseBatteryForeignObjectID:
                     case this.config.houseConsumptionForeignObjectID:
@@ -290,6 +300,7 @@ class GoE extends utils.Adapter {
                     case this.config.solarPowerForeignObjectID:
                     case this.config.houseBatteryForeignObjectID:
                     case this.config.houseConsumptionForeignObjectID:
+                        this.log.silly(`state ${id} changed: ${state.val} (ack = ${state.ack}) namespace: ` + this.namespace);
                         if(this.ackObj[id] === true) {
                             this.log.silly("Will work on " + id + " becase ack is " + state.ack + " and should be " + this.ackObj[id]);
                             this.calculateFromForeignObjects(id);
@@ -333,7 +344,23 @@ class GoE extends utils.Adapter {
         if(this.config.apiVersion == 2) {
             apiEndpoint = "/api/status?filter=" + Object.keys(this.translationObjectV2).join(",");
         }
-        this.log.debug("Starte Abfrage an: http://" + this.config.serverName + apiEndpoint);
+        // Get additional parameters from API v2
+        this.log.debug(`Starte V2 Abfrage an: http://${this.config.serverName}/api/status?filter=psm`);
+        axios.get("/api/status?filter=psm")
+            .then((o) => {
+                this.log.silly("Response: " + o.status + " - " + o.statusText + " with data as " + typeof o.data);
+                this.log.debug(JSON.stringify(o.data));
+                if(typeof o.data == "object") {
+                    this.setState("phaseSwitchMode", { "val": parseInt(o.data["psm"]), ack: true });
+                } else {
+                    this.log.warn(`Response of psm is ${typeof o.data}`);
+                }
+            })
+            .catch((e) => {
+                this.log.error(e);
+            });
+        // Get all other attributes from API-V1
+        this.log.debug("Starte V1 Abfrage an: http://" + this.config.serverName + apiEndpoint);
         axios.defaults.baseURL = "http://" + this.config.serverName;
         await axios.get("/status")
             .then((o) => {
@@ -379,6 +406,7 @@ class GoE extends utils.Adapter {
                     // sentry.captureException(e);
                 }
             });
+        
     }
 
     /**
@@ -569,7 +597,7 @@ class GoE extends utils.Adapter {
                                 this.log.debug("Callback with " + JSON.stringify(o) + " Error: " + JSON.stringify(e));
                             });
                         } else {
-                            this.log.silly("Object found, try to update: temperatures.temperature" + (i+1));
+                            // this.log.silly("Object found, try to update: temperatures.temperature" + (i+1));
                             await queue.add(() => this.setState("temperatures.temperature" + (i+1), { val: Number(tempArr[i]), ack: true}));
                         }
                     }
@@ -642,13 +670,18 @@ class GoE extends utils.Adapter {
 
     /**
      * Set max amp to amx or amp based on firmware
-     * @param {string} maxAmp
+     * @param {number} maxAmp
      */
     async setAmp(maxAmp) {
         // Get Firmware Version if amx is available
         const fw = await this.getStateAsync("firmware_version");
+        let maxSetAmp = this.config.maxAmp;
+        if(!maxSetAmp) {
+            this.log.warn("Maximum Amperes not set in settings. Use of 16 amperes instead.");
+            maxSetAmp = 16;
+        }
         let amp = "";
-        if(fw != undefined && fw != null && parseInt(fw.toString()) > 33) {
+        if(fw != undefined && fw != null && fw.val != null && parseInt(fw.val.toString()) > 33) {
             // Use AMX insted of AMP. Becaus the EEPROM of amp is only 100.000 times writeable
             // Available by firmware > 033
             amp = "amx";
@@ -658,14 +691,14 @@ class GoE extends utils.Adapter {
         if(maxAmp < 6) {
             // The smallest value is 6 amperes
             this.setValue(amp, 6);
-            this.log.debug("set maxAmperes (" + amp + ") by maxWatts: 6 amperes");
-        } else if(maxAmp < 32) {
+            this.log.debug("set maxAmperes (" + amp + "): 6 amperes");
+        } else if(maxAmp < maxSetAmp) {
             this.setValue(amp, maxAmp);
-            this.log.debug("set maxAmperes (" + amp + ") by maxWatts: " + maxAmp + " amperes" );
+            this.log.debug("set maxAmperes (" + amp + "): " + maxAmp + " amperes" );
         } else {
             // The maximum is 32 Amperes
-            this.setValue(amp, 32);
-            this.log.debug("set maxAmperes (" + amp + ") by maxWatts: 32 amperes");
+            this.setValue(amp, maxSetAmp);
+            this.log.debug("set maxAmperes (" + amp + "): " + maxSetAmp + " amperes");
         }
     }
 
@@ -747,7 +780,7 @@ class GoE extends utils.Adapter {
             transaction ? transaction.finish() : "";
         } else {
             // Still existing Block-Timer
-            this.log.debug("MaxWatts ignored. You are sending to fast! Update interval in settings is currently set to: " + this.config.ampUpdateInterval);
+            this.log.silly("MaxWatts ignored. You are sending to fast! Update interval in settings is currently set to: " + this.config.ampUpdateInterval);
         }
     }
     /**
@@ -764,6 +797,12 @@ class GoE extends utils.Adapter {
             });
             const loadWith6AAtLeast = this.config.loadWith6AAtLeast;
             try {
+                const phaseSwitchWatts = this.config.phaseSwitchWatts || 4200;
+                const phaseSwitchMode = await this.getStateAsync("phaseSwitchMode");
+                if(phaseSwitchMode === null || phaseSwitchMode === undefined || phaseSwitchMode.val === null) {
+                    this.log.error("adjustAmpLevelInWatts: Not all required information about the phases are found. Required Values are: phaseSwitchMode");
+                    return;
+                }
                 const avgVoltage1 = await this.getStateAsync("energy.phase1.voltage");
                 if(avgVoltage1 === null || avgVoltage1 === undefined || avgVoltage1.val === null) {
                     this.log.error("adjustAmpLevelInWatts: Not all required information about the phases are found. Required Values are: eneregy.phase1.voltage");
@@ -806,7 +845,7 @@ class GoE extends utils.Adapter {
                 }
                 // car.val == 2 => Fahrzeug aktiv am laden
                 // car.val == 4  && alw.val == 0 => Fahrszeug pasiert zum laden
-                     //  false  || ( true && true)
+                //  false  || ( true && true)
                 if(!(car.val == 2 || (car.val == 4 && allowCharge.val === 0))) {
                     this.log.debug("Ignore to change ampere level by watts, because there is no car loading. Car: " + car.val + "; alw: " + allowCharge.val);
                     return;
@@ -819,19 +858,19 @@ class GoE extends utils.Adapter {
                 let usedVolts = 0;
                 if(allowCharge.val === 1) {
                     // Check which phases are currently used
-                    if(curAmpPha1.val > 0) {
+                    if(Number(curAmpPha1.val) > 0) {
                         usedVolts += parseInt(avgVoltage1.val.toString(), 10);
                         usedAmperes += parseInt(curAmpPha1.val.toString(), 10);
                         usedWatts += parseInt(avgVoltage1.val.toString(), 10) * parseInt(curAmpPha1.val.toString(), 10);
                         usedPhases += 1;
                     }
-                    if(curAmpPha2.val > 0) {
+                    if(Number(curAmpPha2.val) > 0) {
                         usedVolts += parseInt(avgVoltage2.val.toString(), 10);
                         usedAmperes += parseInt(curAmpPha2.val.toString(), 10);
                         usedWatts += parseInt(avgVoltage2.val.toString(), 10) * parseInt(curAmpPha2.val.toString(), 10);
                         usedPhases += 1;
                     }
-                    if(curAmpPha3.val > 0) {
+                    if(Number(curAmpPha3.val) > 0) {
                         usedVolts += parseInt(avgVoltage3.val.toString(), 10);
                         usedAmperes += parseInt(curAmpPha3.val.toString(), 10);
                         usedWatts += parseInt(avgVoltage3.val.toString(), 10) * parseInt(curAmpPha3.val.toString(), 10);
@@ -839,24 +878,46 @@ class GoE extends utils.Adapter {
                     }
                 } else {
                     // Wenn derzeit keine Phase zum Laden verwendet wird, wie bei alw = 0;
-                    usedPhases = 1;
-                    usedVolts = 230;
+                    usedPhases = Number(phaseSwitchMode.val) > 1 ? 3 : 1;
+                    usedVolts = 230 * usedPhases;
                 }
 
                 // Currents Watts + adjustment / average Volts / usedPhases => max Ampere
                 // Example: 3 Phases, 220V , Current 14 A (Adding 2A each Phase)
                 // (9240 W + 1320) / (660 / 3) / 3 => 16 A
                 // Using floor (abrunden) anstatt runden, damit immer etwas übrig bleibt.
-                const maxAmp = Math.floor((usedWatts + changeWatts) / (usedVolts / usedPhases) / usedPhases);
+                let maxAmp = Math.floor((usedWatts + changeWatts) / (usedVolts / usedPhases) / usedPhases);
                 this.log.debug("Current used " + Math.round(usedWatts) +  " Watts with " + usedAmperes + " Ampere (sum) by " + usedPhases + " Phases and adjusting this with  " + changeWatts + " watts by " + (usedVolts / usedPhases) + " Volts (avg) to new max of " + maxAmp + " Amperes per Phase");
-
+                if((usedWatts + changeWatts) > phaseSwitchWatts && phaseSwitchMode.val != 2) {
+                    // initiate phase switch to 3-phases
+                    this.log.debug(`Current Watts ${usedWatts + changeWatts} require Mode 3-phases; current: ${phaseSwitchMode.val}; Change maxAmp from ${maxAmp} to ${Math.round(maxAmp / 3)}`);
+                    axios.get("/api/set?psm=2")
+                        .then((o) => {
+                            this.setState("phaseSwitchMode", {val: 2, ack: true});
+                            maxAmp = Math.round(maxAmp / 3);
+                        })
+                        .catch((e) => {
+                            this.log.error(e);
+                        });
+                } else if((usedWatts + changeWatts) < phaseSwitchWatts && phaseSwitchMode.val != 1) {
+                    this.log.debug(`Current Watts ${usedWatts + changeWatts} require Mode 1-phase; current: ${phaseSwitchMode.val}; Change maxAmp from ${maxAmp} to ${Math.round(maxAmp * 3)}`);
+                    axios.get("/api/set?psm=1")
+                        .then((o) => {
+                            this.setState("phaseSwitchMode", {val: 1, ack: true});
+                            maxAmp = maxAmp * 3;
+                        })
+                        .catch((e) => {
+                            this.log.error(e);
+                        });
+                }
                 if(maxAmp < 6) {
                     // Allow charge (Ist Auto angehängt und freigabe vorhanden.)
                     // loadWith6AAtLeast => true; nicht abschalten
-                    if(!loadWith6AAtLeast && allowCharge.val !== 0) {
-                        this.setValue("alw", 0);
+                    if(!loadWith6AAtLeast) {
+                        if( allowCharge.val !== 0)
+                            this.setValue("alw", 0);
                     } else {
-                        this.log.debug("Continue because loadWith6AAtLeast is activated.")
+                        this.log.debug("Continue because loadWith6AAtLeast is activated.");
                     }
                 } else {
                     this.setAmp(maxAmp);
@@ -876,7 +937,7 @@ class GoE extends utils.Adapter {
 
         } else {
             // Still existing Block-Timer
-            this.log.debug("MaxWatts ignored. You are sending to fast! Update interval in settings is currently set to: " + this.config.ampUpdateInterval);
+            this.log.silly("MaxWatts ignored. You are sending to fast! Update interval in settings is currently set to: " + this.config.ampUpdateInterval);
         }
     }
     /**
@@ -890,8 +951,8 @@ class GoE extends utils.Adapter {
         try {
             const solarOnly = await this.getStateAsync("solarLoadOnly");
             if (solarOnly === undefined || solarOnly == null || solarOnly.val == null || solarOnly.val !== true) {
-                this.log.silly("Solar calculation disabled");
-                if(!solarOnly.ack)
+                this.log.silly(`Solar calculation disabled: ${solarOnly}`);
+                if(solarOnly != undefined && solarOnly != null && solarOnly.val != null && !solarOnly.ack)
                     this.setState("solarLoadOnly", { val: false, ack: true });
                 return;
             }
@@ -902,16 +963,18 @@ class GoE extends utils.Adapter {
                 return;
             }
 
-            let availWatts = 0;
-            availWatts += (await this.getNumberFromForeignObjectId(this.config.solarPowerForeignObjectID));
+            let availWatts1 = 0;
+            availWatts1 = availWatts1 + (await this.getNumberFromForeignObjectId(this.config.solarPowerForeignObjectID));
             if(this.config.solarPowerForeignObjectNegate) {
-                availWatts = availWatts * -1;
-                this.log.silly("Negate watts of Solar new: " + availWatts);
+                availWatts1 = availWatts1 * -1;
+                this.log.silly("Negate watts of Solar new: " + availWatts1);
             }
-            if(availWatts >= this.config.bufferToSolar) {
-                availWatts -= this.config.bufferToSolar;
+            let availWatts2 = availWatts1;
+            if(availWatts1 >= this.config.bufferToSolar) {
+                availWatts2 -= this.config.bufferToSolar;
             }
-            availWatts -= await this.getNumberFromForeignObjectId(this.config.houseConsumptionForeignObjectID);
+            let houseConsumption = await this.getNumberFromForeignObjectId(this.config.houseConsumptionForeignObjectID);
+            let availWatts3 = availWatts2 - houseConsumption;
 
             // houseBatteryForeignObjectID - Ladestrom der Hausbatterie
             // Wenn dieses Fremdobjekt angegeben wird, ist die Priorisierung auf das Laden des Fzg. gesetzt.
@@ -925,11 +988,11 @@ class GoE extends utils.Adapter {
             //} else {
             //    houseBattery = 0;
             //}
-            availWatts += houseBattery;
+            let availWatts = availWatts3 + houseBattery;
             // If your home battery contains 3000 Wh use in one hour the whole energy to load.
             //
 
-            this.log.debug("Start ajust by foreign Object with " + (availWatts - parseInt(usedPower.val.toString(), 10)) + " Watts");
+            this.log.debug("Start ajust by foreign Object with " + (availWatts - parseInt(usedPower.val.toString(), 10)) + ` Watts. (${availWatts1} solarPower - ${this.config.bufferToSolar} Buffer - ${houseConsumption} House consumption + ${houseBattery} House battery)`);
             this.adjustAmpLevelInWatts(availWatts - parseInt(usedPower.val.toString(), 10));
         } catch (err) {
             this.log.error("Error in calculateFromForeignObjects: " + JSON.stringify(err.message));

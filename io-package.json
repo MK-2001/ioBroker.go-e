@@ -1,8 +1,21 @@
 {
     "common": {
       "name": "go-e",
-      "version": "1.0.29",
+      "version": "1.0.30",
       "news": {
+        "1.0.30": {
+          "en": "added max ampere in settings; Added level to switch 1-phase to 3 pahases; enables phasesSwitchMode; Only possible if V2 is enabled; some bugs",
+          "de": "max ampere in Einstellungen hinzugefügt; Ebene hinzugefügt, um 1-Phase zu 3 pahases zu wechseln; Phasen ermöglicht SwitchMode; Nur möglich, wenn V2 aktiviert ist; einige Fehler",
+          "ru": "добавлен max ampere в настройках; Добавлен уровень для переключения 1-фазы на 3 пахаса; позволяет фазы SwitchMode; Только возможно, если V2 включен; некоторые ошибки",
+          "pt": "adicionado ampere máximo em configurações; nível adicionado para alternar 1 fase para 3 pahases; permite fases SwitchMode; Só é possível se V2 estiver habilitado; alguns bugs",
+          "nl": "toegevoegd max ampère in instellingen; Toegevoegd niveau om 1-fase over te schakelen naar 3 pahases; maakt fasen mogelijk SwitchMode; Alleen mogelijk als V2 is ingeschakeld; sommige bugs",
+          "fr": "ajout d'ampère max dans les réglages; ajout de niveau pour passer d'une phase à trois pashases; permet des phases Mode de commutation; Seulement si V2 est activé ; certains bugs",
+          "it": "aggiunto max ampere nelle impostazioni; livello aggiunto per passare 1-fase a 3 pahases; consente fasi SwitchMode; Solo possibile se è abilitato V2; alcuni bug",
+          "es": "amperio max añadido en la configuración; Nivel añadido para cambiar 1 fase a 3 pahases; permite fases SwitchMode; Sólo es posible si V2 está habilitado; algunos errores",
+          "pl": "dodano max ampere w ustawieniach; dodano poziom, aby przełączyć 1- fazę na 3 pahazy; umożliwia fazę tryb przełączania; Możliwe tylko wtedy, gdy włączone jest V2; niektóre błędy",
+          "uk": "додано максимальний ампер в налаштуваннях; Додана рівень для перемикання 1-фазних до 3 пагаз; дозволяє фази SwitchMode; Тільки можливо, якщо V2 ввімкнено; деякі помилки",
+          "zh-cn": "在设置中添加最大安培; 添加关卡以切换 1 相到 3 pahase; 启用相 切换模式; 只有在启用了 V2 时才有可能; 一些错误"
+        },
         "1.0.29": {
           "en": "Solved Bugs from GitHub Issues 171, 162, ...; Fixed Bug in Lights; updated Admin screen; Logic fixtures",
           "de": "Gelöste Bugs von GitHub Issues 171, 162, ...; Fixed Bug in Lights; aktualisierter Admin-Bildschirm; Logik-Features",
@@ -284,7 +297,9 @@
         "alw",
         "car",
         "amp"
-      ]
+      ],
+      "maxAmp": 16,
+      "phaseSwitchWatts": 4200
     },
     "objects": [],
     "instanceObjects": [
@@ -564,7 +579,8 @@
           "type": "boolean",
           "role": "value.internal",
           "read": true,
-          "write": true
+          "write": true,
+          "def": true
         }
       },
       {
@@ -2091,6 +2107,22 @@
           "read": true,
           "write": true,
           "unit": "Watt"
+        }
+      },
+      {
+        "_id": "phaseSwitchMode",
+        "type": "state",
+        "common": {
+          "name": "Phase switch Mode",
+          "role": "",
+          "icon": "",
+          "desc": "Channel to provide information of Phase Switch Mode",
+          "type": "number",
+          "states": {
+            "0": "Automatic",
+            "1": "Force 1 Phase",
+            "2": "Force 3 Phases"
+          }
         }
       }
     ]

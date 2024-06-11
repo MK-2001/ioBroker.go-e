@@ -146,7 +146,7 @@ systemDictionary = {
         "pl": "Jak?",
         "uk": "Ака?",
         "zh-cn": "评 注?"
-      },
+    },
     "houseBatteryForeignObjectAck": {
         "en": "Ack?",
         "de": "Ack?",
@@ -159,7 +159,7 @@ systemDictionary = {
         "pl": "Jak?",
         "uk": "Ака?",
         "zh-cn": "评 注?"
-      },
+    },
     "houseConsumptionForeignObjectAck": {
         "en": "Ack?",
         "de": "Ack?",
@@ -172,7 +172,7 @@ systemDictionary = {
         "pl": "Jak?",
         "uk": "Ака?",
         "zh-cn": "评 注?"
-      },
+    },
     "solarPowerForeignObjectNegate": {
         "en": "Negate?",
         "de": "Verhandeln?",
@@ -185,7 +185,7 @@ systemDictionary = {
         "pl": "Negaty?",
         "uk": "Негай?",
         "zh-cn": "吗?"
-      },
+    },
     "houseBatteryForeignObjectNegate": {
         "en": "Negate?",
         "de": "Verhandeln?",
@@ -198,7 +198,7 @@ systemDictionary = {
         "pl": "Negaty?",
         "uk": "Негай?",
         "zh-cn": "吗?"
-      },
+    },
     "apiVersion": {
         "en": "If you have Hardware in Version 2 you need API-Version 1. If you installed Hardware Version 3 or later you can activate API V2 in the go-eCharger - App.",
         "de": "Wenn du HW V2 besitzt, muss du die Einstellung bei API V1 belassen. Ab HW Version 3 kann auch die API V2 alternativ aktivieren.",
@@ -211,7 +211,7 @@ systemDictionary = {
         "pl": "Jeśli będziesz w wersji 2 potrzebował API-Version 1. Jeśli zainstalowano wersję Hardware 3 lub później może aktywować API V2 w go-eCharger.",
         "uk": "Якщо у вас є обладнання в версії 2 вам потрібен API-Version 1. Якщо ви встановили версію обладнання 3 або пізніше ви можете активувати API V2 в go-eCharger - додаток.",
         "zh-cn": "如果你在万国宫有Hardware,需要1。 如果你安装了Hardware Version 3或以后,你可以在即将到来的Charger中打动APIV2。."
-      },
+    },
     "loadWith6AAtLeast": {
         "en": "Load with at least 6A:<br />Behavior when enabled if not enougth pv power is available: 3Phases => 1Phase => continue with 1P & 6Amperes",
         "de": "Laden mit min 6A:<br />Verhalten bei aktiviert: 3Phasen => 1Phase => min. 1P & 6Ampere; Bei deaktiviert: 3Phasen => 1Phase => Stopp;",
@@ -224,5 +224,31 @@ systemDictionary = {
         "pl": "Load z przynajmniej 6A:<br > >/Behavior, jeśli nie jest dopuszczalna moc pv jest dostępna: 3Phases =>>>>>>>>>>>>>>>>>>>>>>>>>>>>> <<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>><<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> 1Phase Aktualnie gra w 1P & 6Amperes",
         "uk": "Навантаження з принаймні 6A: <br >/Behavior при включенні, якщо не занурення живлення pv доступна: 3Phases => 1Пхасе => продовжити з 1P & 6Amperes",
         "zh-cn": "至少有6A的贷款:<br >/Behavior,如果无法获得无enougth pv电力:3Phases=> 1 Phase= > 继续有1个P和6个Amper"
-      }
+    },
+    "maxAmp": {
+        "en": "Maximum Amperes when loading.",
+        "de": "Maximale Ampere beim Laden.",
+        "ru": "Максимальный Ампер при загрузке.",
+        "pt": "Amperes máximos ao carregar.",
+        "nl": "Maximale ampère bij laden.",
+        "fr": "Ampères maximales lors du chargement.",
+        "it": "Ampere massimo al caricamento.",
+        "es": "Maximum Amperes cuando se carga.",
+        "pl": "Maksymalne Amperes podczas załadunku.",
+        "uk": "Максимальні Ампери при навантаженні.",
+        "zh-cn": "装入时最大安珀 ."
+    },
+    "phaseSwitchWatts": {
+        "en": "level to switch from 1-phase to 3-phases mode",
+        "de": "Überschuss-Schwelle für den Wechsel von 1-Phasig auf 3-Phasig (Watt)",
+        "ru": "уровень для перехода от 1-фазного к 3-фазному режиму",
+        "pt": "nível para alternar do modo de 1 fase para 3 fases",
+        "nl": "niveau om over te schakelen van 1-fase naar 3-fasenmodus",
+        "fr": "niveau pour passer du mode 1-phase à 3-phases",
+        "it": "livello per passare da 1-fase a 3 fasi",
+        "es": "nivel para cambiar de 1 fase a 3 fases",
+        "pl": "poziom przełączania z trybu 1 fazy na tryb 3 fazy",
+        "uk": "рівень переходу від 1-фазного до 3-фазного режиму",
+        "zh-cn": "级别从 1 级改为 3 级"
+    }
 };
