@@ -228,5 +228,9 @@ systemDictionary = {
     "maxAmp": {
         "de": "Maxium Amperes when loading.",
         "en": "Maxium Amperes when loading."
+    },
+    "phaseSwitchWatts": {
+        "de": "Überschuss-Schwelle für den Wechsel von 1-Phasig auf 3-Phasig (Watt)",
+        "en": "level to switch from 1-phase to 3-phases mode"
     }
 };

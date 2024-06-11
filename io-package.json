@@ -288,7 +288,8 @@
         "car",
         "amp"
       ],
-      "maxAmp": 16
+      "maxAmp": 16,
+      "phaseSwitchWatts": 4200  
     },
     "objects": [],
     "instanceObjects": [
@@ -2095,6 +2096,22 @@
           "read": true,
           "write": true,
           "unit": "Watt"
+        }
+      },
+      {
+        "_id": "phaseSwitchMode",
+        "type": "channel",
+        "common": {
+          "name": "Phase switch Mode",
+          "role": "",
+          "icon": "",
+          "desc": "Channel to provide information of Phase Switch Mode",
+          "type": "number",
+          "states": {
+            "0": "Automatic",
+            "1": "Force 1 Phase",
+            "2": "Force 3 Phases"
+          }
         }
       }
     ]

@@ -123,6 +123,8 @@ class GoE extends utils.Adapter {
             this.log.debug("Subscribe foreign object " + this.config.solarPowerForeignObjectID);
         }
         this.log.silly("Ack-Obj: " + JSON.stringify(this.ackObj));
+        // setup axios
+        axios.defaults.baseURL = "http://" + this.config.serverName;
         // Get all Information for the first time.
         await this.getStateFromDevice();
         // Start the Adapter to sync in the interval
@@ -378,6 +380,18 @@ class GoE extends utils.Adapter {
                     this.log.error(e.message);
                     // sentry.captureException(e);
                 }
+            });
+        // Get additional parameters from API v2
+        axios.get("/api/status?filter=psm")
+            .then((o) => {
+                this.log.silly("Response: " + o.status + " - " + o.statusText + " with data as " + typeof o.data);
+                this.log.debug(JSON.stringify(o.data));
+                if(typeof o.data != "object") {
+                    this.setState("phaseSwitchMode", { "val": parseInt(o["psm"]), ack: true });
+                }
+            })
+            .catch((e) => {
+                this.log.error(e);
             });
     }
 
@@ -769,6 +783,12 @@ class GoE extends utils.Adapter {
             });
             const loadWith6AAtLeast = this.config.loadWith6AAtLeast;
             try {
+                const phaseSwitchWatts = this.config.phaseSwitchWatts || 4200;
+                const phaseSwitchMode = await this.getStateAsync("phaseSwitchMode");
+                if(phaseSwitchMode === null || phaseSwitchMode === undefined || phaseSwitchMode.val === null) {
+                    this.log.error("adjustAmpLevelInWatts: Not all required information about the phases are found. Required Values are: phaseSwitchMode");
+                    return;
+                }
                 const avgVoltage1 = await this.getStateAsync("energy.phase1.voltage");
                 if(avgVoltage1 === null || avgVoltage1 === undefined || avgVoltage1.val === null) {
                     this.log.error("adjustAmpLevelInWatts: Not all required information about the phases are found. Required Values are: eneregy.phase1.voltage");
@@ -811,7 +831,7 @@ class GoE extends utils.Adapter {
                 }
                 // car.val == 2 => Fahrzeug aktiv am laden
                 // car.val == 4  && alw.val == 0 => Fahrszeug pasiert zum laden
-                     //  false  || ( true && true)
+                //  false  || ( true && true)
                 if(!(car.val == 2 || (car.val == 4 && allowCharge.val === 0))) {
                     this.log.debug("Ignore to change ampere level by watts, because there is no car loading. Car: " + car.val + "; alw: " + allowCharge.val);
                     return;
@@ -824,19 +844,19 @@ class GoE extends utils.Adapter {
                 let usedVolts = 0;
                 if(allowCharge.val === 1) {
                     // Check which phases are currently used
-                    if(curAmpPha1.val > 0) {
+                    if(Number(curAmpPha1.val) > 0) {
                         usedVolts += parseInt(avgVoltage1.val.toString(), 10);
                         usedAmperes += parseInt(curAmpPha1.val.toString(), 10);
                         usedWatts += parseInt(avgVoltage1.val.toString(), 10) * parseInt(curAmpPha1.val.toString(), 10);
                         usedPhases += 1;
                     }
-                    if(curAmpPha2.val > 0) {
+                    if(Number(curAmpPha2.val) > 0) {
                         usedVolts += parseInt(avgVoltage2.val.toString(), 10);
                         usedAmperes += parseInt(curAmpPha2.val.toString(), 10);
                         usedWatts += parseInt(avgVoltage2.val.toString(), 10) * parseInt(curAmpPha2.val.toString(), 10);
                         usedPhases += 1;
                     }
-                    if(curAmpPha3.val > 0) {
+                    if(Number(curAmpPha3.val) > 0) {
                         usedVolts += parseInt(avgVoltage3.val.toString(), 10);
                         usedAmperes += parseInt(curAmpPha3.val.toString(), 10);
                         usedWatts += parseInt(avgVoltage3.val.toString(), 10) * parseInt(curAmpPha3.val.toString(), 10);
@@ -844,8 +864,8 @@ class GoE extends utils.Adapter {
                     }
                 } else {
                     // Wenn derzeit keine Phase zum Laden verwendet wird, wie bei alw = 0;
-                    usedPhases = 1;
-                    usedVolts = 230;
+                    usedPhases = Number(phaseSwitchMode.val) > 1 ? 3 : 1;
+                    usedVolts = 230 * usedPhases;
                 }
 
                 // Currents Watts + adjustment / average Volts / usedPhases => max Ampere
@@ -854,7 +874,26 @@ class GoE extends utils.Adapter {
                 // Using floor (abrunden) anstatt runden, damit immer etwas übrig bleibt.
                 const maxAmp = Math.floor((usedWatts + changeWatts) / (usedVolts / usedPhases) / usedPhases);
                 this.log.debug("Current used " + Math.round(usedWatts) +  " Watts with " + usedAmperes + " Ampere (sum) by " + usedPhases + " Phases and adjusting this with  " + changeWatts + " watts by " + (usedVolts / usedPhases) + " Volts (avg) to new max of " + maxAmp + " Amperes per Phase");
-
+                if((usedWatts + changeWatts) > phaseSwitchWatts && phaseSwitchMode.val != 2) {
+                    // initiate phase switch to 3-phases
+                    this.log.debug(`Current Watts ${usedWatts + changeWatts} require Mode 3-phases; current: ${phaseSwitchMode.val}`);
+                    axios.get("/api/set?psm=2")
+                        .then((o) => {
+                            this.log.silly(JSON.stringify(o));
+                        })
+                        .catch((e) => {
+                            this.log.error(e);
+                        });
+                } else if((usedWatts + changeWatts) < phaseSwitchWatts && phaseSwitchMode.val != 1) {
+                    this.log.debug(`Current Watts ${usedWatts + changeWatts} require Mode 1-phase; current: ${phaseSwitchMode.val}`);
+                    axios.get("/api/set?psm=1")
+                        .then((o) => {
+                            this.log.silly(JSON.stringify(o));
+                        })
+                        .catch((e) => {
+                            this.log.error(e);
+                        });
+                }
                 if(maxAmp < 6) {
                     // Allow charge (Ist Auto angehängt und freigabe vorhanden.)
                     // loadWith6AAtLeast => true; nicht abschalten
