@@ -336,7 +336,21 @@ class GoE extends utils.Adapter {
         if(this.config.apiVersion == 2) {
             apiEndpoint = "/api/status?filter=" + Object.keys(this.translationObjectV2).join(",");
         }
-        this.log.debug("Starte Abfrage an: http://" + this.config.serverName + apiEndpoint);
+        // Get additional parameters from API v2
+        this.log.debug(`Starte V2 Abfrage an: http://${this.config.serverName}/api/status?filter=psm`);
+        axios.get("/api/status?filter=psm")
+            .then((o) => {
+                this.log.silly("Response: " + o.status + " - " + o.statusText + " with data as " + typeof o.data);
+                this.log.debug(JSON.stringify(o.data));
+                if(typeof o.data != "object") {
+                    this.setState("phaseSwitchMode", { "val": parseInt(o["psm"]), ack: true });
+                }
+            })
+            .catch((e) => {
+                this.log.error(e);
+            });
+        // Get all other attributes from API-V1
+        this.log.debug("Starte V1 Abfrage an: http://" + this.config.serverName + apiEndpoint);
         axios.defaults.baseURL = "http://" + this.config.serverName;
         await axios.get("/status")
             .then((o) => {
@@ -382,19 +396,7 @@ class GoE extends utils.Adapter {
                     // sentry.captureException(e);
                 }
             });
-        // Get additional parameters from API v2
-        this.log.debug(`Starte Abfrage an: http://${this.config.serverName}/api/status?filter=psm`);
-        axios.get("/api/status?filter=psm")
-            .then((o) => {
-                this.log.silly("Response: " + o.status + " - " + o.statusText + " with data as " + typeof o.data);
-                this.log.debug(JSON.stringify(o.data));
-                if(typeof o.data != "object") {
-                    this.setState("phaseSwitchMode", { "val": parseInt(o["psm"]), ack: true });
-                }
-            })
-            .catch((e) => {
-                this.log.error(e);
-            });
+        
     }
 
     /**
