@@ -343,7 +343,9 @@ class GoE extends utils.Adapter {
                 this.log.silly("Response: " + o.status + " - " + o.statusText + " with data as " + typeof o.data);
                 this.log.debug(JSON.stringify(o.data));
                 if(typeof o.data == "object") {
-                    this.setState("phaseSwitchMode", { "val": parseInt(o["psm"]), ack: true });
+                    this.setState("phaseSwitchMode", { "val": parseInt(o.data["psm"]), ack: true });
+                } else {
+                    this.log.warn(`Response of psm is ${typeof o.data}`);
                 }
             })
             .catch((e) => {
@@ -587,7 +589,7 @@ class GoE extends utils.Adapter {
                                 this.log.debug("Callback with " + JSON.stringify(o) + " Error: " + JSON.stringify(e));
                             });
                         } else {
-                            this.log.silly("Object found, try to update: temperatures.temperature" + (i+1));
+                            // this.log.silly("Object found, try to update: temperatures.temperature" + (i+1));
                             await queue.add(() => this.setState("temperatures.temperature" + (i+1), { val: Number(tempArr[i]), ack: true}));
                         }
                     }
@@ -939,7 +941,7 @@ class GoE extends utils.Adapter {
         try {
             const solarOnly = await this.getStateAsync("solarLoadOnly");
             if (solarOnly === undefined || solarOnly == null || solarOnly.val == null || solarOnly.val !== true) {
-                this.log.silly("Solar calculation disabled");
+                this.log.silly(`Solar calculation disabled: ${solarOnly}`);
                 if(solarOnly === undefined || solarOnly == null || solarOnly.val == null || !solarOnly.ack)
                     this.setState("solarLoadOnly", { val: false, ack: true });
                 return;
