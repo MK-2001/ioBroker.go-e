@@ -19,9 +19,7 @@
     "url": "https://github.com/MK-2001/ioBroker.go-e"
   },
   "dependencies": {
-    "@sentry/node": "^8.9.1",
     "@iobroker/adapter-core": "^2.6.0",
-    "@sentry/tracing": "^7.114.0",
     "axios": "^1.7.2",
     "joi": "^17.13.1",
     "p-queue": "^6.6.2"

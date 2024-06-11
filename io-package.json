@@ -4,7 +4,7 @@
       "version": "1.0.30",
       "news": {
         "1.0.31": {
-          "en": "updated versions for required libs;"
+          "en": "updated versions for required libs; removed sentry;"
         },
         "1.0.30": {
           "en": "added max ampere in settings; Added level to switch 1-phase to 3 pahases; enables phasesSwitchMode; Only possible if V2 is enabled; some bugs",
@@ -277,7 +277,6 @@
       "serverName": "go-eCharger",
       "serverInterval": 60,
       "ampUpdateInterval": 30,
-      "sentryEnabled": true,
       "writeTemperatureArray": true,
       "loadWith6AAtLeast": false,
       "solarPowerForeignObjectID": "",
