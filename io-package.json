@@ -1,10 +1,13 @@
 {
     "common": {
       "name": "go-e",
-      "version": "1.0.31",
+      "version": "1.0.32",
       "news": {
+        "1.0.32": {
+          "en": "Removed bugs 164 und 224"
+        },
         "1.0.31": {
-          "en": "updated versions for required libs; removed sentry;"
+          "en": "updated versions for required libs; removed sentry; Bugs removed"
         },
         "1.0.30": {
           "en": "added max ampere in settings; Added level to switch 1-phase to 3 pahases; enables phasesSwitchMode; Only possible if V2 is enabled; some bugs",
