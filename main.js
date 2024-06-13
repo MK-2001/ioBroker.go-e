@@ -62,7 +62,7 @@ class GoE extends utils.Adapter {
         // Initialize your adapter here
         // Write it to possible values
         this.log.info("Adapter is staring in Version setByGitHubActions");
-        this.log.info("Update selectable values from " + JSON.stringify(this.config.possibleAttributes) + " to " + Object.keys(this.translationObjectV2));
+        this.log.debug("Update selectable values from " + JSON.stringify(this.config.possibleAttributes) + " to " + Object.keys(this.translationObjectV2) + "; WOrking with Version " + this.config.apiVersion);
         this.config.possibleAttributes = Object.keys(this.translationObjectV2);
 
         // The adapters config (in the instance object everything under the attribute "native") is accessible via
@@ -329,22 +329,23 @@ class GoE extends utils.Adapter {
         let apiEndpoint = "/status";
         if(this.config.apiVersion == 2) {
             apiEndpoint = "/api/status?filter=" + Object.keys(this.translationObjectV2).join(",");
+            // Get additional parameters from API v2
+            this.log.debug(`Starte V2 Abfrage an: http://${this.config.serverName}/api/status?filter=psm`);
+            axios.get("/api/status?filter=psm")
+                .then((o) => {
+                    this.log.silly("Response: " + o.status + " - " + o.statusText + " with data as " + typeof o.data);
+                    this.log.debug(JSON.stringify(o.data));
+                    if(typeof o.data == "object") {
+                        this.setState("phaseSwitchMode", { "val": parseInt(o.data["psm"]), ack: true });
+                    } else {
+                        this.log.warn(`Response of psm is ${typeof o.data}`);
+                    }
+                })
+                .catch((e) => {
+                    this.log.error(e);
+                });
         }
-        // Get additional parameters from API v2
-        this.log.debug(`Starte V2 Abfrage an: http://${this.config.serverName}/api/status?filter=psm`);
-        axios.get("/api/status?filter=psm")
-            .then((o) => {
-                this.log.silly("Response: " + o.status + " - " + o.statusText + " with data as " + typeof o.data);
-                this.log.debug(JSON.stringify(o.data));
-                if(typeof o.data == "object") {
-                    this.setState("phaseSwitchMode", { "val": parseInt(o.data["psm"]), ack: true });
-                } else {
-                    this.log.warn(`Response of psm is ${typeof o.data}`);
-                }
-            })
-            .catch((e) => {
-                this.log.error(e);
-            });
+        
         // Get all other attributes from API-V1
         this.log.debug("Starte V1 Abfrage an: http://" + this.config.serverName + apiEndpoint);
         axios.defaults.baseURL = "http://" + this.config.serverName;
