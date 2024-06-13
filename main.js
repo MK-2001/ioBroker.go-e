@@ -62,7 +62,7 @@ class GoE extends utils.Adapter {
         // Initialize your adapter here
         // Write it to possible values
         this.log.info("Adapter is staring in Version setByGitHubActions");
-        this.log.debug("Update selectable values from " + JSON.stringify(this.config.possibleAttributes) + " to " + Object.keys(this.translationObjectV2) + "; WOrking with Version " + this.config.apiVersion);
+        this.log.debug("Update selectable values from " + JSON.stringify(this.config.possibleAttributes) + " to " + Object.keys(this.translationObjectV2) + "; Working with Version " + this.config.apiVersion);
         this.config.possibleAttributes = Object.keys(this.translationObjectV2);
 
         // The adapters config (in the instance object everything under the attribute "native") is accessible via
