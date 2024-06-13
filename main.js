@@ -655,23 +655,29 @@ class GoE extends utils.Adapter {
             maxSetAmp = 16;
         }
         let amp = "";
+        let ampStr = "";
         if(fw != undefined && fw != null && fw.val != null && parseInt(fw.val.toString()) > 33) {
             // Use AMX insted of AMP. Becaus the EEPROM of amp is only 100.000 times writeable
             // Available by firmware > 033
             amp = "amx";
+            ampStr = "amperePV";
         } else {
             amp = "amp";
+            ampStr = "ampere";
         }
         if(maxAmp < 6) {
             // The smallest value is 6 amperes
             this.setValue(amp, 6);
+            this.setState(ampStr, { val: 6, ack: true });
             this.log.debug("set maxAmperes (" + amp + "): 6 amperes");
         } else if(maxAmp < maxSetAmp) {
             this.setValue(amp, maxAmp);
+            this.setState(ampStr, { val: maxAmp, ack: true });
             this.log.debug("set maxAmperes (" + amp + "): " + maxAmp + " amperes" );
         } else {
-            // The maximum is 32 Amperes
+            // The maximum is 32 Amperes and is defined in Settings
             this.setValue(amp, maxSetAmp);
+            this.setState(ampStr, { val: maxSetAmp, ack: true });
             this.log.debug("set maxAmperes (" + amp + "): " + maxSetAmp + " amperes");
         }
     }
@@ -883,6 +889,7 @@ class GoE extends utils.Adapter {
                             this.setValue("alw", 0);
                     } else {
                         this.log.debug("Continue because loadWith6AAtLeast is activated.");
+                        this.setAmp(6);
                     }
                 } else {
                     this.setAmp(maxAmp);
