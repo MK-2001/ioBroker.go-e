@@ -11,7 +11,6 @@ const utils = require("@iobroker/adapter-core");
 // const fs = require("fs");
 const axios = require("axios").default;
 const {default: PQueue} = require("p-queue");
-const sentry = require("@sentry/node");
 const schema = require("./lib/schema.js").schema;
 
 class GoE extends utils.Adapter {
@@ -63,26 +62,13 @@ class GoE extends utils.Adapter {
         // Initialize your adapter here
         // Write it to possible values
         this.log.info("Adapter is staring in Version setByGitHubActions");
-        this.log.info("Update selectable values from " + JSON.stringify(this.config.possibleAttributes) + " to " + Object.keys(this.translationObjectV2));
+        this.log.debug("Update selectable values from " + JSON.stringify(this.config.possibleAttributes) + " to " + Object.keys(this.translationObjectV2) + "; Working with Version " + this.config.apiVersion);
         this.config.possibleAttributes = Object.keys(this.translationObjectV2);
 
         // The adapters config (in the instance object everything under the attribute "native") is accessible via
         // this.config:
         this.log.info("Server: " + this.config.serverName);
         this.log.info("Intervall: " + this.config.serverInterval);
-
-        if(this.config.sentryEnabled) {
-            // Activate Sentry if enabled
-            this.log.warn("Sentry enabled. You can switch it off in settings of the adapter.");
-            sentry.init({
-                dsn: "https://6190adbfedd24ef5ad49d34aa306abd5@o689933.ingest.sentry.io/5774371",
-
-                // Set tracesSampleRate to 1.0 to capture 100%
-                // of transactions for performance monitoring.
-                // We recommend adjusting this value in production
-                tracesSampleRate: 0.05
-            });
-        }
 
         // In order to get state updates, you need to subscribe to them. The following line adds a subscription for our variable we have created above.
         this.subscribeStates("access_state");
@@ -343,22 +329,23 @@ class GoE extends utils.Adapter {
         let apiEndpoint = "/status";
         if(this.config.apiVersion == 2) {
             apiEndpoint = "/api/status?filter=" + Object.keys(this.translationObjectV2).join(",");
+            // Get additional parameters from API v2
+            this.log.debug(`Starte V2 Abfrage an: http://${this.config.serverName}/api/status?filter=psm`);
+            axios.get("/api/status?filter=psm")
+                .then((o) => {
+                    this.log.silly("Response: " + o.status + " - " + o.statusText + " with data as " + typeof o.data);
+                    this.log.debug(JSON.stringify(o.data));
+                    if(typeof o.data == "object") {
+                        this.setState("phaseSwitchMode", { "val": parseInt(o.data["psm"]), ack: true });
+                    } else {
+                        this.log.warn(`Response of psm is ${typeof o.data}`);
+                    }
+                })
+                .catch((e) => {
+                    this.log.error(e);
+                });
         }
-        // Get additional parameters from API v2
-        this.log.debug(`Starte V2 Abfrage an: http://${this.config.serverName}/api/status?filter=psm`);
-        axios.get("/api/status?filter=psm")
-            .then((o) => {
-                this.log.silly("Response: " + o.status + " - " + o.statusText + " with data as " + typeof o.data);
-                this.log.debug(JSON.stringify(o.data));
-                if(typeof o.data == "object") {
-                    this.setState("phaseSwitchMode", { "val": parseInt(o.data["psm"]), ack: true });
-                } else {
-                    this.log.warn(`Response of psm is ${typeof o.data}`);
-                }
-            })
-            .catch((e) => {
-                this.log.error(e);
-            });
+        
         // Get all other attributes from API-V1
         this.log.debug("Starte V1 Abfrage an: http://" + this.config.serverName + apiEndpoint);
         axios.defaults.baseURL = "http://" + this.config.serverName;
@@ -367,7 +354,6 @@ class GoE extends utils.Adapter {
                 this.log.silly("Response: " + o.status + " - " + o.statusText + " with data as " + typeof o.data);
                 this.log.debug(JSON.stringify(o.data));
                 if(typeof o.data != "object") {
-                    sentry.captureException("Respose id type " + (typeof o.data) + "; " + JSON.stringify(o.data));
                     this.log.error("Respose id type " + (typeof o.data) + "; " + JSON.stringify(o.data));
                 } else {
                     const validation = schema.validate(o.data,{abortEarly: false});
@@ -375,7 +361,6 @@ class GoE extends utils.Adapter {
                         if (validation.value === undefined) {
                             this.log.error("API send no content");
                         } else {
-                            sentry.captureException(validation.error);
                             this.log.error("API response validation error: " + JSON.stringify(validation.error.details));
                             this.log.info(JSON.stringify(validation.error._original));
                         }
@@ -403,7 +388,6 @@ class GoE extends utils.Adapter {
                     this.log.warn("Adapter not ready " + this.config.serverName);
                 } else {
                     this.log.error(e.message);
-                    // sentry.captureException(e);
                 }
             });
         
@@ -445,7 +429,6 @@ class GoE extends utils.Adapter {
                 await queue.add(() => this.setState("synctime",                           { val: dateObject.toISOString(), ack: true }));
             } catch (e) {
                 this.log.info("Cloud not store synctime, because of error " + e.message);
-                // sentry.captureException(e);
             }
 
             await queue.add(() => this.setState("reboot_counter",                     { val: parseInt(o.rbc, 10), ack: true })); // read, V1, V2
@@ -604,7 +587,6 @@ class GoE extends utils.Adapter {
                 }
             } catch (e) {
                 this.log.warn("Cloud not store temperature array to single values, because of error " + e.message);
-                sentry.captureException(e);
             }
             await queue.add(() => this.setState("adapter_in",                         { val: parseInt(o.adi, 10), ack: true })); // read
             await queue.add(() => this.setState("unlocked_by",                        { val: parseInt(o.uby, 10), ack: true })); // read
@@ -619,7 +601,6 @@ class GoE extends utils.Adapter {
             }
         } catch(e) {
             this.log.warn("Error in go.e: " + JSON.stringify(e.message) + "; Stack: " + e.stack);
-            sentry.captureException(JSON.stringify(e));
         }
     }
     /**
@@ -628,10 +609,6 @@ class GoE extends utils.Adapter {
      * @param {string | number | boolean} value
      */
     setValue(id, value) {
-        // const transaction = sentry.startTransaction({
-        //    op: "setValue",
-        //    name: "setValue(" + id + ", " + value + ")"
-        //});
         this.log.info("Set value " + value + " of id " + id);
         axios.get("http://" + this.config.serverName + "/mqtt?payload=" + id + "=" + value)
             .then(o => {
@@ -640,9 +617,7 @@ class GoE extends utils.Adapter {
             })
             .catch(err => {
                 this.log.error(err.message + " at " + id + " / " + value);
-                sentry.captureException(err);
             });
-        //transaction.finish();
     }
 
     /**
@@ -664,7 +639,6 @@ class GoE extends utils.Adapter {
             })
             .catch(err => {
                 this.log.error(err.message + " at " + id + " / " + value + " with error message " + JSON.stringify(err));
-                sentry.captureException(err);
             });
     }
 
@@ -681,23 +655,29 @@ class GoE extends utils.Adapter {
             maxSetAmp = 16;
         }
         let amp = "";
+        let ampStr = "";
         if(fw != undefined && fw != null && fw.val != null && parseInt(fw.val.toString()) > 33) {
             // Use AMX insted of AMP. Becaus the EEPROM of amp is only 100.000 times writeable
             // Available by firmware > 033
             amp = "amx";
+            ampStr = "amperePV";
         } else {
             amp = "amp";
+            ampStr = "ampere";
         }
         if(maxAmp < 6) {
             // The smallest value is 6 amperes
             this.setValue(amp, 6);
+            this.setState(ampStr, { val: 6, ack: true });
             this.log.debug("set maxAmperes (" + amp + "): 6 amperes");
         } else if(maxAmp < maxSetAmp) {
             this.setValue(amp, maxAmp);
+            this.setState(ampStr, { val: maxAmp, ack: true });
             this.log.debug("set maxAmperes (" + amp + "): " + maxAmp + " amperes" );
         } else {
-            // The maximum is 32 Amperes
+            // The maximum is 32 Amperes and is defined in Settings
             this.setValue(amp, maxSetAmp);
+            this.setState(ampStr, { val: maxSetAmp, ack: true });
             this.log.debug("set maxAmperes (" + amp + "): " + maxSetAmp + " amperes");
         }
     }
@@ -711,10 +691,6 @@ class GoE extends utils.Adapter {
             this.ampTimer = setTimeout(() => {
                 this.ampTimer = null;
             }, this.config.ampUpdateInterval * 1000);
-            const transaction = sentry.startTransaction({
-                op: "updateAmpLevel",
-                name: "updateAmpLevel(" + watts + ")"
-            });
             try {
                 // San for active phases on Adapter
                 const prePhase1   = await this.getStateAsync("energy.phase1.preContactorActive");
@@ -777,7 +753,6 @@ class GoE extends utils.Adapter {
             } catch (e) {
                 this.log.error("Error during set MaxWatts: " + e.message);
             }
-            transaction ? transaction.finish() : "";
         } else {
             // Still existing Block-Timer
             this.log.silly("MaxWatts ignored. You are sending to fast! Update interval in settings is currently set to: " + this.config.ampUpdateInterval);
@@ -791,10 +766,6 @@ class GoE extends utils.Adapter {
             this.ampTimer = setTimeout(() => {
                 this.ampTimer = null;
             }, this.config.ampUpdateInterval * 3000);
-            const transaction = sentry.startTransaction({
-                op: "adjustAmpLevelInWatts",
-                name: "adjustAmpLevelInWatts(" + changeWatts + ")"
-            });
             const loadWith6AAtLeast = this.config.loadWith6AAtLeast;
             try {
                 const phaseSwitchWatts = this.config.phaseSwitchWatts || 4200;
@@ -918,6 +889,7 @@ class GoE extends utils.Adapter {
                             this.setValue("alw", 0);
                     } else {
                         this.log.debug("Continue because loadWith6AAtLeast is activated.");
+                        this.setAmp(6);
                     }
                 } else {
                     this.setAmp(maxAmp);
@@ -927,12 +899,6 @@ class GoE extends utils.Adapter {
 
             } catch (e) {
                 this.log.error("Error during set adjust Watts: " + e.message);
-                sentry.captureException(e);
-            }
-            try {
-                transaction.finish();
-            } catch(e) {
-                // do nothing;
             }
 
         } else {
@@ -944,10 +910,6 @@ class GoE extends utils.Adapter {
      * Get the max Watts from foreign adapters
      */
     async calculateFromForeignObjects(stateObjectId = "[unknown State ID]") {
-        const transaction = sentry.startTransaction({
-            op: "calculateFromForeignObjects",
-            name: "calculateFromForeignObjects(" + stateObjectId + ")"
-        });
         try {
             const solarOnly = await this.getStateAsync("solarLoadOnly");
             if (solarOnly === undefined || solarOnly == null || solarOnly.val == null || solarOnly.val !== true) {
@@ -997,11 +959,6 @@ class GoE extends utils.Adapter {
         } catch (err) {
             this.log.error("Error in calculateFromForeignObjects: " + JSON.stringify(err.message));
         }
-        try {
-            transaction.finish();
-        } catch(e) {
-            // Do nothing
-        }
     }
     /**
      * get a number from a foreign object id or reply with a default value
@@ -1032,7 +989,6 @@ class GoE extends utils.Adapter {
             this.setState(this.translationObject[attribute], { val: ampLvl, ack: true });
         } else {
             this.log.warn("Cant set " + ampLvl + " to " + attribute + "it must be between 6 and 32 ampere");
-            sentry.captureException("Cant set " + ampLvl + " to " + attribute + "it must be between 6 and 32 ampere");
         }
     }
 }

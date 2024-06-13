@@ -1,8 +1,34 @@
 {
     "common": {
       "name": "go-e",
-      "version": "1.0.30",
+      "version": "1.0.32",
       "news": {
+        "1.0.32": {
+          "en": "Removed bugs 164 und 224",
+          "de": "Entfernte Fehler 164 und 224",
+          "ru": "Удаленные клопы 164 и 224",
+          "pt": "Remover bugs 164 und 224",
+          "nl": "Verwijderde bugs 164 und 224",
+          "fr": "Supprimé les bugs 164 et 224",
+          "it": "Bug rimossi 164 und 224",
+          "es": "Errores eliminados 164 und 224",
+          "pl": "Usunięto błędy 164 i 224",
+          "uk": "Вилучені помилки 164 унд 224",
+          "zh-cn": "删除错误 164 度 224"
+        },
+        "1.0.31": {
+          "en": "updated versions for required libs; removed sentry; Bugs removed",
+          "de": "aktualisierte Versionen für erforderlich libs; entfernte Sendung; Bugs entfernt",
+          "ru": "обновленные версии для требуемых libs; удалена тележка; Удалены баги",
+          "pt": "versões atualizadas para libs necessárias; remetente removido; Bugs removidos",
+          "nl": "bijgewerkte versies voor vereiste libs; verwijderde wacht; Bugs verwijderd",
+          "fr": "mises à jour des versions pour les libs obligatoires; suppression de la sentinelle; suppression des bogues",
+          "it": "versioni aggiornate per libre richieste; rimosse la sentinella",
+          "es": "versiones actualizadas para libs requeridas; centinela eliminada; Errores eliminados",
+          "pl": "zaktualizowane wersje dla wymaganych warg; usunięty wartownik; usunięty błąd",
+          "uk": "оновлені версії для необхідних лілій; видалені відправники; Виправлені помилки",
+          "zh-cn": "需要的 lib 的更新版本; 已删除的哨兵; 已删除的臭虫"
+        },
         "1.0.30": {
           "en": "added max ampere in settings; Added level to switch 1-phase to 3 pahases; enables phasesSwitchMode; Only possible if V2 is enabled; some bugs",
           "de": "max ampere in Einstellungen hinzugefügt; Ebene hinzugefügt, um 1-Phase zu 3 pahases zu wechseln; Phasen ermöglicht SwitchMode; Nur möglich, wenn V2 aktiviert ist; einige Fehler",
@@ -274,7 +300,6 @@
       "serverName": "go-eCharger",
       "serverInterval": 60,
       "ampUpdateInterval": 30,
-      "sentryEnabled": true,
       "writeTemperatureArray": true,
       "loadWith6AAtLeast": false,
       "solarPowerForeignObjectID": "",
