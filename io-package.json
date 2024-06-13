@@ -2149,6 +2149,61 @@
             "2": "Force 3 Phases"
           }
         }
+      },
+      {
+        "_id": "schedule",
+        "type": "channel",
+        "common": {
+          "name": "Schedule chargeing",
+          "role": "",
+          "icon": "",
+          "desc": "Channel to provide possibilities about chargeing"
+        }
+      },
+      {
+        "_id": "schedule.allowChargeingForMins",
+        "type": "state",
+        "common": {
+          "name": "Allow charing for minutes",
+          "role": "",
+          "icon": "",
+          "desc": "State to set a specific date for loading; -1 => endless",
+          "type": "number",
+          "def": -1,
+          "read": true,
+          "write": true,
+          "unit": "m"
+        }
+      },
+      {
+        "_id": "schedule.stopChargeingAt",
+        "type": "state",
+        "common": {
+          "name": "Dont allow chargin after this time",
+          "role": "",
+          "icon": "",
+          "desc": "Date after loading is not allowed anymore.",
+          "type": "string",
+          "def": "2022-01-01T00:00:00.000Z",
+          "read": true,
+          "write": true
+        }
+      },
+      {
+        "_id": "schedule.stopChargeingEnabled",
+        "type": "state",
+        "common": {
+          "name": "Dont allow charging",
+          "role": "",
+          "icon": "",
+          "desc": "Scheduler activated?",
+          "type": "boolean",
+          "def": false,
+          "read": true,
+          "write": true
+        }
       }
+      
+
     ]
   }

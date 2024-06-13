@@ -92,6 +92,8 @@ class GoE extends utils.Adapter {
         this.subscribeStates("stop_state");
         this.subscribeStates("unlock_state");
         this.subscribeStates("phaseSwitchMode");
+        this.subscribeStates("schedule.allowChargeingForMins");
+        this.subscribeStates("schedule.stopChargeingAt");
 
         // get updates from a foreign adapter if it is set in Settings
         if(this.config.houseBatteryForeignObjectID) {
@@ -265,6 +267,29 @@ class GoE extends utils.Adapter {
                             this.setValueV2("psm", parseInt(state.val.toString()));
                         } else {
                             this.log.warn("Could not set value " + state.val.toString() + " into " + id + " (psm)");
+                        }
+                        break;
+                    case this.namespace + ".schedule.allowChargeingForMins":
+                        if(parseInt(state.val.toString()) > 0) {
+                            this.setState("schedule.allowChargeingForMins", {val: state.val, ack: true});
+                            this.setState("schedule.stopChargeingAt", {val: new Date(Date.now() + (parseInt(state.val.toString()) * 60 * 1000)).toISOString(), ack: true});
+                            this.setState("schedule.stopChargeingEnabled", {val: true, ack:true});
+                            if(state.val !== undefined && state.val !== null)
+                                this.setStopTimeout = setTimeout(() => {
+                                    this.setValue("alw", 0);
+                                    this.log.info("Stop process because of schedule Minutes");
+                                }, parseInt(state.val.toString()) * 1000);
+                        }
+                        break;
+                    case this.namespace + ".schedule.stopChargeingAt":
+                        if(!isNaN(Date.parse(state.val.toString())) && Date.parse(state.val.toString()) > Date.now()) {
+                            this.setState("schedule.stopChargeingAt", {val: state.val, ack: true});
+                            this.setState("schedule.stopChargeingEnabled", {val: true, ack:true});
+                            if(state.val !== undefined && state.val !== null)
+                                this.setStopTimeout = setTimeout(() => {
+                                    this.setValue("alw", 0);
+                                    this.log.info("Stop process because of schedule At");
+                                }, Date.parse(state.val.toString()) - Date.now());
                         }
                         break;
                     case this.config.solarPowerForeignObjectID:
@@ -911,6 +936,24 @@ class GoE extends utils.Adapter {
      */
     async calculateFromForeignObjects(stateObjectId = "[unknown State ID]") {
         try {
+            const allowCharge = await this.getStateAsync("allow_charging");
+            if(allowCharge === null || allowCharge === undefined || allowCharge.val === null) {
+                this.log.error("calculateFromForeignObjects: Not all required information about the phases are found. Required Values are: alw");
+                return;
+            }
+
+            // Check if scheduler is active
+            const stopChargeingEnabled = await this.getStateAsync("schedule.stopChargeingEnabled");
+            const stopChargeingAt = await this.getStateAsync("schedule.stopChargeingAt");
+            if(stopChargeingEnabled !== null && stopChargeingEnabled !== undefined && stopChargeingEnabled.val === true && 
+              stopChargeingAt !== null && stopChargeingAt !== undefined && stopChargeingAt.val != null && !isNaN(Date.parse(stopChargeingAt.val.toString())) && Date.parse(stopChargeingAt.val.toString()) < Date.now()
+            ) {
+                this.log.info("Scheduler does not allow to load after " + stopChargeingAt.val);
+                if( allowCharge.val !== 0)
+                    this.setValue("alw", 0);
+                return;
+            }
+            // Check is solar load is enabled; Dont act if not.
             const solarOnly = await this.getStateAsync("solarLoadOnly");
             if (solarOnly === undefined || solarOnly == null || solarOnly.val == null || solarOnly.val !== true) {
                 this.log.silly(`Solar calculation disabled: ${solarOnly}`);
