@@ -124,11 +124,13 @@ class GoE extends utils.Adapter {
         this.interval = setInterval(async () => {
             await this.getStateFromDevice();
         }, this.config.serverInterval * 1000);
-        if(this.config.calcMethod !== "iob") {
+        if(this.config.calcMethod !== "iob" && this.config.apiVersion == 2) {
             // Start the Adapter to sync in the interval
             this.interval = setInterval(async () => {
                 await this.writeIds();
             }, 4 * 1000);
+        } else if (this.config.calcMethod !== "iob" && this.config.apiVersion != 2) {
+            this.log.error("For Hardware use to calc PV is API V2 required. But is not enabled in settings.")
         }
     }
 
