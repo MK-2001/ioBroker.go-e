@@ -447,10 +447,12 @@ class GoE extends utils.Adapter {
             pGrid: availWatts,
             pAkku: houseBattery
         };
-        this.log.debug("Write ids Object: " + JSON.stringify(buildObj));
         axios.get("/api/set?ids=" + JSON.stringify(buildObj))
+            .then((res) => {
+                this.log.debug("Wrote ids Object: " + JSON.stringify(buildObj) + " with response " + res.data);
+            })
             .catch((e) => {
-                this.log.warn("Was not able to write ids: " + e.message);
+                this.log.warn("Was not able to write ids: " + JSON.stringify(buildObj) + "; Error: " + e.message);
             });
     }   
     /**
