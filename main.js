@@ -911,7 +911,7 @@ class GoE extends utils.Adapter {
                     }
                 } else {
                     // Wenn derzeit keine Phase zum Laden verwendet wird, wie bei alw = 0;
-                    usedPhases = Number(phaseSwitchMode.val) > 1 ? 3 : 1;
+                    usedPhases = Number(phaseSwitchMode.val) != 1 ? 3 : 1;
                     usedVolts = 230 * usedPhases;
                 }
 
