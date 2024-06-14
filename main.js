@@ -441,17 +441,17 @@ class GoE extends utils.Adapter {
      * This function is writing the IDS endpoint on the go-e adapter based to given attributes
      */
     async writeIds() {
-        const availWatts = await this.getNumberFromForeignObjectId(this.config.solarPowerForeignObjectID));
+        const availWatts = await this.getNumberFromForeignObjectId(this.config.solarPowerForeignObjectID);
         const houseBattery = await this.getNumberFromForeignObjectId(this.config.houseBatteryForeignObjectID);
         const buildObj =  {
             pGrid: availWatts,
             pAkku: houseBattery
-        }
+        };
         this.log.debug("Write ids Object: " + JSON.stringify(buildObj));
         axios.get("/api/set?ids=" + JSON.stringify(buildObj))
-        .catch((e) => {
-            this.log.warn("Was not able to write ids: " + e.message);
-        })
+            .catch((e) => {
+                this.log.warn("Was not able to write ids: " + e.message);
+            });
     }   
     /**
      * Process a default status response as descibed in the api documentation of go-eCharger
