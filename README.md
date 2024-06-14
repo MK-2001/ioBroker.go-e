@@ -10,9 +10,6 @@
 [![NPM](https://nodei.co/npm/iobroker.go-e.png?mini=true)](https://nodei.co/npm/iobroker.go-e/)
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/34be1ff5fb7943c4aab5ec6a06f0e4a5)](https://www.codacy.com/gh/MK-2001/ioBroker.go-e/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=MK-2001/ioBroker.go-e&amp;utm_campaign=Badge_Grade)
 
-# Usage of Sentry
-**This adapter uses Sentry libraries to automatically report exceptions and code errors to the developers.** For more details and for information how to disable the error reporting see [Sentry-Plugin Documentation](https://github.com/ioBroker/plugin-sentry#plugin-sentry)! Sentry reporting is used starting with js-controller 3.0.
-
 # The go-eCharger Wallbox
 ![Product Image](admin/go-eCharger-HOME-Wallbox.png)
 For more details please visit https://go-e.co/

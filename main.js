@@ -7,6 +7,7 @@
 // The adapter-core module gives you access to the core ioBroker functions
 // you need to create an adapter
 const utils = require("@iobroker/adapter-core");
+const { build } = require("joi");
 // Load your modules here, e.g.:
 // const fs = require("fs");
 const axios = require("axios").default;
@@ -69,6 +70,7 @@ class GoE extends utils.Adapter {
         // this.config:
         this.log.info("Server: " + this.config.serverName);
         this.log.info("Intervall: " + this.config.serverInterval);
+        this.log.info("Calculation Method: " + this.config.calcMethod);
 
         // In order to get state updates, you need to subscribe to them. The following line adds a subscription for our variable we have created above.
         this.subscribeStates("access_state");
@@ -95,21 +97,23 @@ class GoE extends utils.Adapter {
         this.subscribeStates("schedule.allowChargeingForMins");
         this.subscribeStates("schedule.stopChargeingAt");
 
-        // get updates from a foreign adapter if it is set in Settings
-        if(this.config.houseBatteryForeignObjectID) {
-            this.subscribeForeignStates(this.config.houseBatteryForeignObjectID);
-            this.ackObj[this.config.houseBatteryForeignObjectID] = this.config.houseBatteryForeignObjectAck;
-            this.log.debug("Subscribe foreign object " + this.config.houseBatteryForeignObjectID);
-        }
-        if(this.config.houseConsumptionForeignObjectID) {
-            this.subscribeForeignStates(this.config.houseConsumptionForeignObjectID);
-            this.ackObj[this.config.houseConsumptionForeignObjectID] = this.config.houseConsumptionForeignObjectAck;
-            this.log.debug("Subscribe foreign object " + this.config.houseConsumptionForeignObjectID);
-        }
-        if(this.config.solarPowerForeignObjectID) {
-            this.subscribeForeignStates(this.config.solarPowerForeignObjectID);
-            this.ackObj[this.config.solarPowerForeignObjectID] = this.config.solarPowerForeignObjectAck;
-            this.log.debug("Subscribe foreign object " + this.config.solarPowerForeignObjectID);
+        if(this.config.calcMethod == "iob") {
+            // get updates from a foreign adapter if it is set in Settings
+            if(this.config.houseBatteryForeignObjectID) {
+                this.subscribeForeignStates(this.config.houseBatteryForeignObjectID);
+                this.ackObj[this.config.houseBatteryForeignObjectID] = this.config.houseBatteryForeignObjectAck;
+                this.log.debug("Subscribe foreign object " + this.config.houseBatteryForeignObjectID);
+            }
+            if(this.config.houseConsumptionForeignObjectID) {
+                this.subscribeForeignStates(this.config.houseConsumptionForeignObjectID);
+                this.ackObj[this.config.houseConsumptionForeignObjectID] = this.config.houseConsumptionForeignObjectAck;
+                this.log.debug("Subscribe foreign object " + this.config.houseConsumptionForeignObjectID);
+            }
+            if(this.config.solarPowerForeignObjectID) {
+                this.subscribeForeignStates(this.config.solarPowerForeignObjectID);
+                this.ackObj[this.config.solarPowerForeignObjectID] = this.config.solarPowerForeignObjectAck;
+                this.log.debug("Subscribe foreign object " + this.config.solarPowerForeignObjectID);
+            }
         }
         this.log.silly("Ack-Obj: " + JSON.stringify(this.ackObj));
         // setup axios
@@ -120,6 +124,12 @@ class GoE extends utils.Adapter {
         this.interval = setInterval(async () => {
             await this.getStateFromDevice();
         }, this.config.serverInterval * 1000);
+        if(this.config.calcMethod !== "iob") {
+            // Start the Adapter to sync in the interval
+            this.interval = setInterval(async () => {
+                await this.writeIds();
+            }, 4 * 1000);
+        }
     }
 
     /**
@@ -243,8 +253,15 @@ class GoE extends utils.Adapter {
                         this.setValue("lbr", parseInt(state.val.toString(), 10));
                         break;
                     case this.namespace + ".solarLoadOnly":
-                        if(!state.val) {
-                            this.setValue("alw", 1);
+                        if(this.config.calcMethod == "iob") {
+                            if(!state.val) {
+                                this.setValue("alw", 1);
+                            }
+                        } else {
+                            this.setValueV2("fup", state.val)
+                            .then(() => {
+                                this.setState("solarLoadOnly", {ack:true});
+                            });
                         }
                         break;
                     case this.namespace + ".stop_state":
@@ -418,6 +435,22 @@ class GoE extends utils.Adapter {
         
     }
 
+    /**
+     * This function is writing the IDS endpoint on the go-e adapter based to given attributes
+     */
+    async writeIds() {
+        const availWatts = await this.getNumberFromForeignObjectId(this.config.solarPowerForeignObjectID));
+        const houseBattery = await this.getNumberFromForeignObjectId(this.config.houseBatteryForeignObjectID);
+        const buildObj =  {
+            pGrid: availWatts,
+            pAkku: houseBattery
+        }
+        this.log.debug("Write ids Object: " + JSON.stringify(buildObj));
+        axios.get("/api/set?ids=" + JSON.stringify(buildObj))
+        .catch((e) => {
+            this.log.warn("Was not able to write ids: " + e.message);
+        })
+    }   
     /**
      * Process a default status response as descibed in the api documentation of go-eCharger
      * @param {object} o
@@ -656,7 +689,7 @@ class GoE extends utils.Adapter {
             value = '"' + value + '"';
         }
         this.log.debug("call " + "http://" + this.config.serverName + "/api/set?" + id + "=" + value);
-        axios.get("http://" + this.config.serverName + "/api/set?" + id + "=" + value)
+        return axios.get("http://" + this.config.serverName + "/api/set?" + id + "=" + value)
             .then(o => {
                 this.log.debug(o.status + " with message: " + o.statusText);
                 // this.processStatusObject(o.data);
