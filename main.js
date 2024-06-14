@@ -449,7 +449,7 @@ class GoE extends utils.Adapter {
         };
         axios.get("/api/set?ids=" + JSON.stringify(buildObj))
             .then((res) => {
-                this.log.debug("Wrote ids Object: " + JSON.stringify(buildObj) + " with response " + res.data);
+                this.log.debug("Wrote ids Object: " + JSON.stringify(buildObj) + " with response " + JSON.stringify(res.data));
             })
             .catch((e) => {
                 this.log.warn("Was not able to write ids: " + JSON.stringify(buildObj) + "; Error: " + e.message);
