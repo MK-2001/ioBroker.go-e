@@ -2152,6 +2152,19 @@
         }
       },
       {
+        "_id": "phaseSwitchModeBuffer",
+        "type": "state",
+        "common": {
+          "name": "Buffer for Phase switch Mode in Watt [W]",
+          "role": "",
+          "icon": "",
+          "desc": "State to provide information of Phase Switch Mode Buffer",
+          "type": "number",
+          "unit": "W",
+          "def": "500"
+        }
+      },
+      {
         "_id": "schedule",
         "type": "channel",
         "common": {
