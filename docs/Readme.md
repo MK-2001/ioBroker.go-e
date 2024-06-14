@@ -60,6 +60,7 @@ In this paragraph are listet additional functionalities which can be used for an
 - [unlock_state](#unlock-state)
 - [Foreign Objects](#foreign-objects)
 - [LoadAtLeast6A](#load-at-least-6a)
+- [phaseSwitchModeBuffer](#phaseSwitchModeBuffer)
 
 ## Access State
 
@@ -181,3 +182,19 @@ It should result in automatism like this graph:
 # Load At Least 6A
 This option set the behavior of the adapter to continue loading the car with reduced speed, even if there is not enougth solar power available.
 
+# phaseSwitchModeBuffer
+Default: 500 W  
+  
+This is the buffer to the settings in phaseSwitchWatts. This buffer reduces the amount to change between 1phses and 3-phases loading operation. To disable set to 0.  
+Default phaseSwitchWatts is 4200 (Watts).  
+
+'''Example:'''
+Setup: phaseSwitchWatts = 4200; phaseSwitchModeBuffer = 500;
+| pGrid [Watt] | current Mode | required mode | explain |
+|:--|:--:|:--:|:--|
+| 7000 | 3-phases | 3-phases | usual operation |
+| 4000 | 3-phases | 3-phases | ready to switch to 1-phase, but buffer not reached |
+| 4699 | 3-phases | 1-phase | switch reached |
+| 2000 | 1-phase | 1-phase | usual operation |
+| 4201 | 1-phase | 1-phase | ready to switch, but buffer not reached |
+| 4701 | 1 phase | 3-phases | switch level reached |
