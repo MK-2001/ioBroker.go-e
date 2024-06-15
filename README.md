@@ -39,6 +39,7 @@ https://t.me/goECharger
 
 Official API Documentation:
 https://github.com/goecharger/go-eCharger-API-v1
+https://github.com/goecharger/go-eCharger-API-v2
 
 Official Product Support:
 https://go-e.co/support/

@@ -257,8 +257,11 @@ class GoE extends utils.Adapter {
                         break;
                     case this.namespace + ".solarLoadOnly":
                         if(this.config.calcMethod == "iob") {
+                            // Is solarOnly => false (off)
                             if(!state.val) {
                                 this.setValue("alw", 1);
+                                this.setValueV2("fup", 0); // go-e Solarladen deaktivieren
+                                this.setValueV2("psm", 0); // Phases Switch to auto
                             }
                         } else {
                             this.setValueV2("fup", state.val)
@@ -390,7 +393,7 @@ class GoE extends utils.Adapter {
                     this.log.error(e);
                 });
         }
-        
+
         // Get all other attributes from API-V1
         this.log.debug("Starte V1 Abfrage an: http://" + this.config.serverName + apiEndpoint);
         axios.defaults.baseURL = "http://" + this.config.serverName;
@@ -436,7 +439,7 @@ class GoE extends utils.Adapter {
                     this.log.error(e.message);
                 }
             });
-        
+
     }
 
     /**
@@ -456,7 +459,7 @@ class GoE extends utils.Adapter {
             .catch((e) => {
                 this.log.warn("Was not able to write ids: " + JSON.stringify(buildObj) + "; Error: " + e.message);
             });
-    }   
+    }
     /**
      * Process a default status response as descibed in the api documentation of go-eCharger
      * @param {object} o
@@ -848,7 +851,6 @@ class GoE extends utils.Adapter {
                 if(phaseSwitchModeBuffer === null || phaseSwitchModeBuffer === undefined || phaseSwitchModeBuffer.val === null) {
                     this.log.warn("adjustAmpLevelInWatts: Not all required information about the phases are found. Required Values are: phaseSwitchModeBuffer; Will use 0;");
                     phaseSwitchModeBuffer = { val: 0, ack: true, ts: 0, from: "", lc: 0};
-                    return;
                 }
                 const phaseSwitchMode = await this.getStateAsync("phaseSwitchMode");
                 if(phaseSwitchMode === null || phaseSwitchMode === undefined || phaseSwitchMode.val === null) {
@@ -1003,7 +1005,7 @@ class GoE extends utils.Adapter {
             // Check if scheduler is active
             const stopChargeingEnabled = await this.getStateAsync("schedule.stopChargeingEnabled");
             const stopChargeingAt = await this.getStateAsync("schedule.stopChargeingAt");
-            if(stopChargeingEnabled !== null && stopChargeingEnabled !== undefined && stopChargeingEnabled.val === true && 
+            if(stopChargeingEnabled !== null && stopChargeingEnabled !== undefined && stopChargeingEnabled.val === true &&
               stopChargeingAt !== null && stopChargeingAt !== undefined && stopChargeingAt.val != null && !isNaN(Date.parse(stopChargeingAt.val.toString())) && Date.parse(stopChargeingAt.val.toString()) < Date.now()
             ) {
                 this.log.info("Scheduler does not allow to load after " + stopChargeingAt.val);
