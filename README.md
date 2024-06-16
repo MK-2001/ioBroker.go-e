@@ -46,6 +46,17 @@ https://go-e.co/support/
 
 ## Changelog
 
+### 1.0.33
+* switch between ioBroker and go-e Hardware logic for PV-Calculation
+* Adding phaseSwitch Buffer to reduce switch on coudy days
+* improved documentation
+
+### 1.0.32
+* Timer for loading
+
+### 1.0.31
+* Versioning updates
+
 ### 1.0.30
 * added max ampere in settings
 * Added level to switch 1-phase to 3 pahases
