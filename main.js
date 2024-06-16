@@ -488,7 +488,7 @@ class GoE extends utils.Adapter {
                 // sometimes it provides "0302-300526" see #171
                 // TODO: No glue what this is about.
                 // Realdate: 22th August 2020 at 16:43 (CET)
-                this.log.debug(" Synctime: " + o.tme);
+                // this.log.debug(" Synctime: " + o.tme);
                 const reggie = /(\d{2})(\d{2})(\d{2})(\d{2})(\d{2})/;
                 // @ts-ignore
                 const [, day, month, year, hours, minutes] = reggie.exec(o.tme);
