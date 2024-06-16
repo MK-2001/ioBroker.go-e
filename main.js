@@ -941,8 +941,8 @@ class GoE extends utils.Adapter {
                 // (9240 W + 1320) / (660 / 3) / 3 => 16 A
                 // Using floor (abrunden) anstatt runden, damit immer etwas übrig bleibt.
                 let maxAmp = Math.floor((usedWatts + changeWatts) / (usedVolts / usedPhases) / usedPhases);
-                this.log.debug("Current used " + Math.round(usedWatts) +  " Watts with " + usedAmperes + " Ampere (sum) by " + usedPhases + " Phases and adjusting this with  " + changeWatts + " watts by " + (usedVolts / usedPhases) + " Volts (avg) to new max of " + maxAmp + " Amperes per Phase; PhaseSwitchLevel: from " + phaseSwitchMode.val +  " at " + (phaseSwitchMode.val != 1 ? "<" + (phaseSwitchWatts - Number(phaseSwitchModeBuffer.val)) : ">" + (phaseSwitchWatts + Number(phaseSwitchModeBuffer.val))));
-                if((usedWatts + changeWatts) > phaseSwitchWatts + Number(phaseSwitchModeBuffer.val) && phaseSwitchMode.val != 2) {
+                this.log.debug("Current used " + Math.round(usedWatts) +  " Watts with " + usedAmperes + " Ampere (sum) by " + usedPhases + " Phases and adjusting this with  " + changeWatts + " watts by " + (usedVolts / usedPhases) + " Volts (avg) to new max of " + maxAmp + " Amperes per Phase; PhaseSwitchLevel: from " + phaseSwitchMode.val +  " at " + (phaseSwitchMode.val != 1 ? "<" + (Number(phaseSwitchWatts) - Number(phaseSwitchModeBuffer.val)) : ">" + (Number(phaseSwitchWatts) + Number(phaseSwitchModeBuffer.val))));
+                if((usedWatts + changeWatts) > Number(phaseSwitchWatts) + Number(phaseSwitchModeBuffer.val) && phaseSwitchMode.val != 2) {
                     // initiate phase switch to 3-phases
                     this.log.debug(`Current Watts ${usedWatts + changeWatts} require Mode 3-phases; current: ${phaseSwitchMode.val}; Change maxAmp from ${maxAmp} to ${Math.round(maxAmp / 3)}`);
                     axios.get("/api/set?psm=2")
@@ -953,7 +953,7 @@ class GoE extends utils.Adapter {
                         .catch((e) => {
                             this.log.error(e);
                         });
-                } else if((usedWatts + changeWatts) < phaseSwitchWatts - Number(phaseSwitchModeBuffer.val) && phaseSwitchMode.val != 1) {
+                } else if((usedWatts + changeWatts) < Number(phaseSwitchWatts) - Number(phaseSwitchModeBuffer.val) && phaseSwitchMode.val != 1) {
                     this.log.debug(`Current Watts ${usedWatts + changeWatts} require Mode 1-phase; current: ${phaseSwitchMode.val}; Change maxAmp from ${maxAmp} to ${Math.round(maxAmp * 3)}`);
                     axios.get("/api/set?psm=1")
                         .then(() => {
