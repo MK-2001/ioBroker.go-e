@@ -945,7 +945,7 @@ class GoE extends utils.Adapter {
                 if((usedWatts + changeWatts) > Number(phaseSwitchWatts) + Number(phaseSwitchModeBuffer.val) && phaseSwitchMode.val != 2) {
                     // initiate phase switch to 3-phases
                     this.log.debug(`Current Watts ${usedWatts + changeWatts} require Mode 3-phases; current: ${phaseSwitchMode.val}; Change maxAmp from ${maxAmp} to ${Math.round(maxAmp / 3)}`);
-                    axios.get("/api/set?psm=2")
+                    await axios.get("/api/set?psm=2")
                         .then(() => {
                             this.setState("phaseSwitchMode", {val: 2, ack: true});
                             maxAmp = Math.round(maxAmp / 3);
@@ -955,7 +955,7 @@ class GoE extends utils.Adapter {
                         });
                 } else if((usedWatts + changeWatts) < Number(phaseSwitchWatts) - Number(phaseSwitchModeBuffer.val) && phaseSwitchMode.val != 1) {
                     this.log.debug(`Current Watts ${usedWatts + changeWatts} require Mode 1-phase; current: ${phaseSwitchMode.val}; Change maxAmp from ${maxAmp} to ${Math.round(maxAmp * 3)}`);
-                    axios.get("/api/set?psm=1")
+                    await axios.get("/api/set?psm=1")
                         .then(() => {
                             this.setState("phaseSwitchMode", {val: 1, ack: true});
                             maxAmp = maxAmp * 3;
