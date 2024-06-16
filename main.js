@@ -374,9 +374,9 @@ class GoE extends utils.Adapter {
      * This function get the JSON Object from the go-E Charger status API
      */
     async getStateFromDevice() {
-        let apiEndpoint = "/status";
+        // let apiEndpoint = "/status";
         if(this.config.apiVersion == 2) {
-            apiEndpoint = "/api/status?filter=" + Object.keys(this.translationObjectV2).join(",");
+            // apiEndpoint = "/api/status?filter=" + Object.keys(this.translationObjectV2).join(",");
             // Get additional parameters from API v2
             this.log.debug(`Starte V2 Abfrage an: http://${this.config.serverName}/api/status?filter=psm`);
             axios.get("/api/status?filter=psm")
