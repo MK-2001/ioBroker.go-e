@@ -1,8 +1,11 @@
 {
     "common": {
       "name": "go-e",
-      "version": "1.0.33",
+      "version": "1.0.34",
       "news": {
+        "1.0.34": {
+          "en": "bug #232"
+        },
         "1.0.33": {
           "en": "Added ability to write ids and fub directly;Removed bugs for phaseSwitches; added timer for loading; checked if APIv2 is enabled; optimzed debug; Improved documentation in git (https://github.com/MK-2001/ioBroker.go-e/blob/main/docs/Readme.md);",
           "de": "Zusätzliche Möglichkeit, ids und fub direkt zu schreiben;Entfernte Bugs für phaseSwitches; hinzugefügt Timer für das Laden; überprüft, ob APIv2 aktiviert ist; optimzed debug; Verbesserte Dokumentation in git (https://github.com/MK-2001/ioBroker.go-e/blob/main/docs/Readme.md);",
