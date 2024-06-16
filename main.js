@@ -749,12 +749,12 @@ class GoE extends utils.Adapter {
             this.log.debug("set maxAmperes (" + amp + "): 6 amperes");
         } else if(maxAmp < maxSetAmp) {
             this.setValue(amp, maxAmp);
-            this.setState(ampStr, { val: maxAmp, ack: true });
+            this.setState(ampStr, { val: Number(maxAmp), ack: true });
             this.log.debug("set maxAmperes (" + amp + "): " + maxAmp + " amperes" );
         } else {
             // The maximum is 32 Amperes and is defined in Settings
             this.setValue(amp, maxSetAmp);
-            this.setState(ampStr, { val: maxSetAmp, ack: true });
+            this.setState(ampStr, { val: Number(maxSetAmp), ack: true });
             this.log.debug("set maxAmperes (" + amp + "): " + maxSetAmp + " amperes");
         }
     }
