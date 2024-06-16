@@ -395,7 +395,7 @@ class GoE extends utils.Adapter {
         }
 
         // Get all other attributes from API-V1
-        this.log.debug("Starte V1 Abfrage an: http://" + this.config.serverName + apiEndpoint);
+        // this.log.debug("Starte V1 Abfrage an: http://" + this.config.serverName + apiEndpoint);
         axios.defaults.baseURL = "http://" + this.config.serverName;
         await axios.get("/status")
             .then((o) => {
