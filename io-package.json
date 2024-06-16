@@ -1,8 +1,21 @@
 {
     "common": {
       "name": "go-e",
-      "version": "1.0.32",
+      "version": "1.0.33",
       "news": {
+        "1.0.33": {
+          "en": "Added ability to write ids and fub directly;Removed bugs for phaseSwitches; added timer for loading; checked if APIv2 is enabled; optimzed debug; Improved documentation in git (https://github.com/MK-2001/ioBroker.go-e/blob/main/docs/Readme.md);",
+          "de": "Zusätzliche Möglichkeit, ids und fub direkt zu schreiben;Entfernte Bugs für phaseSwitches; hinzugefügt Timer für das Laden; überprüft, ob APIv2 aktiviert ist; optimzed debug; Verbesserte Dokumentation in git (https://github.com/MK-2001/ioBroker.go-e/blob/main/docs/Readme.md);",
+          "ru": "Добавлена возможность напрямую писать ids и fub; Удалены ошибки для фазSwitches; добавлен таймер для загрузки; проверено, включен ли APIv2; оптимизирован отладка; улучшена документация в git (https://github.com/MK-2001/ioBroker.go-e/blob/main/docs/Readme.md);",
+          "pt": "Adicionado capacidade de escrever ids e fub diretamente; bugs modificados para phaseSwitches; temporizador adicionado para carregamento; verificado se APIv2 está habilitado; debug otimizado; Documentação melhorada em git (https://github.com/MK-2001/ioBroker.go-e/blob/main/docs/Readme.md);",
+          "nl": "Toegevoegd vermogen om id's en fub direct te schrijven;Verwijderde bugs voor faseSwitches; toegevoegd timer voor laden; gecontroleerd als APIv2 is ingeschakeld; optimzed debug; Verbeterde documentatie in git (https://github.com/MK-2001/ioBroker.go-e/blob/main/docs/Readme.md);",
+          "fr": "Possibilité d'écrire des ids et des fubs directement;Bogues supprimés pour phaseSwitches; minuterie ajoutée pour le chargement; vérifié si APIv2 est activé; débogue optimisée; Documentation améliorée dans git (https://github.com/MK-2001/ioBroker.go-e/blob/main/docs/Readme.md);",
+          "it": "Aggiunta la capacità di scrivere ids e fub direttamente; bug rimossi per phaseSwitches; timer aggiunto per il caricamento; controllato se APIv2 è abilitato; debug ottimizzato; documentazione migliorata in git (https://github.com/MK-2001/ioBroker.go-e/blob/main/docs/Readme.md);",
+          "es": "Posibilidad de escribir ids y fub directamente;Removidos bugs for phaseSwitches; añadido timer for loading; verificado si APIv2 está habilitado; depuración optimizada; Mejor documentación en git (https://github.com/MK-2001/ioBroker.go-e/blob/main/docs/Readme.md);",
+          "pl": "Dodano możliwość zapisu idów i fub bezpośrednio; Usunięto błędy dla fazeSwitches; dodano timer do wczytania; sprawdzono, czy APIV2 jest włączona; zoptymalizowano debug; poprawiono dokumentację w git (https: / / github.com / MK- 2001 / ioBroker.go- e / blob / main / docs / Readme.md);",
+          "uk": "Додано можливість написати ids і fub безпосередньо; Видалення помилок для фазиSwitches; додано таймер для завантаження; перевірте, якщо APIv2 ввімкнено; оптимізоване видалення; Покращена документація в git (https://github.com/MK-2001/ioBroker.go-e/blob/main/docs/Readme.md);",
+          "zh-cn": "添加直接写入ID和fub的能力; 重置相位交换器的bug; 添加加载的计时器; 检查APIv2是否启用; 优化调试; 改进git中的文档(https://github.com/MK-2001/ioBroker.go-e/blob/main/docs/Readme.md); ;"
+        },
         "1.0.32": {
           "en": "Removed bugs 164 und 224",
           "de": "Entfernte Fehler 164 und 224",
@@ -324,7 +337,8 @@
         "amp"
       ],
       "maxAmp": 16,
-      "phaseSwitchWatts": 4200
+      "phaseSwitchWatts": 4200,
+      "calcMethod": "iob"
     },
     "objects": [],
     "instanceObjects": [
@@ -2149,6 +2163,74 @@
             "2": "Force 3 Phases"
           }
         }
+      },
+      {
+        "_id": "phaseSwitchModeBuffer",
+        "type": "state",
+        "common": {
+          "name": "Buffer for Phase switch Mode in Watt [W]",
+          "role": "",
+          "icon": "",
+          "desc": "State to provide information of Phase Switch Mode Buffer",
+          "type": "number",
+          "unit": "W",
+          "def": "500"
+        }
+      },
+      {
+        "_id": "schedule",
+        "type": "channel",
+        "common": {
+          "name": "Schedule chargeing",
+          "role": "",
+          "icon": "",
+          "desc": "Channel to provide possibilities about chargeing"
+        }
+      },
+      {
+        "_id": "schedule.allowChargeingForMins",
+        "type": "state",
+        "common": {
+          "name": "Allow charing for minutes",
+          "role": "",
+          "icon": "",
+          "desc": "State to set a specific date for loading; -1 => endless",
+          "type": "number",
+          "def": -1,
+          "read": true,
+          "write": true,
+          "unit": "m"
+        }
+      },
+      {
+        "_id": "schedule.stopChargeingAt",
+        "type": "state",
+        "common": {
+          "name": "Dont allow chargin after this time",
+          "role": "",
+          "icon": "",
+          "desc": "Date after loading is not allowed anymore.",
+          "type": "string",
+          "def": "2022-01-01T00:00:00.000Z",
+          "read": true,
+          "write": true
+        }
+      },
+      {
+        "_id": "schedule.stopChargeingEnabled",
+        "type": "state",
+        "common": {
+          "name": "Dont allow charging",
+          "role": "",
+          "icon": "",
+          "desc": "Scheduler activated?",
+          "type": "boolean",
+          "def": false,
+          "read": true,
+          "write": true
+        }
       }
+
+
     ]
   }

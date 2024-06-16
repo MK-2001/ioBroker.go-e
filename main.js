@@ -69,6 +69,7 @@ class GoE extends utils.Adapter {
         // this.config:
         this.log.info("Server: " + this.config.serverName);
         this.log.info("Intervall: " + this.config.serverInterval);
+        this.log.info("Calculation Method: " + this.config.calcMethod);
 
         // In order to get state updates, you need to subscribe to them. The following line adds a subscription for our variable we have created above.
         this.subscribeStates("access_state");
@@ -92,22 +93,28 @@ class GoE extends utils.Adapter {
         this.subscribeStates("stop_state");
         this.subscribeStates("unlock_state");
         this.subscribeStates("phaseSwitchMode");
+        this.subscribeStates("schedule.allowChargeingForMins");
+        this.subscribeStates("schedule.stopChargeingAt");
 
-        // get updates from a foreign adapter if it is set in Settings
-        if(this.config.houseBatteryForeignObjectID) {
-            this.subscribeForeignStates(this.config.houseBatteryForeignObjectID);
-            this.ackObj[this.config.houseBatteryForeignObjectID] = this.config.houseBatteryForeignObjectAck;
-            this.log.debug("Subscribe foreign object " + this.config.houseBatteryForeignObjectID);
-        }
-        if(this.config.houseConsumptionForeignObjectID) {
-            this.subscribeForeignStates(this.config.houseConsumptionForeignObjectID);
-            this.ackObj[this.config.houseConsumptionForeignObjectID] = this.config.houseConsumptionForeignObjectAck;
-            this.log.debug("Subscribe foreign object " + this.config.houseConsumptionForeignObjectID);
-        }
-        if(this.config.solarPowerForeignObjectID) {
-            this.subscribeForeignStates(this.config.solarPowerForeignObjectID);
-            this.ackObj[this.config.solarPowerForeignObjectID] = this.config.solarPowerForeignObjectAck;
-            this.log.debug("Subscribe foreign object " + this.config.solarPowerForeignObjectID);
+        if(this.config.calcMethod == "iob") {
+            // Disable FUP (Solar überschuss)
+            this.setValueV2("fup", false);
+            // get updates from a foreign adapter if it is set in Settings
+            if(this.config.houseBatteryForeignObjectID) {
+                this.subscribeForeignStates(this.config.houseBatteryForeignObjectID);
+                this.ackObj[this.config.houseBatteryForeignObjectID] = this.config.houseBatteryForeignObjectAck;
+                this.log.debug("Subscribe foreign object " + this.config.houseBatteryForeignObjectID);
+            }
+            if(this.config.houseConsumptionForeignObjectID) {
+                this.subscribeForeignStates(this.config.houseConsumptionForeignObjectID);
+                this.ackObj[this.config.houseConsumptionForeignObjectID] = this.config.houseConsumptionForeignObjectAck;
+                this.log.debug("Subscribe foreign object " + this.config.houseConsumptionForeignObjectID);
+            }
+            if(this.config.solarPowerForeignObjectID) {
+                this.subscribeForeignStates(this.config.solarPowerForeignObjectID);
+                this.ackObj[this.config.solarPowerForeignObjectID] = this.config.solarPowerForeignObjectAck;
+                this.log.debug("Subscribe foreign object " + this.config.solarPowerForeignObjectID);
+            }
         }
         this.log.silly("Ack-Obj: " + JSON.stringify(this.ackObj));
         // setup axios
@@ -118,6 +125,14 @@ class GoE extends utils.Adapter {
         this.interval = setInterval(async () => {
             await this.getStateFromDevice();
         }, this.config.serverInterval * 1000);
+        if(this.config.calcMethod !== "iob" && this.config.apiVersion == 2) {
+            // Start the Adapter to sync in the interval
+            this.interval = setInterval(async () => {
+                await this.writeIds();
+            }, 4 * 1000);
+        } else if (this.config.calcMethod !== "iob" && this.config.apiVersion != 2) {
+            this.log.error("For Hardware use to calc PV is API V2 required. But is not enabled in settings.");
+        }
     }
 
     /**
@@ -241,8 +256,18 @@ class GoE extends utils.Adapter {
                         this.setValue("lbr", parseInt(state.val.toString(), 10));
                         break;
                     case this.namespace + ".solarLoadOnly":
-                        if(!state.val) {
-                            this.setValue("alw", 1);
+                        if(this.config.calcMethod == "iob") {
+                            // Is solarOnly => false (off)
+                            if(!state.val) {
+                                this.setValue("alw", 1);
+                                this.setValueV2("fup", 0); // go-e Solarladen deaktivieren
+                                this.setValueV2("psm", 0); // Phases Switch to auto
+                            }
+                        } else {
+                            this.setValueV2("fup", state.val)
+                                .then(() => {
+                                    this.setState("solarLoadOnly", {ack:true});
+                                });
                         }
                         break;
                     case this.namespace + ".stop_state":
@@ -267,12 +292,35 @@ class GoE extends utils.Adapter {
                             this.log.warn("Could not set value " + state.val.toString() + " into " + id + " (psm)");
                         }
                         break;
+                    case this.namespace + ".schedule.allowChargeingForMins":
+                        if(parseInt(state.val.toString()) > 0) {
+                            this.setState("schedule.allowChargeingForMins", {val: state.val, ack: true});
+                            this.setState("schedule.stopChargeingAt", {val: new Date(Date.now() + (parseInt(state.val.toString()) * 60 * 1000)).toISOString(), ack: true});
+                            this.setState("schedule.stopChargeingEnabled", {val: true, ack:true});
+                            if(state.val !== undefined && state.val !== null)
+                                this.setStopTimeout = setTimeout(() => {
+                                    this.setValue("alw", 0);
+                                    this.log.info("Stop process because of schedule Minutes");
+                                }, parseInt(state.val.toString()) * 1000);
+                        }
+                        break;
+                    case this.namespace + ".schedule.stopChargeingAt":
+                        if(!isNaN(Date.parse(state.val.toString())) && Date.parse(state.val.toString()) > Date.now()) {
+                            this.setState("schedule.stopChargeingAt", {val: state.val, ack: true});
+                            this.setState("schedule.stopChargeingEnabled", {val: true, ack:true});
+                            if(state.val !== undefined && state.val !== null)
+                                this.setStopTimeout = setTimeout(() => {
+                                    this.setValue("alw", 0);
+                                    this.log.info("Stop process because of schedule At");
+                                }, Date.parse(state.val.toString()) - Date.now());
+                        }
+                        break;
                     case this.config.solarPowerForeignObjectID:
                     case this.config.houseBatteryForeignObjectID:
                     case this.config.houseConsumptionForeignObjectID:
                         if(this.ackObj[id] === false) {
                             this.log.silly("Will work on " + id + " becase ack is " + state.ack + " and should be " + this.ackObj[id]);
-                            this.calculateFromForeignObjects(id);
+                            this.calculateFromForeignObjects();
                         } else {
                             this.log.silly("Will NOT work on " + id + " becase ack is " + state.ack + " and should be " + this.ackObj[id]);
                         }
@@ -289,7 +337,7 @@ class GoE extends utils.Adapter {
                         this.log.silly(`state ${id} changed: ${state.val} (ack = ${state.ack}) namespace: ` + this.namespace);
                         if(this.ackObj[id] === true) {
                             this.log.silly("Will work on " + id + " becase ack is " + state.ack + " and should be " + this.ackObj[id]);
-                            this.calculateFromForeignObjects(id);
+                            this.calculateFromForeignObjects();
                         } else {
                             this.log.silly("Will NOT work on " + id + " becase ack is " + state.ack + " and should be " + this.ackObj[id]);
                         }
@@ -326,9 +374,9 @@ class GoE extends utils.Adapter {
      * This function get the JSON Object from the go-E Charger status API
      */
     async getStateFromDevice() {
-        let apiEndpoint = "/status";
+        // let apiEndpoint = "/status";
         if(this.config.apiVersion == 2) {
-            apiEndpoint = "/api/status?filter=" + Object.keys(this.translationObjectV2).join(",");
+            // apiEndpoint = "/api/status?filter=" + Object.keys(this.translationObjectV2).join(",");
             // Get additional parameters from API v2
             this.log.debug(`Starte V2 Abfrage an: http://${this.config.serverName}/api/status?filter=psm`);
             axios.get("/api/status?filter=psm")
@@ -345,9 +393,9 @@ class GoE extends utils.Adapter {
                     this.log.error(e);
                 });
         }
-        
+
         // Get all other attributes from API-V1
-        this.log.debug("Starte V1 Abfrage an: http://" + this.config.serverName + apiEndpoint);
+        // this.log.debug("Starte V1 Abfrage an: http://" + this.config.serverName + apiEndpoint);
         axios.defaults.baseURL = "http://" + this.config.serverName;
         await axios.get("/status")
             .then((o) => {
@@ -357,7 +405,8 @@ class GoE extends utils.Adapter {
                     this.log.error("Respose id type " + (typeof o.data) + "; " + JSON.stringify(o.data));
                 } else {
                     const validation = schema.validate(o.data,{abortEarly: false});
-                    if (validation.error || validation.value === undefined) {
+                    // @ts-ignore
+                    if (validation.error != undefined && (validation.error || validation.value === undefined)) {
                         if (validation.value === undefined) {
                             this.log.error("API send no content");
                         } else {
@@ -390,9 +439,27 @@ class GoE extends utils.Adapter {
                     this.log.error(e.message);
                 }
             });
-        
+
     }
 
+    /**
+     * This function is writing the IDS endpoint on the go-e adapter based to given attributes
+     */
+    async writeIds() {
+        const availWatts = await this.getNumberFromForeignObjectId(this.config.solarPowerForeignObjectID);
+        const houseBattery = await this.getNumberFromForeignObjectId(this.config.houseBatteryForeignObjectID);
+        const buildObj =  {
+            pGrid: availWatts,
+            pAkku: houseBattery
+        };
+        axios.get("/api/set?ids=" + JSON.stringify(buildObj))
+            .then((res) => {
+                this.log.debug("Wrote ids Object: " + JSON.stringify(buildObj) + " with response " + JSON.stringify(res.data));
+            })
+            .catch((e) => {
+                this.log.warn("Was not able to write ids: " + JSON.stringify(buildObj) + "; Error: " + e.message);
+            });
+    }
     /**
      * Process a default status response as descibed in the api documentation of go-eCharger
      * @param {object} o
@@ -421,13 +488,14 @@ class GoE extends utils.Adapter {
                 // sometimes it provides "0302-300526" see #171
                 // TODO: No glue what this is about.
                 // Realdate: 22th August 2020 at 16:43 (CET)
-                this.log.debug(" Synctime: " + o.tme);
+                // this.log.debug(" Synctime: " + o.tme);
                 const reggie = /(\d{2})(\d{2})(\d{2})(\d{2})(\d{2})/;
                 // @ts-ignore
                 const [, day, month, year, hours, minutes] = reggie.exec(o.tme);
                 const dateObject = new Date(parseInt(year, 10)+2000, parseInt(month, 10)-1, parseInt(day, 10), parseInt(hours, 10), parseInt(minutes, 10), 0);
                 await queue.add(() => this.setState("synctime",                           { val: dateObject.toISOString(), ack: true }));
             } catch (e) {
+                // @ts-ignore
                 this.log.info("Cloud not store synctime, because of error " + e.message);
             }
 
@@ -576,6 +644,7 @@ class GoE extends utils.Adapter {
                                 desc:       "Temperature Sensor"
                             };
                             this.log.info("Object not found, try to create: temperatures.temperature" + (i+1));
+                            // @ts-ignore
                             this.createState("", "temperatures", "temperature" + (i+1), obj, {id: "", property: ""} , (e, o) => {
                                 this.log.debug("Callback with " + JSON.stringify(o) + " Error: " + JSON.stringify(e));
                             });
@@ -586,7 +655,8 @@ class GoE extends utils.Adapter {
                     }
                 }
             } catch (e) {
-                this.log.warn("Cloud not store temperature array to single values, because of error " + e.message);
+                const errMsg = e instanceof Error ? e.message : JSON.stringify(e);
+                this.log.warn("Cloud not store temperature array to single values, because of error " + errMsg);
             }
             await queue.add(() => this.setState("adapter_in",                         { val: parseInt(o.adi, 10), ack: true })); // read
             await queue.add(() => this.setState("unlocked_by",                        { val: parseInt(o.uby, 10), ack: true })); // read
@@ -596,11 +666,14 @@ class GoE extends utils.Adapter {
             await queue.add(() => this.setState("energy.norway_mode",                 { val: parseInt(o.nmo, 10), ack: true })); // write
             await queue.add(() => this.setState("scheduler_settings",                 { val: o.sch, ack: true }));
             await queue.add(() => this.setState("scheduler_double_press",             { val: parseInt(o.sdp, 10), ack: true })); //
+            // eslint-disable-next-line no-constant-condition
             if(o.lon != undefined && false) {
                 await queue.add(() => this.setState("lon",                            { val: o.lon, ack: true })); // Lastmanagement: erwartete Anzahl von Ladestationen (derzeit nicht unterstützt)
             }
         } catch(e) {
-            this.log.warn("Error in go.e: " + JSON.stringify(e.message) + "; Stack: " + e.stack);
+            const errMsg = e instanceof Error ? e.message : JSON.stringify(e);
+            const errStack = e instanceof Error ? e.stack : "";
+            this.log.warn("Error in go.e: " + JSON.stringify(errMsg) + "; Stack: " + errStack);
         }
     }
     /**
@@ -626,20 +699,24 @@ class GoE extends utils.Adapter {
      * @param {string | number | boolean} value
      */
     setValueV2(id, value) {
-        this.log.info("Set value V2 " + value + " of id " + id);
-        if(typeof value === "string") {
-            value = '"' + value + '"';
+        if(this.config.apiVersion == 2) {
+            this.log.info("Set value V2 " + value + " of id " + id);
+            if(typeof value === "string") {
+                value = '"' + value + '"';
+            }
+            this.log.debug("call " + "http://" + this.config.serverName + "/api/set?" + id + "=" + value);
+            return axios.get("http://" + this.config.serverName + "/api/set?" + id + "=" + value)
+                .then(o => {
+                    this.log.debug(o.status + " with message: " + o.statusText);
+                    // this.processStatusObject(o.data);
+                    // Response of V2 does not have all data.
+                })
+                .catch(err => {
+                    this.log.error(err.message + " at " + id + " / " + value + " with error message " + JSON.stringify(err));
+                });
+        } else {
+            return Promise.reject(new Error("Api V2 is not enabled"));
         }
-        this.log.debug("call " + "http://" + this.config.serverName + "/api/set?" + id + "=" + value);
-        axios.get("http://" + this.config.serverName + "/api/set?" + id + "=" + value)
-            .then(o => {
-                this.log.debug(o.status + " with message: " + o.statusText);
-                // this.processStatusObject(o.data);
-                // Response of V2 does not have all data.
-            })
-            .catch(err => {
-                this.log.error(err.message + " at " + id + " / " + value + " with error message " + JSON.stringify(err));
-            });
     }
 
     /**
@@ -669,16 +746,16 @@ class GoE extends utils.Adapter {
             // The smallest value is 6 amperes
             this.setValue(amp, 6);
             this.setState(ampStr, { val: 6, ack: true });
-            this.log.debug("set maxAmperes (" + amp + "): 6 amperes");
+            // this.log.debug("set maxAmperes (" + amp + "): 6 amperes");
         } else if(maxAmp < maxSetAmp) {
             this.setValue(amp, maxAmp);
-            this.setState(ampStr, { val: maxAmp, ack: true });
-            this.log.debug("set maxAmperes (" + amp + "): " + maxAmp + " amperes" );
+            this.setState(ampStr, { val: Number(maxAmp), ack: true });
+            // this.log.debug("set maxAmperes (" + amp + "): " + maxAmp + " amperes" );
         } else {
             // The maximum is 32 Amperes and is defined in Settings
             this.setValue(amp, maxSetAmp);
-            this.setState(ampStr, { val: maxSetAmp, ack: true });
-            this.log.debug("set maxAmperes (" + amp + "): " + maxSetAmp + " amperes");
+            this.setState(ampStr, { val: Number(maxSetAmp), ack: true });
+            // this.log.debug("set maxAmperes (" + amp + "): " + maxSetAmp + " amperes");
         }
     }
 
@@ -730,13 +807,13 @@ class GoE extends utils.Adapter {
                 // Check which & how many phases are used for loading and summarize of these phases the volts
                 let sumVolts = 0;
                 if(car.val === 2) {
-                    if(curAmpPha1.val > 0) {
+                    if(Number(curAmpPha1.val) > 0) {
                         sumVolts += parseInt(avgVoltage1.val.toString());
                     }
-                    if(curAmpPha2.val > 0) {
+                    if(Number(curAmpPha2.val) > 0) {
                         sumVolts += parseInt(avgVoltage2.val.toString());
                     }
-                    if(curAmpPha3.val > 0) {
+                    if(Number(curAmpPha3.val) > 0) {
                         sumVolts += parseInt(avgVoltage3.val.toString());
                     }
                 } else {
@@ -749,9 +826,10 @@ class GoE extends utils.Adapter {
                 const maxAmp = Math.round(watts/sumVolts);
                 this.log.debug("Resulting max of " + maxAmp + " Ampere");
 
-                setAmp(maxAmp);
+                this.setAmp(maxAmp);
             } catch (e) {
-                this.log.error("Error during set MaxWatts: " + e.message);
+                const errMsg = e instanceof Error ? e.message : JSON.stringify(e);
+                this.log.error("Error during set MaxWatts: " + errMsg);
             }
         } else {
             // Still existing Block-Timer
@@ -769,6 +847,11 @@ class GoE extends utils.Adapter {
             const loadWith6AAtLeast = this.config.loadWith6AAtLeast;
             try {
                 const phaseSwitchWatts = this.config.phaseSwitchWatts || 4200;
+                let phaseSwitchModeBuffer = await this.getStateAsync("phaseSwitchModeBuffer");
+                if(phaseSwitchModeBuffer === null || phaseSwitchModeBuffer === undefined || phaseSwitchModeBuffer.val === null) {
+                    this.log.warn("adjustAmpLevelInWatts: Not all required information about the phases are found. Required Values are: phaseSwitchModeBuffer; Will use 0;");
+                    phaseSwitchModeBuffer = { val: 0, ack: true, ts: 0, from: "", lc: 0};
+                }
                 const phaseSwitchMode = await this.getStateAsync("phaseSwitchMode");
                 if(phaseSwitchMode === null || phaseSwitchMode === undefined || phaseSwitchMode.val === null) {
                     this.log.error("adjustAmpLevelInWatts: Not all required information about the phases are found. Required Values are: phaseSwitchMode");
@@ -849,7 +932,7 @@ class GoE extends utils.Adapter {
                     }
                 } else {
                     // Wenn derzeit keine Phase zum Laden verwendet wird, wie bei alw = 0;
-                    usedPhases = Number(phaseSwitchMode.val) > 1 ? 3 : 1;
+                    usedPhases = Number(phaseSwitchMode.val) != 1 ? 3 : 1;
                     usedVolts = 230 * usedPhases;
                 }
 
@@ -858,22 +941,22 @@ class GoE extends utils.Adapter {
                 // (9240 W + 1320) / (660 / 3) / 3 => 16 A
                 // Using floor (abrunden) anstatt runden, damit immer etwas übrig bleibt.
                 let maxAmp = Math.floor((usedWatts + changeWatts) / (usedVolts / usedPhases) / usedPhases);
-                this.log.debug("Current used " + Math.round(usedWatts) +  " Watts with " + usedAmperes + " Ampere (sum) by " + usedPhases + " Phases and adjusting this with  " + changeWatts + " watts by " + (usedVolts / usedPhases) + " Volts (avg) to new max of " + maxAmp + " Amperes per Phase");
-                if((usedWatts + changeWatts) > phaseSwitchWatts && phaseSwitchMode.val != 2) {
+                this.log.debug("Current used " + Math.round(usedWatts) +  " Watts with " + usedAmperes + " Ampere (sum) by " + usedPhases + " Phases and adjusting this with  " + changeWatts + " watts by " + (usedVolts / usedPhases) + " Volts (avg) to new max of " + maxAmp + " Amperes per Phase; PhaseSwitchLevel: from " + phaseSwitchMode.val +  " at " + (phaseSwitchMode.val != 1 ? "<" + (Number(phaseSwitchWatts) - Number(phaseSwitchModeBuffer.val)) : ">" + (Number(phaseSwitchWatts) + Number(phaseSwitchModeBuffer.val))));
+                if((usedWatts + changeWatts) > Number(phaseSwitchWatts) + Number(phaseSwitchModeBuffer.val) && phaseSwitchMode.val != 2) {
                     // initiate phase switch to 3-phases
                     this.log.debug(`Current Watts ${usedWatts + changeWatts} require Mode 3-phases; current: ${phaseSwitchMode.val}; Change maxAmp from ${maxAmp} to ${Math.round(maxAmp / 3)}`);
-                    axios.get("/api/set?psm=2")
-                        .then((o) => {
+                    await axios.get("/api/set?psm=2")
+                        .then(() => {
                             this.setState("phaseSwitchMode", {val: 2, ack: true});
                             maxAmp = Math.round(maxAmp / 3);
                         })
                         .catch((e) => {
                             this.log.error(e);
                         });
-                } else if((usedWatts + changeWatts) < phaseSwitchWatts && phaseSwitchMode.val != 1) {
+                } else if((usedWatts + changeWatts) < Number(phaseSwitchWatts) - Number(phaseSwitchModeBuffer.val) && phaseSwitchMode.val != 1) {
                     this.log.debug(`Current Watts ${usedWatts + changeWatts} require Mode 1-phase; current: ${phaseSwitchMode.val}; Change maxAmp from ${maxAmp} to ${Math.round(maxAmp * 3)}`);
-                    axios.get("/api/set?psm=1")
-                        .then((o) => {
+                    await axios.get("/api/set?psm=1")
+                        .then(() => {
                             this.setState("phaseSwitchMode", {val: 1, ack: true});
                             maxAmp = maxAmp * 3;
                         })
@@ -898,7 +981,8 @@ class GoE extends utils.Adapter {
                 }
 
             } catch (e) {
-                this.log.error("Error during set adjust Watts: " + e.message);
+                const errMsg = e instanceof Error ? e.message : JSON.stringify(e);
+                this.log.error("Error during set adjust Watts: " + errMsg);
             }
 
         } else {
@@ -908,9 +992,28 @@ class GoE extends utils.Adapter {
     }
     /**
      * Get the max Watts from foreign adapters
+     * params: stateObjectId = "[unknown State ID]"
      */
-    async calculateFromForeignObjects(stateObjectId = "[unknown State ID]") {
+    async calculateFromForeignObjects() {
         try {
+            const allowCharge = await this.getStateAsync("allow_charging");
+            if(allowCharge === null || allowCharge === undefined || allowCharge.val === null) {
+                this.log.error("calculateFromForeignObjects: Not all required information about the phases are found. Required Values are: alw");
+                return;
+            }
+
+            // Check if scheduler is active
+            const stopChargeingEnabled = await this.getStateAsync("schedule.stopChargeingEnabled");
+            const stopChargeingAt = await this.getStateAsync("schedule.stopChargeingAt");
+            if(stopChargeingEnabled !== null && stopChargeingEnabled !== undefined && stopChargeingEnabled.val === true &&
+              stopChargeingAt !== null && stopChargeingAt !== undefined && stopChargeingAt.val != null && !isNaN(Date.parse(stopChargeingAt.val.toString())) && Date.parse(stopChargeingAt.val.toString()) < Date.now()
+            ) {
+                this.log.info("Scheduler does not allow to load after " + stopChargeingAt.val);
+                if( allowCharge.val !== 0)
+                    this.setValue("alw", 0);
+                return;
+            }
+            // Check is solar load is enabled; Dont act if not.
             const solarOnly = await this.getStateAsync("solarLoadOnly");
             if (solarOnly === undefined || solarOnly == null || solarOnly.val == null || solarOnly.val !== true) {
                 this.log.silly(`Solar calculation disabled: ${solarOnly}`);
@@ -935,8 +1038,8 @@ class GoE extends utils.Adapter {
             if(availWatts1 >= this.config.bufferToSolar) {
                 availWatts2 -= this.config.bufferToSolar;
             }
-            let houseConsumption = await this.getNumberFromForeignObjectId(this.config.houseConsumptionForeignObjectID);
-            let availWatts3 = availWatts2 - houseConsumption;
+            const houseConsumption = await this.getNumberFromForeignObjectId(this.config.houseConsumptionForeignObjectID);
+            const availWatts3 = availWatts2 - houseConsumption;
 
             // houseBatteryForeignObjectID - Ladestrom der Hausbatterie
             // Wenn dieses Fremdobjekt angegeben wird, ist die Priorisierung auf das Laden des Fzg. gesetzt.
@@ -950,14 +1053,15 @@ class GoE extends utils.Adapter {
             //} else {
             //    houseBattery = 0;
             //}
-            let availWatts = availWatts3 + houseBattery;
+            const availWatts = availWatts3 + houseBattery;
             // If your home battery contains 3000 Wh use in one hour the whole energy to load.
             //
 
             this.log.debug("Start ajust by foreign Object with " + (availWatts - parseInt(usedPower.val.toString(), 10)) + ` Watts. (${availWatts1} solarPower - ${this.config.bufferToSolar} Buffer - ${houseConsumption} House consumption + ${houseBattery} House battery)`);
             this.adjustAmpLevelInWatts(availWatts - parseInt(usedPower.val.toString(), 10));
         } catch (err) {
-            this.log.error("Error in calculateFromForeignObjects: " + JSON.stringify(err.message));
+            const errMsg = err instanceof Error ? err.message : JSON.stringify(err);
+            this.log.error("Error in calculateFromForeignObjects: " + JSON.stringify(errMsg));
         }
     }
     /**

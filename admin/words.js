@@ -24,7 +24,7 @@ systemDictionary = {
         "it": "Nome server o indirizzo IP come & quot; 192.168.1.100 & quot; o & quot; go-eCharger.domain.local & quot;",
         "es": "Nombre del servidor o dirección IP como & quot; 192.168.1.100 & quot; o & quot; go-eCharger.domain.local & quot;",
         "pl": "Nazwa serwera lub adres IP, na przykład „192.168.1.100” lub „go-eCharger.domain.local”",
-        "zh-cn": "服务器名称或IP地址（例如“ 192.168.1.100”）或“ go-eCharger.domain.local”"
+        "zh-cn": "服务器名称或IP地址 (例如“ 192.168.1.100”) 或“ go-eCharger.domain.local”"
     },
     "serverInterval": {
         "en": "Refresh Interval",
@@ -63,8 +63,8 @@ systemDictionary = {
         "zh-cn": "向 Sentry 发送调试消息作为开发人员的帮助"
     },
     "solarPowerForeignObjectID": {
-        "en": "object-id for currently available solar power in watts [W]",
-        "de": "ObjektID für die aktuell verfügbare Solarleistung in Watt [W]",
+        "en": "object-id for currently available solar power in watts [W] (pGrid <0 is give power to public grid)",
+        "de": "ObjektID für die aktuell verfügbare Solarleistung, welche ins Netz eingespeist wird, in Watt [W] (pGrid<0 bedeutet Energie wird ins netz eingespeist)",
         "ru": "идентификатор объекта для доступной в настоящее время солнечной энергии в ваттах [Вт]",
         "pt": "object-id para energia solar atualmente disponível em watts [W]",
         "nl": "object-id voor momenteel beschikbare zonne-energie in watt [W]",
@@ -75,8 +75,8 @@ systemDictionary = {
         "zh-cn": "以瓦特为单位的当前可用太阳能的对象 ID [W]"
     },
     "houseConsumptionForeignObjectID": {
-        "en": "object-id for current home power consumption in watts [W]",
-        "de": "ObjektID für den aktuellen Stromverbrauch zu Hause in Watt [W]",
+        "en": "object-id for reserved home power consumption in watts [W]",
+        "de": "ObjektID für den reservierten Stromverbrauch zu Hause in Watt [W]",
         "ru": "идентификатор объекта для текущего потребления электроэнергии дома в ваттах [Вт]",
         "pt": "object-id para o consumo atual de energia doméstica em watts [W]",
         "nl": "object-id voor huidig stroomverbruik thuis in watt [W]",
@@ -87,8 +87,8 @@ systemDictionary = {
         "zh-cn": "以瓦特为单位的当前家庭功耗的对象 ID [W]"
     },
     "houseBatteryForeignObjectID": {
-        "en": "object-id for current powerflow of battery in watts [W]",
-        "de": "objekt-ID für Stromfluss der Batterie in Watt [W]",
+        "en": "object-id for current powerflow of battery in watts [W] <br> (<0 is battery loading)",
+        "de": "objekt-ID für Stromfluss der Batterie in Watt [W] <br>(<0 bedeutet Batterie lädt)",
         "ru": "объект-id для текущего потока батареи в ватт [W]",
         "pt": "objeto-id para o fluxo de energia atual da bateria em watts [W]",
         "nl": "object-id for huidige stroom van batterij in watten",
@@ -98,7 +98,8 @@ systemDictionary = {
         "pl": "obiekty dla prądu zasilania baterii w watach WW",
         "uk": "об'єкт-id для поточного живлення акумулятора в ват [W]",
         "zh-cn": "[W]"
-      }, "bufferToSolar": {
+    },
+    "bufferToSolar": {
         "en": "Buffer to the outcome from solar panel to the usage of loading process",
         "de": "Puffer zwischen Solarpanel-Ertrag und der Nutzung für den Ladevorgang in Watt [W]",
         "ru": "Буфер результата от солнечной панели к использованию процесса загрузки",
@@ -250,5 +251,8 @@ systemDictionary = {
         "pl": "poziom przełączania z trybu 1 fazy na tryb 3 fazy",
         "uk": "рівень переходу від 1-фазного до 3-фазного режиму",
         "zh-cn": "级别从 1 级改为 3 级"
+    },
+    "calcMethod": {
+        "en": "Which mode should be used to calculate the PV-Überschuss"
     }
 };
