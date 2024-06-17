@@ -1,9 +1,9 @@
 {
     "common": {
       "name": "go-e",
-      "version": "1.0.35",
+      "version": "1.0.36",
       "news": {
-        "1.0.35": {
+        "1.0.36": {
           "en": "bug #232; wrong default value type;"
         },
         "1.0.33": {
