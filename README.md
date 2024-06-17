@@ -46,11 +46,12 @@ https://go-e.co/support/
 
 ## Changelog
 
-### 1.0.34
+### 1.0.35
 * switch between ioBroker and go-e Hardware logic for PV-Calculation
 * Adding phaseSwitch Buffer to reduce switch on coudy days
 * improved documentation
 * Bug #232
+* Wrong deafult value type
 
 ### 1.0.32
 * Timer for loading
