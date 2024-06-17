@@ -98,9 +98,10 @@ class GoE extends utils.Adapter {
 
         if(this.config.calcMethod == "iob") {
             // Disable FUP (Solar überschuss)
-            this.setValueV2("fup", false).catch(() => {
-                // Do nothing
-            });
+            if(this.config.apiVersion == 2)
+                this.setValueV2("fup", false).catch(() => {
+                    // Do nothing
+                });
             // get updates from a foreign adapter if it is set in Settings
             if(this.config.houseBatteryForeignObjectID) {
                 this.subscribeForeignStates(this.config.houseBatteryForeignObjectID);
@@ -262,15 +263,19 @@ class GoE extends utils.Adapter {
                             // Is solarOnly => false (off)
                             if(!state.val) {
                                 this.setValue("alw", 1);
-                                this.setValueV2("fup", 0).catch(); // go-e Solarladen deaktivieren
-                                this.setValueV2("psm", 0).catch(); // Phases Switch to auto
+                                if(this.config.apiVersion == 2) {
+                                    this.setValueV2("fup", 0).catch(() => {}); // go-e Solarladen deaktivieren
+                                    this.setValueV2("psm", 0).catch(() => {}); // Phases Switch to auto
+                                }
                             }
                         } else {
                             this.setValueV2("fup", state.val)
                                 .then(() => {
                                     this.setState("solarLoadOnly", {ack:true});
                                 })
-                                .catch();
+                                .catch(() => {
+                                    // Do nothing
+                                });
                         }
                         break;
                     case this.namespace + ".stop_state":
@@ -290,7 +295,7 @@ class GoE extends utils.Adapter {
                         break;
                     case this.namespace + ".phaseSwitchMode":
                         if(parseInt(state.val.toString()) === 0 || parseInt(state.val.toString()) === 1 || parseInt(state.val.toString()) == 2 ) {
-                            this.setValueV2("psm", parseInt(state.val.toString())).catch();
+                            this.setValueV2("psm", parseInt(state.val.toString())).catch(() => {});
                         } else {
                             this.log.warn("Could not set value " + state.val.toString() + " into " + id + " (psm)");
                         }
