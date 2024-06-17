@@ -716,7 +716,9 @@ class GoE extends utils.Adapter {
                     this.log.error(err.message + " at " + id + " / " + value + " with error message " + JSON.stringify(err));
                 });
         } else {
-            return Promise.reject(new Error("Api V2 is not enabled"));
+            return new Promise(() => {
+                throw new Error("Api V2 is not enabled");
+            });
         }
     }
 
