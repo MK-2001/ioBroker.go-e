@@ -98,7 +98,9 @@ class GoE extends utils.Adapter {
 
         if(this.config.calcMethod == "iob") {
             // Disable FUP (Solar überschuss)
-            this.setValueV2("fup", false).catch();
+            this.setValueV2("fup", false).catch(() => {
+                // Do nothing
+            });
             // get updates from a foreign adapter if it is set in Settings
             if(this.config.houseBatteryForeignObjectID) {
                 this.subscribeForeignStates(this.config.houseBatteryForeignObjectID);
@@ -716,9 +718,7 @@ class GoE extends utils.Adapter {
                     this.log.error(err.message + " at " + id + " / " + value + " with error message " + JSON.stringify(err));
                 });
         } else {
-            return new Promise(() => {
-                throw new Error("Api V2 is not enabled");
-            });
+            return Promise.reject(new Error("Api V2 is not enabled"));
         }
     }
 
