@@ -1029,6 +1029,17 @@ class GoE extends utils.Adapter {
                     this.setState("solarLoadOnly", { val: false, ack: true });
                 return;
             }
+
+            // Check if SoC Car is enabled
+            const carBatterySoC = await this.getNumberFromForeignObjectId(this.config.carBatterySoCForeignObjectID);
+            const stopChargeingAtCarSoC = await this.getStateAsync("stopChargeingAtCarSoC");
+            if(stopChargeingAtCarSoC != null && stopChargeingAtCarSoC != undefined && stopChargeingAtCarSoC.val === true && carBatterySoC >= 80) {
+                this.log.info("Stop loading over 80% because car SoC is at " + carBatterySoC);
+                if( allowCharge.val !== 0)
+                    this.setValue("alw", 0);
+                return;
+            }
+
             const usedPower = await this.getStateAsync("energy.power");
             // Check if used Power has a value
             if(usedPower === undefined || usedPower == null || usedPower.val == null) {
