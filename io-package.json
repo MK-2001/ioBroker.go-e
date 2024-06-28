@@ -2238,13 +2238,27 @@
         "_id": "stopChargeingAtCarSoc80",
         "type": "state",
         "common": {
-          "name": "Dont allow charging when the car battery has 80% SoC",
+          "name": "Stop 80% SoC",
           "role": "",
           "icon": "",
           "desc": "Dont allow charging when the car battery has 80% SoC",
           "type": "boolean",
           "def": false,
           "read": true,
+          "write": true
+        }
+      },
+      {
+        "_id": "phaseSwitchModeEnabled",
+        "type": "state",
+        "common": {
+          "name": "Enable phase switching",
+          "role":"",
+          "icon":"",
+          "desc": "Enable switchin between 1 and 3 phases during solar Only Loading. Disable will stick on 1 phase.",
+          "type": "boolean",
+          "def": true, 
+          "read": true, 
           "write": true
         }
       }
