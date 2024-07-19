@@ -1,9 +1,9 @@
 {
     "common": {
       "name": "go-e",
-      "version": "1.0.36",
+      "version": "1.0.38",
       "news": {
-        "1.0.37": {
+        "1.0.38": {
           "en": "bug; wrong negate if set object to go-e Adapter;"
         },
         "1.0.36": {
@@ -2260,8 +2260,8 @@
           "icon":"",
           "desc": "Enable switchin between 1 and 3 phases during solar Only Loading. Disable will stick on 1 phase.",
           "type": "boolean",
-          "def": true, 
-          "read": true, 
+          "def": true,
+          "read": true,
           "write": true
         }
       }
