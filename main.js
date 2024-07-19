@@ -267,6 +267,8 @@ class GoE extends utils.Adapter {
                                     this.setValueV2("fup", 0).catch(() => {}); // go-e Solarladen deaktivieren
                                     this.setValueV2("psm", 0).catch(() => {}); // Phases Switch to auto
                                 }
+                            } else {
+                                this.setValueV2("psm", 1).catch(() => {}); // Phases Switch to 1-phase
                             }
                         } else {
                             this.setValueV2("fup", state.val)
@@ -328,7 +330,7 @@ class GoE extends utils.Adapter {
                     case this.config.houseConsumptionForeignObjectID:
                         if(this.ackObj[id] === false) {
                             this.log.silly("Will work on " + id + " becase ack is " + state.ack + " and should be " + this.ackObj[id]);
-                            this.calculateFromForeignObjects();
+                            this.calculateFromForeignObjects(id);
                         } else {
                             this.log.silly("Will NOT work on " + id + " becase ack is " + state.ack + " and should be " + this.ackObj[id]);
                         }
@@ -345,7 +347,7 @@ class GoE extends utils.Adapter {
                         this.log.silly(`state ${id} changed: ${state.val} (ack = ${state.ack}) namespace: ` + this.namespace);
                         if(this.ackObj[id] === true) {
                             this.log.silly("Will work on " + id + " becase ack is " + state.ack + " and should be " + this.ackObj[id]);
-                            this.calculateFromForeignObjects();
+                            this.calculateFromForeignObjects(id);
                         } else {
                             this.log.silly("Will NOT work on " + id + " becase ack is " + state.ack + " and should be " + this.ackObj[id]);
                         }
@@ -454,8 +456,12 @@ class GoE extends utils.Adapter {
      * This function is writing the IDS endpoint on the go-e adapter based to given attributes
      */
     async writeIds() {
-        const availWatts = await this.getNumberFromForeignObjectId(this.config.solarPowerForeignObjectID);
+        let availWatts = await this.getNumberFromForeignObjectId(this.config.solarPowerForeignObjectID);
         const houseBattery = await this.getNumberFromForeignObjectId(this.config.houseBatteryForeignObjectID);
+        if(this.config.solarPowerForeignObjectNegate) {
+            availWatts = availWatts * -1;
+            this.log.silly("Negate watts of Solar new: " + availWatts);
+        }
         const buildObj =  {
             pGrid: availWatts,
             pAkku: houseBattery
@@ -865,6 +871,11 @@ class GoE extends utils.Adapter {
                     this.log.error("adjustAmpLevelInWatts: Not all required information about the phases are found. Required Values are: phaseSwitchMode");
                     return;
                 }
+                const phaseSwitchModeEnabled = await this.getStateAsync("phaseSwitchModeEnabled");
+                if(phaseSwitchModeEnabled === null || phaseSwitchModeEnabled === undefined || phaseSwitchModeEnabled.val === null) {
+                    this.log.error("adjustAmpLevelInWatts: Not all required information about the phases are found. Required Values are: phaseSwitchModeEnabled");
+                    return;
+                }
                 const avgVoltage1 = await this.getStateAsync("energy.phase1.voltage");
                 if(avgVoltage1 === null || avgVoltage1 === undefined || avgVoltage1.val === null) {
                     this.log.error("adjustAmpLevelInWatts: Not all required information about the phases are found. Required Values are: eneregy.phase1.voltage");
@@ -949,8 +960,8 @@ class GoE extends utils.Adapter {
                 // (9240 W + 1320) / (660 / 3) / 3 => 16 A
                 // Using floor (abrunden) anstatt runden, damit immer etwas übrig bleibt.
                 let maxAmp = Math.floor((usedWatts + changeWatts) / (usedVolts / usedPhases) / usedPhases);
-                this.log.debug("Current used " + Math.round(usedWatts) +  " Watts with " + usedAmperes + " Ampere (sum) by " + usedPhases + " Phases and adjusting this with  " + changeWatts + " watts by " + (usedVolts / usedPhases) + " Volts (avg) to new max of " + maxAmp + " Amperes per Phase; PhaseSwitchLevel: from " + phaseSwitchMode.val +  " at " + (phaseSwitchMode.val != 1 ? "<" + (Number(phaseSwitchWatts) - Number(phaseSwitchModeBuffer.val)) : ">" + (Number(phaseSwitchWatts) + Number(phaseSwitchModeBuffer.val))));
-                if((usedWatts + changeWatts) > Number(phaseSwitchWatts) + Number(phaseSwitchModeBuffer.val) && phaseSwitchMode.val != 2) {
+                this.log.info("Change Amperes: Current used " + Math.round(usedWatts) +  " Watts with " + usedAmperes + " Ampere (sum) by " + usedPhases + " Phases and adjusting this with  " + changeWatts + " watts by " + (usedVolts / usedPhases) + " Volts (avg) to new max of " + maxAmp + " Amperes per Phase; PhaseSwitchLevel: from " + (phaseSwitchModeEnabled.val ? (phaseSwitchMode.val +  " at " + (phaseSwitchMode.val != 1 ? "<" + (Number(phaseSwitchWatts) - Number(phaseSwitchModeBuffer.val)) : ">" + (Number(phaseSwitchWatts) + Number(phaseSwitchModeBuffer.val)))): "off"));
+                if((usedWatts + changeWatts) > Number(phaseSwitchWatts) + Number(phaseSwitchModeBuffer.val) && phaseSwitchMode.val != 2 && phaseSwitchModeEnabled.val == true) {
                     // initiate phase switch to 3-phases
                     this.log.debug(`Current Watts ${usedWatts + changeWatts} require Mode 3-phases; current: ${phaseSwitchMode.val}; Change maxAmp from ${maxAmp} to ${Math.round(maxAmp / 3)}`);
                     await axios.get("/api/set?psm=2")
@@ -1002,7 +1013,7 @@ class GoE extends utils.Adapter {
      * Get the max Watts from foreign adapters
      * params: stateObjectId = "[unknown State ID]"
      */
-    async calculateFromForeignObjects() {
+    async calculateFromForeignObjects(foreignObj = "unknown") {
         try {
             const allowCharge = await this.getStateAsync("allow_charging");
             if(allowCharge === null || allowCharge === undefined || allowCharge.val === null) {
@@ -1029,6 +1040,17 @@ class GoE extends utils.Adapter {
                     this.setState("solarLoadOnly", { val: false, ack: true });
                 return;
             }
+
+            // Check if SoC Car is enabled
+            const carBatterySoC = await this.getNumberFromForeignObjectId(this.config.carBatterySoCForeignObjectID);
+            const stopChargeingAtCarSoC = await this.getStateAsync("stopChargeingAtCarSoC");
+            if(stopChargeingAtCarSoC != null && stopChargeingAtCarSoC != undefined && stopChargeingAtCarSoC.val === true && carBatterySoC >= 80) {
+                this.log.info("Stop loading over 80% because car SoC is at " + carBatterySoC);
+                if( allowCharge.val !== 0)
+                    this.setValue("alw", 0);
+                return;
+            }
+
             const usedPower = await this.getStateAsync("energy.power");
             // Check if used Power has a value
             if(usedPower === undefined || usedPower == null || usedPower.val == null) {
@@ -1065,7 +1087,7 @@ class GoE extends utils.Adapter {
             // If your home battery contains 3000 Wh use in one hour the whole energy to load.
             //
 
-            this.log.debug("Start ajust by foreign Object with " + (availWatts - parseInt(usedPower.val.toString(), 10)) + ` Watts. (${availWatts1} solarPower - ${this.config.bufferToSolar} Buffer - ${houseConsumption} House consumption + ${houseBattery} House battery)`);
+            this.log.debug("Incoming request from foreign Object " + foreignObj + " with " + (availWatts - parseInt(usedPower.val.toString(), 10)) + ` Watts. (${availWatts1} solarPower - ${this.config.bufferToSolar} Buffer - ${houseConsumption} House consumption + ${houseBattery} House battery)`);
             this.adjustAmpLevelInWatts(availWatts - parseInt(usedPower.val.toString(), 10));
         } catch (err) {
             const errMsg = err instanceof Error ? err.message : JSON.stringify(err);

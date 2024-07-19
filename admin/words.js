@@ -254,5 +254,8 @@ systemDictionary = {
     },
     "calcMethod": {
         "en": "Which mode should be used to calculate the PV-Überschuss"
+    },
+    "carBatterySoCForeignObjectID": {
+        "en": "Car Battery Status SoC in percent (0-100)"
     }
 };

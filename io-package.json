@@ -1,8 +1,11 @@
 {
     "common": {
       "name": "go-e",
-      "version": "1.0.36",
+      "version": "1.0.38",
       "news": {
+        "1.0.38": {
+          "en": "bug; wrong negate if set object to go-e Adapter;"
+        },
         "1.0.36": {
           "en": "bug #232; wrong default value type;"
         },
@@ -326,6 +329,7 @@
       "houseBatteryForeignObjectID": "",
       "houseBatteryForeignObjectAck": false,
       "houseBatteryForeignObjectNegate": true,
+      "carBatterySoCForeignObjectID": "",
       "bufferToSolar": 100,
       "bufferToBattery": 0,
       "apiVersion": 1,
@@ -2232,8 +2236,34 @@
           "read": true,
           "write": true
         }
+      },
+      {
+        "_id": "stopChargeingAtCarSoc80",
+        "type": "state",
+        "common": {
+          "name": "Stop 80% SoC",
+          "role": "",
+          "icon": "",
+          "desc": "Dont allow charging when the car battery has 80% SoC",
+          "type": "boolean",
+          "def": false,
+          "read": true,
+          "write": true
+        }
+      },
+      {
+        "_id": "phaseSwitchModeEnabled",
+        "type": "state",
+        "common": {
+          "name": "Enable phase switching",
+          "role":"",
+          "icon":"",
+          "desc": "Enable switchin between 1 and 3 phases during solar Only Loading. Disable will stick on 1 phase.",
+          "type": "boolean",
+          "def": true,
+          "read": true,
+          "write": true
+        }
       }
-
-
     ]
   }
