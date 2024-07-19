@@ -3,6 +3,9 @@
       "name": "go-e",
       "version": "1.0.36",
       "news": {
+        "1.0.37": {
+          "en": "bug; wrong negate if set object to go-e Adapter;"
+        },
         "1.0.36": {
           "en": "bug #232; wrong default value type;"
         },

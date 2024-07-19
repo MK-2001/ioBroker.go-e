@@ -456,8 +456,12 @@ class GoE extends utils.Adapter {
      * This function is writing the IDS endpoint on the go-e adapter based to given attributes
      */
     async writeIds() {
-        const availWatts = await this.getNumberFromForeignObjectId(this.config.solarPowerForeignObjectID);
+        let availWatts = await this.getNumberFromForeignObjectId(this.config.solarPowerForeignObjectID);
         const houseBattery = await this.getNumberFromForeignObjectId(this.config.houseBatteryForeignObjectID);
+        if(this.config.solarPowerForeignObjectNegate) {
+            availWatts = availWatts * -1;
+            this.log.silly("Negate watts of Solar new: " + availWatts);
+        }
         const buildObj =  {
             pGrid: availWatts,
             pAkku: houseBattery
