@@ -265,7 +265,7 @@ class GoE extends utils.Adapter {
                                 this.setValue("alw", 1);
                                 if(this.config.apiVersion == 2) {
                                     this.setValueV2("fup", 0).catch(() => {}); // go-e Solarladen deaktivieren
-                                    this.setValueV2("psm", 0).catch(() => {}); // Phases Switch to auto
+                                    this.setValueV2("psm", this.config.defaultPSM).catch(() => {}); // Phases Switch to auto
                                 }
                             } else {
                                 this.setValueV2("psm", 1).catch(() => {}); // Phases Switch to 1-phase

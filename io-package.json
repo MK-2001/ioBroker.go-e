@@ -1,8 +1,11 @@
 {
     "common": {
       "name": "go-e",
-      "version": "1.0.38",
+      "version": "1.0.39",
       "news": {
+        "1.0.39": {
+          "en": "Defeault Grid-Mode selectable"
+        },
         "1.0.38": {
           "en": "bug; wrong negate if set object to go-e Adapter;"
         },
@@ -345,7 +348,8 @@
       ],
       "maxAmp": 16,
       "phaseSwitchWatts": 4200,
-      "calcMethod": "iob"
+      "calcMethod": "iob",
+      "defaultPSM": "2"
     },
     "objects": [],
     "instanceObjects": [

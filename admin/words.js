@@ -257,5 +257,8 @@ systemDictionary = {
     },
     "carBatterySoCForeignObjectID": {
         "en": "Car Battery Status SoC in percent (0-100)"
+    },
+    "defaultPSM": {
+        "en": "When switchung to Grid-Mode (not Solar Only), which mode should be enabled:"
     }
 };

@@ -46,6 +46,9 @@ https://go-e.co/support/
 
 ## Changelog
 
+### 1.0.39
+* Default PSM Grid mode selectable
+
 ### 1.0.38
 * Bug on Negate Watts if use Go-e charger
 
