@@ -349,7 +349,8 @@
       "maxAmp": 16,
       "phaseSwitchWatts": 4200,
       "calcMethod": "iob",
-      "defaultPSM": "2"
+      "defaultPSM": "2",
+      "timeToWait": 300
     },
     "objects": [],
     "instanceObjects": [
