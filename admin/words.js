@@ -253,12 +253,55 @@ systemDictionary = {
         "zh-cn": "级别从 1 级改为 3 级"
     },
     "calcMethod": {
-        "en": "Which mode should be used to calculate the PV-Überschuss"
+        "en": "Which mode should be used to calculate the PV-Überschuss",
+        "de": "Welcher Modus sollte verwendet werden, um den PV-Überschuss zu berechnen",
+        "ru": "Какой режим следует использовать для расчета PV-Überschuss",
+        "pt": "Que modo deve ser usado para calcular o PV-Überschuss",
+        "nl": "Welke modus moet worden gebruikt om de PV-Überschuss te berekenen",
+        "fr": "Quel mode doit être utilisé pour calculer le PV-Überschuss",
+        "it": "Quale modalità dovrebbe essere utilizzata per calcolare il PV-Überschuss",
+        "es": "Que modo se debe utilizar para calcular el PV-Überschuss",
+        "pl": "Który tryb powinien być użyty do obliczenia PV- Überschuss",
+        "uk": "Який режим слід використовувати для розрахунку ПВ-Юбершусів",
+        "zh-cn": "计算PV- überschuss 时应当使用哪种模式"
     },
     "carBatterySoCForeignObjectID": {
-        "en": "Car Battery Status SoC in percent (0-100)"
+        "en": "Car Battery Status SoC in percent (0-100)",
+        "de": "Auto Batterie Status SoC in Prozent (0-100)",
+        "ru": "Статус авто батареи SoC в процентах (0-100)",
+        "pt": "Estado da bateria do carro SoC em porcentagem (0-100)",
+        "nl": "Auto Batterij status SoC in procent (0-100)",
+        "fr": "État de la batterie de voiture SoC en pourcentage (0-100)",
+        "it": "Car Battery Status SoC in percentuale (0-100)",
+        "es": "Estado de la batería de coche SoC en porcentaje (0-100)",
+        "pl": "Stan akumulatora samochodowego SoC w procentach (0- 100)",
+        "uk": "Статус на сервери",
+        "zh-cn": "汽车电池状态(0-100)"
     },
     "defaultPSM": {
-        "en": "When switchung to Grid-Mode (not Solar Only), which mode should be enabled:"
+        "en": "When switching to Grid-Mode (not Solar Only), which mode should be enabled:",
+        "de": "Beim Umschalten auf Grid-Mode (nicht Solar Only) sollte dieser Modus aktiviert werden:",
+        "ru": "При переходе на Grid-Mode (не только Solar) какой режим должен быть включен:",
+        "pt": "Quando alternado para o moedor (não somente solar), que modo deve ser ativado:",
+        "nl": "Bij schakelen naar raster-modus (niet alleen zonne-energie), welke modus moet worden ingeschakeld:",
+        "fr": "Lorsque vous passez à Grid-Mode (pas Solar Only), quel mode doit être activé:",
+        "it": "Quando si passa a Grid-Mode (non solo solare), quale modalità deve essere abilitata:",
+        "es": "Cuando se cambia a Grid-Mode (no sólo solar), que modo debe ser habilitado:",
+        "pl": "Podczas przełączania na tryb Grid- Mode (nie tylko solar), który tryb powinien być włączony:",
+        "uk": "Увімкніть до Grid-Mode (не тільки Solar), який режим повинен бути включений:",
+        "zh-cn": "当切换到 Grid-Mode( 不只使用 Solar) 时, 应该启用哪种模式 :"
+    },
+    "timeToWait": {
+        "en": "Time to wait before adapter stop loading or initiate a down phase switch (from 3 to 1 phase)",
+        "de": "Zeit zum Warten von bevor adapter stop laden oder ein down phase switch (von 3 bis 1 Phase)",
+        "ru": "Время ждать, когда адаптер прекратит загрузку или инициирует фазовый выключатель (от 3 до 1 фазы)",
+        "pt": "Tempo de esperar para o adaptador parar de carregar ou iniciar um interruptor de fase para baixo (de 3 a 1 fase)",
+        "nl": "Tijd om te wachten tot de adapter stopt met laden of start een down fase schakelaar (van 3 naar 1 fase)",
+        "fr": "Temps d'attente pour arrêter le chargement de l'adaptateur ou lancer un interrupteur de phase descendante (de 3 à 1 phase)",
+        "it": "Tempo di attesa per l'adattatore interrompere il caricamento o avviare un interruttore di fase di discesa (da 3 a 1 fase)",
+        "es": "Hora de esperar para que el adaptador deje de cargar o inicie un interruptor de fase baja (de 3 a 1 fase)",
+        "pl": "Czas oczekiwania na przeładowanie adaptera lub uruchomienie przełącznika fazy dół (z 3 do 1 fazy)",
+        "uk": "Час очікування зупинки адаптера або ініціювання перемикача фази (від 3 до 1 фази)",
+        "zh-cn": "等待适配器停止加载或启动下级开关的时间(从3级到1级)"
     }
 };
