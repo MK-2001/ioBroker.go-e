@@ -145,7 +145,6 @@
       ],
       "license": "Apache-2.0",
       "platform": "Javascript/Node.js",
-      "main": "main.js",
       "icon": "go-echarger.png",
       "enabled": true,
       "extIcon": "https://raw.githubusercontent.com/MK-2001/ioBroker.go-e/master/admin/go-echarger.png",
