@@ -46,7 +46,7 @@ https://go-e.co/support/
 
 ## Changelog
 
-### 1.0.39
+### 1.0.40
 * Default PSM Grid mode selectable
 * Bug in negate when using go-e software (Thanks to Markus D.)
 * ioBroker updates on core packes (dependencies update)
