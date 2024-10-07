@@ -19,3 +19,6 @@ admin/i18n/*/flat.txt%
 
 .DS_Store
 .vscode
+
+# Requested by iob
+iob_npm.done

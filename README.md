@@ -46,6 +46,11 @@ https://go-e.co/support/
 
 ## Changelog
 
+### 1.0.40
+* Default PSM Grid mode selectable
+* Bug in negate when using go-e software (Thanks to Markus D.)
+* ioBroker updates on core packes (dependencies update)
+
 ### 1.0.38
 * Bug on Negate Watts if use Go-e charger
 
@@ -296,4 +301,4 @@ The most of the translations are coming from https://translator-ui.iobroker.in f
    limitations under the License.
 
 ## Copyright
-Copyright (c) 2023 MK-2001 go-e@itinsi.de
+Copyright (c) 2024 MK-2001 go-e@itinsi.de

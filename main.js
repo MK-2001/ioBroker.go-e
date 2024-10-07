@@ -31,6 +31,12 @@ class GoE extends utils.Adapter {
         // Timer Object for the update interval for ampere to the adapter
         this.ampTimer = null;
 
+        // Timestamp for lastSwitchRequest
+        this.lastPhaseSwitchRequest = null;
+
+        // Timestamp for lastStop Request
+        this.lastStopRequest = null;
+
         // Translation Object
         this.translationObject = {
             al1: "settings.ampere_level1",
@@ -265,7 +271,7 @@ class GoE extends utils.Adapter {
                                 this.setValue("alw", 1);
                                 if(this.config.apiVersion == 2) {
                                     this.setValueV2("fup", 0).catch(() => {}); // go-e Solarladen deaktivieren
-                                    this.setValueV2("psm", 0).catch(() => {}); // Phases Switch to auto
+                                    this.setValueV2("psm", this.config.defaultPSM).catch(() => {}); // Phases Switch to auto
                                 }
                             } else {
                                 this.setValueV2("psm", 1).catch(() => {}); // Phases Switch to 1-phase
@@ -457,10 +463,14 @@ class GoE extends utils.Adapter {
      */
     async writeIds() {
         let availWatts = await this.getNumberFromForeignObjectId(this.config.solarPowerForeignObjectID);
-        const houseBattery = await this.getNumberFromForeignObjectId(this.config.houseBatteryForeignObjectID);
+        let houseBattery = await this.getNumberFromForeignObjectId(this.config.houseBatteryForeignObjectID);
         if(this.config.solarPowerForeignObjectNegate) {
             availWatts = availWatts * -1;
-            this.log.silly("Negate watts of Solar new: " + availWatts);
+            this.log.silly("Negate watts of Solar; new: " + availWatts);
+        }
+        if(this.config.houseBatteryForeignObjectNegate) {
+            houseBattery = houseBattery * -1;
+            this.log.silly("Negate watts of HouseBattery; new: " + houseBattery);
         }
         const buildObj =  {
             pGrid: availWatts,
@@ -495,7 +505,7 @@ class GoE extends utils.Adapter {
             await queue.add(() => this.setState("encryption",                         { val: o.version == "C" ? true : false, ack: true })); // read
 
             // Write the whole object for debugging in a State
-            await queue.add(() => this.setObjectNotExists("stateObject", o));
+            // await queue.add(() => this.setObjectNotExists("stateObject", o));
 
             try {
                 // TME provides 2208201643
@@ -973,27 +983,64 @@ class GoE extends utils.Adapter {
                             this.log.error(e);
                         });
                 } else if((usedWatts + changeWatts) < Number(phaseSwitchWatts) - Number(phaseSwitchModeBuffer.val) && phaseSwitchMode.val != 1) {
-                    this.log.debug(`Current Watts ${usedWatts + changeWatts} require Mode 1-phase; current: ${phaseSwitchMode.val}; Change maxAmp from ${maxAmp} to ${Math.round(maxAmp * 3)}`);
-                    await axios.get("/api/set?psm=1")
-                        .then(() => {
-                            this.setState("phaseSwitchMode", {val: 1, ack: true});
-                            maxAmp = maxAmp * 3;
-                        })
-                        .catch((e) => {
-                            this.log.error(e);
-                        });
+                    // initiate phase switch to 1 phase
+                    if(this.lastPhaseSwitchRequest == null) {
+                        this.lastPhaseSwitchRequest = Date.now();
+                        this.log.debug("Wait to Down phaseSwitch until " + new Date (this.lastPhaseSwitchRequest + (this.config.timeToWait * 1000)).toISOString());
+                        // set maxAmp to lowerst value:
+                        maxAmp = 6;
+                    } else {
+                        if(this.lastPhaseSwitchRequest + (this.config.timeToWait * 1000) < Date.now()) {
+                            this.log.debug(`Current Watts ${usedWatts + changeWatts} require Mode 1-phase; current: ${phaseSwitchMode.val}; Change maxAmp from ${maxAmp} to ${Math.round(maxAmp * 3)}`);
+                            await axios.get("/api/set?psm=1")
+                                .then(() => {
+                                    this.setState("phaseSwitchMode", {val: 1, ack: true});
+                                    maxAmp = maxAmp * 3;
+                                    if(maxAmp < 6)
+                                        maxAmp = 6;
+                                })
+                                .catch((e) => {
+                                    this.log.error(e);
+                                });
+                        } else {
+                            this.log.debug("Wait to Down phaseSwitch until " + new Date(this.lastPhaseSwitchRequest + (this.config.timeToWait * 1000)).toISOString());
+                        }
+                    }
+                } else {
+                    if(this.lastPhaseSwitchRequest !== null) {
+                        this.lastPhaseSwitchRequest = null;
+                        this.log.silly("Reset wait for lastPhaseSwitchRequest...");
+                    }
                 }
                 if(maxAmp < 6) {
                     // Allow charge (Ist Auto angehängt und freigabe vorhanden.)
                     // loadWith6AAtLeast => true; nicht abschalten
                     if(!loadWith6AAtLeast) {
-                        if( allowCharge.val !== 0)
-                            this.setValue("alw", 0);
+                        // prüfe, wann der letzte Stop request gesetzt wurde
+                        if(this.lastStopRequest == null) {
+                            this.lastStopRequest = Date.now();
+                            this.log.silly("Wait to stop until " + new Date(this.lastStopRequest + (this.config.timeToWait * 1000)).toISOString());
+                            // set maxAmp to lowerst value:
+                            this.setAmp(6);
+                        } else {
+                            if(this.lastStopRequest + (this.config.timeToWait * 1000) < Date.now()) {
+                                if( allowCharge.val !== 0)
+                                    this.setValue("alw", 0);
+                            } else {
+                                this.log.debug("Wait to stop until " + new Date(this.lastStopRequest + (this.config.timeToWait * 1000)).toISOString());
+                                // set maxAmp to lowerst value:
+                                this.setAmp(6);
+                            }
+                        }
                     } else {
                         this.log.debug("Continue because loadWith6AAtLeast is activated.");
                         this.setAmp(6);
                     }
                 } else {
+                    if(this.lastStopRequest !== null) {
+                        this.lastStopRequest = null;
+                        this.log.silly("Reset wait for lastStopRequest...");
+                    }
                     this.setAmp(maxAmp);
                     if(allowCharge.val == 0)
                         this.setValue("alw", 1);
