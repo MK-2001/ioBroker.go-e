@@ -987,6 +987,8 @@ class GoE extends utils.Adapter {
                     if(this.lastPhaseSwitchRequest == null) {
                         this.lastPhaseSwitchRequest = Date.now();
                         this.log.silly("Wait to Down phaseSwitch until " + (this.lastPhaseSwitchRequest + (this.config.timeToWait * 1000)).toString());
+                        // set maxAmp to lowerst value:
+                        maxAmp = 6;
                     } else {
                         if(this.lastPhaseSwitchRequest + (this.config.timeToWait * 1000) < Date.now()) {
                             this.log.debug(`Current Watts ${usedWatts + changeWatts} require Mode 1-phase; current: ${phaseSwitchMode.val}; Change maxAmp from ${maxAmp} to ${Math.round(maxAmp * 3)}`);
@@ -994,6 +996,8 @@ class GoE extends utils.Adapter {
                                 .then(() => {
                                     this.setState("phaseSwitchMode", {val: 1, ack: true});
                                     maxAmp = maxAmp * 3;
+                                    if(maxAmp < 6)
+                                        maxAmp = 6;
                                 })
                                 .catch((e) => {
                                     this.log.error(e);
@@ -1014,12 +1018,16 @@ class GoE extends utils.Adapter {
                         if(this.lastStopRequest == null) {
                             this.lastStopRequest = Date.now();
                             this.log.silly("Wait to stop until " + (this.lastStopRequest + (this.config.timeToWait * 1000)).toString());
+                            // set maxAmp to lowerst value:
+                            this.setAmp(6);
                         } else {
                             if(this.lastStopRequest + (this.config.timeToWait * 1000) < Date.now()) {
                                 if( allowCharge.val !== 0)
                                     this.setValue("alw", 0);
                             } else {
                                 this.log.silly("Wait to stop until " + (this.lastStopRequest + (this.config.timeToWait * 1000)).toString());
+                                // set maxAmp to lowerst value:
+                                this.setAmp(6);
                             }
                         }
                     } else {
