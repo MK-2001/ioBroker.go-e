@@ -1019,7 +1019,7 @@ class GoE extends utils.Adapter {
                         // prüfe, wann der letzte Stop request gesetzt wurde
                         if(this.lastStopRequest == null) {
                             this.lastStopRequest = Date.now();
-                            this.log.silly("Wait to stop until " + (this.lastStopRequest + (this.config.timeToWait * 1000)).toString());
+                            this.log.silly("Wait to stop until " + new Date(this.lastStopRequest + (this.config.timeToWait * 1000)).toISOString());
                             // set maxAmp to lowerst value:
                             this.setAmp(6);
                         } else {
@@ -1027,7 +1027,7 @@ class GoE extends utils.Adapter {
                                 if( allowCharge.val !== 0)
                                     this.setValue("alw", 0);
                             } else {
-                                this.log.debug("Wait to stop until " + (this.lastStopRequest + (this.config.timeToWait * 1000)).toString());
+                                this.log.debug("Wait to stop until " + new Date(this.lastStopRequest + (this.config.timeToWait * 1000)).toISOString());
                                 // set maxAmp to lowerst value:
                                 this.setAmp(6);
                             }
