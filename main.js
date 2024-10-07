@@ -986,7 +986,7 @@ class GoE extends utils.Adapter {
                     // initiate phase switch to 1 phase
                     if(this.lastPhaseSwitchRequest == null) {
                         this.lastPhaseSwitchRequest = Date.now();
-                        this.log.silly("Wait to Down phaseSwitch until " + (this.lastPhaseSwitchRequest + (this.config.timeToWait * 1000)).toString());
+                        this.log.debug("Wait to Down phaseSwitch until " + new Date (this.lastPhaseSwitchRequest + (this.config.timeToWait * 1000)).toISOString());
                         // set maxAmp to lowerst value:
                         maxAmp = 6;
                     } else {
@@ -1003,12 +1003,14 @@ class GoE extends utils.Adapter {
                                     this.log.error(e);
                                 });
                         } else {
-                            this.log.silly("Wait to Down phaseSwitch until " + (this.lastPhaseSwitchRequest + (this.config.timeToWait * 1000)).toString());
+                            this.log.debug("Wait to Down phaseSwitch until " + new Date(this.lastPhaseSwitchRequest + (this.config.timeToWait * 1000)).toISOString());
                         }
                     }
                 } else {
-                    if(this.lastPhaseSwitchRequest !== null)
+                    if(this.lastPhaseSwitchRequest !== null) {
                         this.lastPhaseSwitchRequest = null;
+                        this.log.silly("Reset wait for lastPhaseSwitchRequest...");
+                    }
                 }
                 if(maxAmp < 6) {
                     // Allow charge (Ist Auto angehängt und freigabe vorhanden.)
@@ -1025,7 +1027,7 @@ class GoE extends utils.Adapter {
                                 if( allowCharge.val !== 0)
                                     this.setValue("alw", 0);
                             } else {
-                                this.log.silly("Wait to stop until " + (this.lastStopRequest + (this.config.timeToWait * 1000)).toString());
+                                this.log.debug("Wait to stop until " + (this.lastStopRequest + (this.config.timeToWait * 1000)).toString());
                                 // set maxAmp to lowerst value:
                                 this.setAmp(6);
                             }
@@ -1035,8 +1037,10 @@ class GoE extends utils.Adapter {
                         this.setAmp(6);
                     }
                 } else {
-                    if(this.lastStopRequest !== null)
+                    if(this.lastStopRequest !== null) {
                         this.lastStopRequest = null;
+                        this.log.silly("Reset wait for lastStopRequest...");
+                    }
                     this.setAmp(maxAmp);
                     if(allowCharge.val == 0)
                         this.setValue("alw", 1);
