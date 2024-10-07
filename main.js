@@ -505,7 +505,7 @@ class GoE extends utils.Adapter {
             await queue.add(() => this.setState("encryption",                         { val: o.version == "C" ? true : false, ack: true })); // read
 
             // Write the whole object for debugging in a State
-            await queue.add(() => this.setObjectNotExists("stateObject", o));
+            // await queue.add(() => this.setObjectNotExists("stateObject", o));
 
             try {
                 // TME provides 2208201643
