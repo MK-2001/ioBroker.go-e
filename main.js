@@ -160,6 +160,7 @@ class GoE extends utils.Adapter {
             callback();
         } catch (e) {
             callback();
+            this.log.silly("callback " + e);
         }
     }
 
@@ -1156,6 +1157,7 @@ class GoE extends utils.Adapter {
                 return defaultValue;
             }
         } catch (err) {
+            this.log.silly("Foreign Object error: " + err);
             return defaultValue;
         }
     }

@@ -39,4 +39,8 @@ export default [...compat.extends("eslint:recommended"), {
 
         semi: ["error", "always"],
     },
+    ignores: [
+        "admin/index_m.js",
+        "admin/words.js"
+    ]
 }];
