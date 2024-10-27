@@ -1,9 +1,9 @@
 {
     "common": {
       "name": "go-e",
-      "version": "1.0.40",
+      "version": "1.0.41",
       "news": {
-        "1.0.40": {
+        "1.0.41": {
           "en": "Default Grid-Mode selectable; Bug in negate when using go-e software; iobroker updates on requirements; Translations; added wait befor stop/down-phase-switch",
           "de": "Default Grid-Mode wählbar; Bug in negate bei der Verwendung von go-e Software; iobroker aktualisiert auf Anforderungen; Übersetzungen; add wait befor stop/down-phase-switch",
           "ru": "Default Grid-Mode подбирается; Bug in negate при использовании программного обеспечения go-e; iobroker обновления на требованиях; Translations; added wait befor stop/down- phase-switch",
