@@ -303,5 +303,14 @@ systemDictionary = {
         "pl": "Czas oczekiwania na przeładowanie adaptera lub uruchomienie przełącznika fazy dół (z 3 do 1 fazy)",
         "uk": "Час очікування зупинки адаптера або ініціювання перемикача фази (від 3 до 1 фази)",
         "zh-cn": "等待适配器停止加载或启动下级开关的时间(从3级到1级)"
+    },
+    // GO-E Endpoints START
+    "alw": {
+        "en": "Allow charging",
+        "de": "Erlabe laden",
+    },
+    "tma": {
+        "en": "Temperaturarray"
     }
+    // GO-E Endpoints ENDE
 };
