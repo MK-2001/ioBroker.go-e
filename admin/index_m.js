@@ -30,13 +30,14 @@ function load(settings, onChange) {
     // reinitialize all the Materialize labels on the page if you are dynamically adding inputs:
     if (M) M.updateTextFields();
     // https://stackoverflow.com/questions/1187518/how-to-get-the-difference-between-two-arrays-in-javascript
-    const intersection = possibleAttributes.filter(x => settings['selectedAttributes'].includes(x));
+    // const intersection = possibleAttributes.filter(x => settings['selectedAttributes'].includes(x));
     $.each(possibleAttributes, function(key, value) {
         $('#selectedAttributes')
             .append($('<option></option>')
                 .attr('value', value)
                 .text(value)
-                .attr('selected', settings['selectedAttributes'].includes(value)));
+                .attr('selected', settings['selectedAttributes'].includes(value)))
+            .on( "change",(onChange()));
     });
 
     // Selection Box added from https://forum.iobroker.net/topic/10186/adapterentwicklung-object-id-baum/6
