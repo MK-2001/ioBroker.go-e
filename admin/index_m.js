@@ -37,7 +37,10 @@ function load(settings, onChange) {
                 .attr('value', value)
                 .text(value)
                 .attr('selected', settings['selectedAttributes'].includes(value)))
-            .on( "change",(onChange()));
+            .on( "change",function(e) {
+                console.log(e);
+                console.log($(this).value)
+            });
     });
 
     // Selection Box added from https://forum.iobroker.net/topic/10186/adapterentwicklung-object-id-baum/6
