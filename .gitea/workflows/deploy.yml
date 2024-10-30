@@ -38,8 +38,8 @@ jobs:
         run: echo "Filename = ${{ steps.npmpack.outputs.filename }}" && echo "ID = ${{ steps.npmpack.outputs.id }}" && echo "Version = ${{ steps.npmpack.outputs.version }}" && if [ -z "${{ steps.npmpack.outputs.filename }}" ]; then echo "Filename wrong!" && exit 1; else echo "filename fine"; fi && if [ -z "${{ steps.npmpack.outputs.version }}" ]; then echo "Version wrong!" && exit 1; else echo "Version fine"; fi
       - name: Move files
         run: |
-          cp -f -v ${{ gitea.workspace }}/${{ steps.npmpack.outputs.filename }} /deploy/iobroker/data/install/
-          cp -f -v ${{ gitea.workspace }}/${{ steps.npmpack.outputs.filename }} /deploy/iobroker-2024/data/install/
+          mkdir -p /deploy/iobroker/data/install/ && cp -f -v ${{ gitea.workspace }}/${{ steps.npmpack.outputs.filename }} /deploy/iobroker/data/install/
+          mkdir -p /deploy/iobroker-2024/data/install/ && cp -f -v ${{ gitea.workspace }}/${{ steps.npmpack.outputs.filename }} /deploy/iobroker-2024/data/install/
       - name: Install on ioBroker
         run: |
           docker exec -it iobroker /bin/bash -c "iobroker url /opt/iobroker/install/${{ steps.npmpack.outputs.filename }}"
