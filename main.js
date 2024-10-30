@@ -399,7 +399,7 @@ class GoE extends utils.Adapter {
             axios.get('/api/status?filter=psm')
                 .then((o) => {
                     this.log.silly('Response: ' + o.status + ' - ' + o.statusText + ' with data as ' + typeof o.data);
-                    this.log.debug(JSON.stringify(o.data));
+                    // this.log.debug(JSON.stringify(o.data));
                     if(typeof o.data == 'object') {
                         this.setState('phaseSwitchMode', { 'val': parseInt(o.data['psm']), ack: true });
                     } else {
@@ -413,6 +413,14 @@ class GoE extends utils.Adapter {
             const queryStr = this.config.selectedAttributes.join(',');
             this.log.debug(`http://${this.config.serverName}/api/status?filter=${queryStr}`);
             // todo abfrage erstellen.
+            axios.get(`/api/status?filter=${queryStr}`)
+                .then((o) => {
+                    this.log.silly('Response: ' + o.status + ' - ' + o.statusText + ' with data as ' + typeof o.data);
+                    this.log.debug(JSON.stringify(o.data));
+                })
+                .catch((e) => {
+                    this.log.error(e);
+                });
         }
 
         // Get all other attributes from API-V1
