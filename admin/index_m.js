@@ -94,6 +94,7 @@ function save(callback) {
         } else {
             obj[$this.attr('id')] = $this.val();
         }
+        console.log(obj);
     });
     callback(obj);
 }
