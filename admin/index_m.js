@@ -39,7 +39,10 @@ function load(settings, onChange) {
                 .attr('selected', settings['selectedAttributes'].includes(value)))
             .on( "change",function(e) {
                 console.log(e);
-                console.log($(this).val)
+                const selectedValues = $('#selectedAttributes').val;
+                console.log(selectedValues)
+                settings['selectedAttributes'] = selectedValues;
+                onChange();
             });
     });
 
