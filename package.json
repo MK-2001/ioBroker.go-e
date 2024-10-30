@@ -9,6 +9,7 @@
   "homepage": "https://github.com/MK-2001/ioBroker.go-e",
   "license": "Apache-2.0",
   "keywords": [
+    "ioBroker",
     "wallbox",
     "ladestation",
     "go-eCharger",
