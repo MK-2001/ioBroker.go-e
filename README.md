@@ -46,6 +46,10 @@ https://go-e.co/support/
 
 ## Changelog
 
+### 1.0.42
+* Changed Adapter Core
+
+
 ### 1.0.41
 * Update of dependencies
 * Default PSM Grid mode selectable
