@@ -1,10 +1,11 @@
-# 1.0.28
+### 1.0.28
 * Added properties to schema.js for firmware 042
 
-# 1.0.27
+### 1.0.27
 * (Casten, fuchs-1978, dft601) Object not found error #158
+* Enabled foreign Object usage; Full Changelog online: https://github.com/MK-2001/ioBroker.go-e/blob/main/docs/CHANGELOG.md; Issue for Object not found.
 
-## 1.0.26
+### 1.0.26
 * Added Object solarLoadOnly
 * Enabled useage of Foreign Object
 * detailes description in documentation with examples
@@ -14,20 +15,32 @@
 * added possibility to use v2 api (not fully supported yet)
 * Updated FOSS
 
-## 1.0.21
+### 1.0.25
+* TempArray resize on FW 054 HW V2; Readme.Adaption; Dependency security updates; Added the options to consider acknowledged value changes of foreign adapters; Added choice of ack of foreign adapters (#125)\\n Minor bug for sentry; Error in tme object; Bug in Sentry. Added Catch.
+
+### 1.0.21
 * Dependency updates: axio, sentry
 * Temperature array 4 > 6 with HW2 FW 054.
 * Removed Bug for an not existing temperature array (#120)
-## 1.0.18
+
+### 1.0.18
+* First adaption of V3 hardware from go-e; Added switch to disable writing of the temperatures array; write different amont of temperature sensors; Added addtional attributes to ast; Updated several FOSS libs
+
+### 1.0.17
 * Stable Version
 * Added switch to disable wrting of the temperatures array.
 * Writing different amount of temperature sensors
 * Updated ast with new property
 * Updaed FOSS
 
-## 1.0.14
+### 1.0.15
+* Bug fixes
+
+### 1.0.14
 * Enabled Hardware V3
-*
+
+### 1.0.10
+* Enabled new Version of hardware updates
 
 ### 1.0.9
 * Catch warn message in read object
