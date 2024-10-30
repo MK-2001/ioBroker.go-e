@@ -1,5 +1,6 @@
 // This will be called by the admin adapter when the settings page loads
 function load(settings, onChange) {
+    console.log(settings);
 
     // example: select elements with id=key and class=value and insert value
     if (!settings) return;
