@@ -103,7 +103,7 @@
     "bufferToBattery": 0,
     "apiVersion": 1,
     "selectedAttributes": ["alw", "car", "amp"],
-    "possibleAttributes": ["alw", "car", "amp"],
+    "possibleAttributes": ["alw", "car", "amp", "tma"],
     "maxAmp": 16,
     "phaseSwitchWatts": 4200,
     "calcMethod": "iob",

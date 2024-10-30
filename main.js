@@ -409,6 +409,10 @@ class GoE extends utils.Adapter {
                 .catch((e) => {
                     this.log.error(e);
                 });
+            // Hole die benutzerdefinierten Informationen
+            const queryStr = this.config.selectedAttributes.join(',');
+            this.log.debug(`http://${this.config.serverName}/api/status?filter=${queryStr}`);
+            // todo abfrage erstellen.
         }
 
         // Get all other attributes from API-V1
