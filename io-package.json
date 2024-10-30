@@ -68,7 +68,7 @@
         "go-eCharger",
         "go-e"
       ],
-      "license": "Apache-2.0",
+      "licenseInformation": "Apache-2.0",
       "platform": "Javascript/Node.js",
       "icon": "go-echarger.png",
       "enabled": true,
