@@ -68,8 +68,8 @@ class GoE extends utils.Adapter {
         // Initialize your adapter here
         // Write it to possible values
         this.log.info('Adapter is staring in Version setByGitHubActions');
-        this.log.debug('Update selectable values from ' + JSON.stringify(this.config.possibleAttributes) + ' to ' + Object.keys(this.translationObjectV2) + '; Working with Version ' + this.config.apiVersion);
-        this.config.possibleAttributes = Object.keys(this.translationObjectV2);
+        // this.log.debug('Update selectable values from ' + JSON.stringify(this.config.selectedAttributes) + ' to ' + Object.keys(this.translationObjectV2) + '; Working with Version ' + this.config.apiVersion);
+        // this.config.possibleAttributes = Object.keys(this.translationObjectV2);
 
         // The adapters config (in the instance object everything under the attribute "native") is accessible via
         // this.config:
@@ -417,6 +417,7 @@ class GoE extends utils.Adapter {
                 .then((o) => {
                     this.log.silly('Response: ' + o.status + ' - ' + o.statusText + ' with data as ' + typeof o.data);
                     this.log.debug(JSON.stringify(o.data));
+                    this.processStatusObject(o.data);
                 })
                 .catch((e) => {
                     this.log.error(e);
@@ -515,198 +516,356 @@ class GoE extends utils.Adapter {
             // Allows only 4 asnychronous calls others are queued
             const queue = new PQueue({concurrency: 4});
 
-            await queue.add(() => this.setState('encryption',                         { val: o.version == 'C' ? true : false, ack: true })); // read
-
+            for (const [key, value] of Object.entries(o)) {
+                //console.log(`${key}: ${value}`);
+                switch (key) {
+                    case 'version':
+                        await queue.add(() => this.setState('encryption',                         { val: o.version == 'C' ? true : false, ack: true })); // read
+                        break;
+                    case 'tme':
+                        try {
+                            // TME provides 2208201643
+                            // sometimes it provides "0302-300526" see #171
+                            // TODO: No glue what this is about.
+                            // Realdate: 22th August 2020 at 16:43 (CET)
+                            // this.log.debug(" Synctime: " + o.tme);
+                            const reggie = /(\d{2})(\d{2})(\d{2})(\d{2})(\d{2})/;
+                            // @ts-ignore
+                            const [, day, month, year, hours, minutes] = reggie.exec(o.tme);
+                            const dateObject = new Date(parseInt(year, 10)+2000, parseInt(month, 10)-1, parseInt(day, 10), parseInt(hours, 10), parseInt(minutes, 10), 0);
+                            await queue.add(() => this.setState('synctime',                           { val: dateObject.toISOString(), ack: true }));
+                        } catch (e) {
+                            // @ts-ignore
+                            this.log.info('Cloud not store synctime, because of error ' + e.message);
+                        }
+                        break;
+                    case 'rbc':
+                        await queue.add(() => this.setState('reboot_counter',                     { val: parseInt(o.rbc, 10), ack: true })); // read, V1, V2
+                        break;
+                    case 'car':
+                        await queue.add(() => this.setState('car',                                { val: parseInt(o.car, 10), ack: true })); // read, V1, V2
+                        break;
+                    case 'rbt':
+                        await queue.add(() => this.setState('reboot_timer',                       { val: parseInt(o.rbt, 10), ack: true })); // read, V1, V2
+                        break;
+                    case 'amp':
+                        await queue.add(() => this.setState('ampere',                             { val: parseInt(o.amp, 10), ack: true })); // write, V1, V2
+                        break;
+                    case 'amx':
+                        if(o.amx === undefined || o.amx == null) {
+                            await queue.add(() => this.setState('amperePV',                       { val: parseInt(o.amp, 10), ack: true })); // COPY AMP Value to AMX V1
+                        } else {
+                            await queue.add(() => this.setState('amperePV',                       { val: parseInt(o.amx, 10), ack: true })); // write, V1
+                        }
+                        break;
+                    case 'err':
+                        await queue.add(() => this.setState('error',                              { val: parseInt(o.err, 10), ack: true })); // read
+                        break;
+                    case 'ast':
+                        await queue.add(() => this.setState('access_state',                       { val: parseInt(o.ast, 10), ack: true })); // write
+                        break;
+                    case 'alw':
+                        await queue.add(() => this.setState('allow_charging',                     { val: parseInt(o.alw, 10), ack: true })); // write, V2
+                        break;
+                    case 'stp':
+                        await queue.add(() => this.setState('stop_state',                         { val: parseInt(o.stp, 10), ack: true })); // write
+                        break;
+                    case 'pha':
+                        await queue.add(() => this.setState('phases',                             { val: parseInt(o.pha, 10), ack: true })); // read
+                        // Split phases in single states
+                        await queue.add(() => this.setState('energy.phase1.preContactorActive',   { val: ((parseInt(o.pha, 10) & preContactorPhase1) == preContactorPhase1), ack: true})); //read
+                        await queue.add(() => this.setState('energy.phase1.postContactorActive',  { val: ((parseInt(o.pha, 10) & postContactorPhase1) == postContactorPhase1), ack: true})); //read
+                        await queue.add(() => this.setState('energy.phase2.preContactorActive',   { val: ((parseInt(o.pha, 10) & preContactorPhase2) == preContactorPhase2), ack: true})); //read
+                        await queue.add(() => this.setState('energy.phase2.postContactorActive',  { val: ((parseInt(o.pha, 10) & postContactorPhase2) == postContactorPhase2), ack: true})); //read
+                        await queue.add(() => this.setState('energy.phase3.preContactorActive',   { val: ((parseInt(o.pha, 10) & preContactorPhase3) == preContactorPhase3), ack: true})); //read
+                        await queue.add(() => this.setState('energy.phase3.postContactorActive',  { val: ((parseInt(o.pha, 10) & postContactorPhase3) == postContactorPhase3), ack: true})); //read
+                        await queue.add(() => this.setState('energy.phase1.voltage',              { val: parseInt(o.nrg[0], 10), ack: true })); // read
+                        break;
+                    case 'nrg':
+                        await queue.add(() => this.setState('energy.phase2.voltage',              { val: parseInt(o.nrg[1], 10), ack: true })); // read
+                        await queue.add(() => this.setState('energy.phase3.voltage',              { val: parseInt(o.nrg[2], 10), ack: true })); // read
+                        await queue.add(() => this.setState('energy.neutral.voltage',             { val: parseInt(o.nrg[3], 10), ack: true })); // read
+                        await queue.add(() => this.setState('energy.phase1.ampere',               { val: (o.nrg[4] / 10), ack: true })); // read
+                        await queue.add(() => this.setState('energy.phase2.ampere',               { val: (o.nrg[5] / 10), ack: true })); // read
+                        await queue.add(() => this.setState('energy.phase3.ampere',               { val: (o.nrg[6] / 10), ack: true })); // read
+                        await queue.add(() => this.setState('energy.phase1.power',                { val: (o.nrg[7] / 10), ack: true })); // read
+                        await queue.add(() => this.setState('energy.phase2.power',                { val: (o.nrg[8] / 10), ack: true })); // read
+                        await queue.add(() => this.setState('energy.phase3.power',                { val: (o.nrg[9] / 10), ack: true })); // read
+                        await queue.add(() => this.setState('energy.neutral.power',               { val: (o.nrg[10] / 10), ack: true })); // read
+                        await queue.add(() => this.setState('energy.power',                       { val: (o.nrg[11] / 100), ack: true })); // read
+                        await queue.add(() => this.setState('energy.phase1.power_coefficient',    { val: parseInt(o.nrg[12], 10), ack: true })); // read
+                        await queue.add(() => this.setState('energy.phase2.power_coefficient',    { val: parseInt(o.nrg[13], 10), ack: true })); // read
+                        await queue.add(() => this.setState('energy.phase3.power_coefficient',    { val: parseInt(o.nrg[14], 10), ack: true })); // read
+                        await queue.add(() => this.setState('energy.neutral.power_coefficient',   { val: parseInt(o.nrg[15], 10), ack: true })); // read
+                        break;
+                    case 'cbl':
+                        await queue.add(() => this.setState('cable_ampere_code',                  { val: parseInt(o.cbl), ack: true })); // read
+                        break;
+                    case 'amt':
+                        await queue.add(() => this.setState('avail_ampere',                       { val: parseInt(o.amt, 10), ack: true }));
+                        break;
+                    case 'eto':
+                        await queue.add(() => this.setState('energy.total',                       { val: (o.eto / 10), ack: true })); // read
+                        break;
+                    case 'wst':
+                        await queue.add(() => this.setState('wifi.state',                         { val: parseInt(o.wst, 10), ack: true })); // read
+                        break;
+                    case 'txi':
+                        await queue.add(() => this.setState('transmit_interface',                 { val: o.txi, ack: true }));
+                        break;
+                    case 'wss':
+                        await queue.add(() => this.setState('wifi.ssid',                          { val: o.wss, ack: true })); // write
+                        break;
+                    case 'wke':
+                        await queue.add(() => this.setState('wifi.key',                           { val: o.wke, ack: true })); // write
+                        break;
+                    case 'wen':
+                        await queue.add(() => this.setState('wifi.enabled',                       { val: parseInt(o.wen, 10), ack: true })); // write
+                        break;
+                    case 'cdi':
+                        await queue.add(() => this.setState('cloud_disabled',                     { val: parseInt(o.cdi, 10), ack: true }));
+                        break;
+                    case 'wak':
+                        await queue.add(() => this.setState('wifi.hotspot_key',                   { val: o.wak, ack: true })); // write
+                        break;
+                    case 'r1x':
+                        await queue.add(() => this.setState('http_flags',                         { val: parseInt(o.r1x, 10), ack: true })); // write
+                        break;
+                    case 'dws':
+                        await queue.add(() => this.setState('loaded_energy',                      { val: parseInt(o.dws, 10), ack: true })); // read
+                        if(/^050/.test(o.fwv)) {
+                            await queue.add(() => this.setState('loaded_energy_kwh',                  { val: o.dws / 100, ack: true}));
+                        } else {
+                            await queue.add(() => this.setState('loaded_energy_kwh',                  { val: o.dws * 10 / 60 / 60 / 1000, ack: true}));
+                        }
+                        break;
+                    case 'dwo':
+                        await queue.add(() => this.setState('max_load',                           { val: (o.dwo / 10), ack: true })); // write
+                        break;
+                    case 'aho':
+                        await queue.add(() => this.setState('electricity_exchange.min_hours',     { val: parseInt(o.aho, 10), ack: true })); // write
+                        break;
+                    case 'afi':
+                        await queue.add(() => this.setState('electricity_exchange.finish_hour',   { val: parseInt(o.afi, 10), ack: true })); // write
+                        break;
+                    case 'azo':
+                        await queue.add(() => this.setState('electricity_exchange.price_zone',    { val: parseInt(o.azo, 10), ack: true }));
+                        break;
+                    case 'ama':
+                        await queue.add(() => this.setState('max_ampere',                         { val: parseInt(o.ama, 10), ack: true }));
+                        break;
+                    case 'fwv':
+                        await queue.add(() => this.setState('firmware_version',                   { val: o.fwv, ack: true })); // read
+                        break;
+                    case 'sse':
+                        await queue.add(() => this.setState('serial_number',                      { val: o.sse, ack: true })); // read
+                        break;
+                    case 'lbr':
+                        await queue.add(() => this.setState('settings.color.led_brightness',      { val: parseInt(o.lbr, 10), ack: true })); // write
+                        break;
+                    case 'al1':
+                        await queue.add(() => this.setState('settings.ampere_level1',             { val: parseInt(o.al1, 10), ack: true })); // write
+                        break;
+                    case 'al2':
+                        await queue.add(() => this.setState('settings.ampere_level2',             { val: parseInt(o.al2, 10), ack: true })); // write
+                        break;
+                    case 'al3':
+                        await queue.add(() => this.setState('settings.ampere_level3',             { val: parseInt(o.al3, 10), ack: true })); // write
+                        break;
+                    case 'al4':
+                        await queue.add(() => this.setState('settings.ampere_level4',             { val: parseInt(o.al4, 10), ack: true })); // write
+                        break;
+                    case 'al5':
+                        await queue.add(() => this.setState('settings.ampere_level5',             { val: parseInt(o.al5, 10), ack: true })); // write
+                        break;
+                    case 'cid':
+                        await queue.add(() => this.setState('settings.color.idle',                { val: '#' + ('000000' + parseInt(o.cid, 10).toString(16)).slice(6), ack: true })); // write
+                        break;
+                    case 'cch':
+                        await queue.add(() => this.setState('settings.color.charging',            { val: '#' + ('000000' + parseInt(o.cch, 10).toString(16)).slice(6), ack: true })); // write
+                        break;
+                    case 'cfi':
+                        await queue.add(() => this.setState('settings.color.finish',              { val: '#' + ('000000' + parseInt(o.cfi, 10).toString(16)).slice(6), ack: true })); // write
+                        break;
+                    case 'tof':
+                        await queue.add(() => this.setState('time_offset',                        { val: parseInt(o.tof, 10), ack: true})); // write
+                        break;
+                    case 'tds':
+                        await queue.add(() => this.setState('time_daylight_saving',               { val: parseInt(o.tds, 10), ack: true })); // write
+                        break;
+                    case 'eca':
+                        // RFID Badges
+                        await queue.add(() => this.setState('rfid.badges.1.consumption',          { val: (o.eca / 10), ack: true })); // read
+                        break;
+                    case 'ecr':
+                        await queue.add(() => this.setState('rfid.badges.2.consumption',          { val: (o.ecr / 10), ack: true })); // read
+                        break;
+                    case 'ecd':
+                        await queue.add(() => this.setState('rfid.badges.3.consumption',          { val: (o.ecd / 10), ack: true })); // read
+                        break;
+                    case 'ec4':
+                        await queue.add(() => this.setState('rfid.badges.4.consumption',          { val: (o.ec4 / 10), ack: true })); // read
+                        break;
+                    case 'ec5':
+                        await queue.add(() => this.setState('rfid.badges.5.consumption',          { val: (o.ec5 / 10), ack: true })); // read
+                        break;
+                    case 'ec6':
+                        await queue.add(() => this.setState('rfid.badges.6.consumption',          { val: (o.ec6 / 10), ack: true })); // read
+                        break;
+                    case 'ec7':
+                        await queue.add(() => this.setState('rfid.badges.7.consumption',          { val: (o.ec7 / 10), ack: true })); // read
+                        break;
+                    case 'ec8':
+                        await queue.add(() => this.setState('rfid.badges.8.consumption',          { val: (o.ec8 / 10), ack: true })); // read
+                        break;
+                    case 'ec9':
+                        await queue.add(() => this.setState('rfid.badges.9.consumption',          { val: (o.ec9 / 10), ack: true })); // read
+                        break;
+                    case 'ec1':
+                        await queue.add(() => this.setState('rfid.badges.10.consumption',         { val: (o.ec1 / 10), ack: true })); // read
+                        break;
+                    case 'rca':
+                        await queue.add(() => this.setState('rfid.badges.1.id',                   { val: o.rca, ack: true })); // read
+                        break;
+                    case 'rcr':
+                        await queue.add(() => this.setState('rfid.badges.2.id',                   { val: o.rcr, ack: true })); // read
+                        break;
+                    case 'rcd':
+                        await queue.add(() => this.setState('rfid.badges.3.id',                   { val: o.rcd, ack: true })); // read
+                        break;
+                    case 'rc4':
+                        await queue.add(() => this.setState('rfid.badges.4.id',                   { val: o.rc4, ack: true })); // read
+                        break;
+                    case 'rc5':
+                        await queue.add(() => this.setState('rfid.badges.5.id',                   { val: o.rc5, ack: true })); // read
+                        break;
+                    case 'rc6':
+                        await queue.add(() => this.setState('rfid.badges.6.id',                   { val: o.rc6, ack: true })); // read
+                        break;
+                    case 'rc7':
+                        await queue.add(() => this.setState('rfid.badges.7.id',                   { val: o.rc7, ack: true })); // read
+                        break;
+                    case 'rc8':
+                        await queue.add(() => this.setState('rfid.badges.8.id',                   { val: o.rc8, ack: true })); // read
+                        break;
+                    case 'rc9':
+                        await queue.add(() => this.setState('rfid.badges.9.id',                   { val: o.rc9, ack: true })); // read
+                        break;
+                    case 'rc1':
+                        await queue.add(() => this.setState('rfid.badges.10.id',                  { val: o.rc1, ack: true })); // read
+                        break;
+                    case 'rna':
+                        // RFID Name
+                        await queue.add(() => this.setState('rfid.badges.1.name',                 { val: o.rna, ack: true })); // write
+                        break;
+                    case 'rnm':
+                        await queue.add(() => this.setState('rfid.badges.2.name',                 { val: o.rnm, ack: true })); // write
+                        break;
+                    case 'rne':
+                        await queue.add(() => this.setState('rfid.badges.3.name',                 { val: o.rne, ack: true })); // write
+                        break;
+                    case 'rn4':
+                        await queue.add(() => this.setState('rfid.badges.4.name',                 { val: o.rn4, ack: true })); // write
+                        break;
+                    case 'rn5':
+                        await queue.add(() => this.setState('rfid.badges.5.name',                 { val: o.rn5, ack: true })); // write
+                        break;
+                    case 'rn6':
+                        await queue.add(() => this.setState('rfid.badges.6.name',                 { val: o.rn6, ack: true })); // write
+                        break;
+                    case 'rn7':
+                        await queue.add(() => this.setState('rfid.badges.7.name',                 { val: o.rn7, ack: true })); // write
+                        break;
+                    case 'rn8':
+                        await queue.add(() => this.setState('rfid.badges.8.name',                 { val: o.rn8, ack: true })); // write
+                        break;
+                    case 'rn9':
+                        await queue.add(() => this.setState('rfid.badges.9.name',                 { val: o.rn9, ack: true })); // write
+                        break;
+                    case 'rn1':
+                        await queue.add(() => this.setState('rfid.badges.10.name',                { val: o.rn1, ack: true })); // write
+                        break;
+                    case 'mce':
+                        await queue.add(() => this.setState('mqtt.enabled',                       { val: parseInt(o.mce, 10), ack: true }));
+                        break;
+                    case 'mcs':
+                        await queue.add(() => this.setState('mqtt.server',                        { val: o.mcs, ack: true }));
+                        break;
+                    case 'mcp':
+                        await queue.add(() => this.setState('mqtt.port',                          { val: o.mcp, ack: true }));
+                        break;
+                    case 'mcu':
+                        await queue.add(() => this.setState('mqtt.user',                          { val: o.mcu, ack: true }));
+                        break;
+                    case 'mck':
+                        await queue.add(() => this.setState('mqtt.key',                           { val: o.mck, ack: true }));
+                        break;
+                    case 'mcc':
+                        await queue.add(() => this.setState('mqtt.connection',                    { val: o.mcc, ack: true }));
+                        break;
+                    case 'tmp':
+                        await queue.add(() => this.setState('temperatures.maintemperature',      { val: parseInt(o.tmp, 10), ack: true })); // read
+                        break;
+                    case 'tma':
+                        try {
+                            let tempArr = o.tma.toString().split(',');
+                            for(let i = 0; i<tempArr.length; i++) {
+                                const tmpObj = await this.getObjectAsync('temperatures.temperature' + (i+1));
+                                this.log.silly('temperatures.temperature' + (i+1) + ': ' + JSON.stringify(tmpObj));
+                                if ( tmpObj == null) {
+                                    const obj = {
+                                        name:       'temperatures.temperature' + (i+1),
+                                        type:       'number',
+                                        read:       true,
+                                        write:      false,
+                                        role:       'value.temperature',
+                                        desc:       'Temperature Sensor'
+                                    };
+                                    this.log.info('Object not found, try to create: temperatures.temperature' + (i+1));
+                                    // @ts-ignore
+                                    this.createState('', 'temperatures', 'temperature' + (i+1), obj, {id: '', property: ''} , (e, o) => {
+                                        this.log.debug('Callback with ' + JSON.stringify(o) + ' Error: ' + JSON.stringify(e));
+                                    });
+                                } else {
+                                    // this.log.silly("Object found, try to update: temperatures.temperature" + (i+1));
+                                    await queue.add(() => this.setState('temperatures.temperature' + (i+1), { val: Number(tempArr[i]), ack: true}));
+                                }
+                            }
+                        } catch (e) {
+                            const errMsg = e instanceof Error ? e.message : JSON.stringify(e);
+                            this.log.warn('Cloud not store temperature array to single values, because of error ' + errMsg);
+                        }
+                        break;
+                    case 'adi':
+                        await queue.add(() => this.setState('adapter_in',                         { val: parseInt(o.adi, 10), ack: true })); // read
+                        break;
+                    case 'uby':
+                        await queue.add(() => this.setState('unlocked_by',                        { val: parseInt(o.uby, 10), ack: true })); // read
+                        break;
+                    case 'lse':
+                        await queue.add(() => this.setState('settings.color.led_save_energy',     { val: parseInt(o.lse, 10), ack: true })); // write
+                        break;
+                    case 'ust':
+                        await queue.add(() => this.setState('unlock_state',                       { val: parseInt(o.ust, 10), ack: true })); // write
+                        break;
+                    case 'dto':
+                        await queue.add(() => this.setState('electricity_exchange.balance_time',  { val: parseInt(o.dto, 10), ack: true })); // write
+                        break;
+                    case 'nmo':
+                        await queue.add(() => this.setState('energy.norway_mode',                 { val: parseInt(o.nmo, 10), ack: true })); // write
+                        break;
+                    case 'sch':
+                        await queue.add(() => this.setState('scheduler_settings',                 { val: o.sch, ack: true }));
+                        break;
+                    case 'sdp':
+                        await queue.add(() => this.setState('scheduler_double_press',             { val: parseInt(o.sdp, 10), ack: true })); //
+                        break;
+                    default:
+                        this.log.info('Not supported key: ' + key + ' Please inform https://github.com/MK-2001/ioBroker.go-e/issues/new/choose');
+                }
+            }
             // Write the whole object for debugging in a State
             // await queue.add(() => this.setObjectNotExists("stateObject", o));
-
-            try {
-                // TME provides 2208201643
-                // sometimes it provides "0302-300526" see #171
-                // TODO: No glue what this is about.
-                // Realdate: 22th August 2020 at 16:43 (CET)
-                // this.log.debug(" Synctime: " + o.tme);
-                const reggie = /(\d{2})(\d{2})(\d{2})(\d{2})(\d{2})/;
-                // @ts-ignore
-                const [, day, month, year, hours, minutes] = reggie.exec(o.tme);
-                const dateObject = new Date(parseInt(year, 10)+2000, parseInt(month, 10)-1, parseInt(day, 10), parseInt(hours, 10), parseInt(minutes, 10), 0);
-                await queue.add(() => this.setState('synctime',                           { val: dateObject.toISOString(), ack: true }));
-            } catch (e) {
-                // @ts-ignore
-                this.log.info('Cloud not store synctime, because of error ' + e.message);
-            }
-
-            await queue.add(() => this.setState('reboot_counter',                     { val: parseInt(o.rbc, 10), ack: true })); // read, V1, V2
-            await queue.add(() => this.setState('reboot_timer',                       { val: parseInt(o.rbt, 10), ack: true })); // read, V1, V2
-            await queue.add(() => this.setState('car',                                { val: parseInt(o.car, 10), ack: true })); // read, V1, V2
-            await queue.add(() => this.setState('ampere',                             { val: parseInt(o.amp, 10), ack: true })); // write, V1, V2
-            if(o.amx === undefined || o.amx == null) {
-                await queue.add(() => this.setState('amperePV',                       { val: parseInt(o.amp, 10), ack: true })); // COPY AMP Value to AMX V1
-            } else {
-                await queue.add(() => this.setState('amperePV',                       { val: parseInt(o.amx, 10), ack: true })); // write, V1
-            }
-
-            await queue.add(() => this.setState('error',                              { val: parseInt(o.err, 10), ack: true })); // read
-            await queue.add(() => this.setState('access_state',                       { val: parseInt(o.ast, 10), ack: true })); // write
-            await queue.add(() => this.setState('allow_charging',                     { val: parseInt(o.alw, 10), ack: true })); // write, V2
-            await queue.add(() => this.setState('stop_state',                         { val: parseInt(o.stp, 10), ack: true })); // write
-
-            await queue.add(() => this.setState('phases',                             { val: parseInt(o.pha, 10), ack: true })); // read
-            // Split phases in single states
-            await queue.add(() => this.setState('energy.phase1.preContactorActive',   { val: ((parseInt(o.pha, 10) & preContactorPhase1) == preContactorPhase1), ack: true})); //read
-            await queue.add(() => this.setState('energy.phase1.postContactorActive',  { val: ((parseInt(o.pha, 10) & postContactorPhase1) == postContactorPhase1), ack: true})); //read
-            await queue.add(() => this.setState('energy.phase2.preContactorActive',   { val: ((parseInt(o.pha, 10) & preContactorPhase2) == preContactorPhase2), ack: true})); //read
-            await queue.add(() => this.setState('energy.phase2.postContactorActive',  { val: ((parseInt(o.pha, 10) & postContactorPhase2) == postContactorPhase2), ack: true})); //read
-            await queue.add(() => this.setState('energy.phase3.preContactorActive',   { val: ((parseInt(o.pha, 10) & preContactorPhase3) == preContactorPhase3), ack: true})); //read
-            await queue.add(() => this.setState('energy.phase3.postContactorActive',  { val: ((parseInt(o.pha, 10) & postContactorPhase3) == postContactorPhase3), ack: true})); //read
-            await queue.add(() => this.setState('energy.phase1.voltage',              { val: parseInt(o.nrg[0], 10), ack: true })); // read
-            await queue.add(() => this.setState('energy.phase2.voltage',              { val: parseInt(o.nrg[1], 10), ack: true })); // read
-            await queue.add(() => this.setState('energy.phase3.voltage',              { val: parseInt(o.nrg[2], 10), ack: true })); // read
-            await queue.add(() => this.setState('energy.neutral.voltage',             { val: parseInt(o.nrg[3], 10), ack: true })); // read
-            await queue.add(() => this.setState('energy.phase1.ampere',               { val: (o.nrg[4] / 10), ack: true })); // read
-            await queue.add(() => this.setState('energy.phase2.ampere',               { val: (o.nrg[5] / 10), ack: true })); // read
-            await queue.add(() => this.setState('energy.phase3.ampere',               { val: (o.nrg[6] / 10), ack: true })); // read
-            await queue.add(() => this.setState('energy.phase1.power',                { val: (o.nrg[7] / 10), ack: true })); // read
-            await queue.add(() => this.setState('energy.phase2.power',                { val: (o.nrg[8] / 10), ack: true })); // read
-            await queue.add(() => this.setState('energy.phase3.power',                { val: (o.nrg[9] / 10), ack: true })); // read
-            await queue.add(() => this.setState('energy.neutral.power',               { val: (o.nrg[10] / 10), ack: true })); // read
-            await queue.add(() => this.setState('energy.power',                       { val: (o.nrg[11] / 100), ack: true })); // read
-            await queue.add(() => this.setState('energy.phase1.power_coefficient',    { val: parseInt(o.nrg[12], 10), ack: true })); // read
-            await queue.add(() => this.setState('energy.phase2.power_coefficient',    { val: parseInt(o.nrg[13], 10), ack: true })); // read
-            await queue.add(() => this.setState('energy.phase3.power_coefficient',    { val: parseInt(o.nrg[14], 10), ack: true })); // read
-            await queue.add(() => this.setState('energy.neutral.power_coefficient',   { val: parseInt(o.nrg[15], 10), ack: true })); // read
-            await queue.add(() => this.setState('cable_ampere_code',                  { val: parseInt(o.cbl), ack: true })); // read
-            await queue.add(() => this.setState('avail_ampere',                       { val: parseInt(o.amt, 10), ack: true }));
-            await queue.add(() => this.setState('energy.total',                       { val: (o.eto / 10), ack: true })); // read
-            // Wifi
-            await queue.add(() => this.setState('wifi.state',                         { val: parseInt(o.wst, 10), ack: true })); // read
-            if(o.txi != undefined) {
-                await queue.add(() => this.setState('transmit_interface',                 { val: o.txi, ack: true }));
-            }
-            await queue.add(() => this.setState('wifi.ssid',                          { val: o.wss, ack: true })); // write
-            await queue.add(() => this.setState('wifi.key',                           { val: o.wke, ack: true })); // write
-            await queue.add(() => this.setState('wifi.enabled',                       { val: parseInt(o.wen, 10), ack: true })); // write
-            await queue.add(() => this.setState('cloud_disabled',                     { val: parseInt(o.cdi, 10), ack: true }));
-            await queue.add(() => this.setState('wifi.hotspot_key',                   { val: o.wak, ack: true })); // write
-            await queue.add(() => this.setState('http_flags',                         { val: parseInt(o.r1x, 10), ack: true })); // write
-            await queue.add(() => this.setState('loaded_energy',                      { val: parseInt(o.dws, 10), ack: true })); // read
-            if(/^050/.test(o.fwv)) {
-                await queue.add(() => this.setState('loaded_energy_kwh',                  { val: o.dws / 100, ack: true}));
-            } else {
-                await queue.add(() => this.setState('loaded_energy_kwh',                  { val: o.dws * 10 / 60 / 60 / 1000, ack: true}));
-            }
-            await queue.add(() => this.setState('max_load',                           { val: (o.dwo / 10), ack: true })); // write
-            await queue.add(() => this.setState('electricity_exchange.min_hours',     { val: parseInt(o.aho, 10), ack: true })); // write
-            await queue.add(() => this.setState('electricity_exchange.finish_hour',   { val: parseInt(o.afi, 10), ack: true })); // write
-            await queue.add(() => this.setState('electricity_exchange.price_zone',    { val: parseInt(o.azo, 10), ack: true }));
-            await queue.add(() => this.setState('max_ampere',                         { val: parseInt(o.ama, 10), ack: true }));
-            await queue.add(() => this.setState('firmware_version',                   { val: o.fwv, ack: true })); // read
-            await queue.add(() => this.setState('serial_number',                      { val: o.sse, ack: true })); // read
-            await queue.add(() => this.setState('settings.color.led_brightness',      { val: parseInt(o.lbr, 10), ack: true })); // write
-            await queue.add(() => this.setState('settings.ampere_level1',             { val: parseInt(o.al1, 10), ack: true })); // write
-            await queue.add(() => this.setState('settings.ampere_level2',             { val: parseInt(o.al2, 10), ack: true })); // write
-            await queue.add(() => this.setState('settings.ampere_level3',             { val: parseInt(o.al3, 10), ack: true })); // write
-            await queue.add(() => this.setState('settings.ampere_level4',             { val: parseInt(o.al4, 10), ack: true })); // write
-            await queue.add(() => this.setState('settings.ampere_level5',             { val: parseInt(o.al5, 10), ack: true })); // write
-            await queue.add(() => this.setState('settings.color.idle',                { val: '#' + ('000000' + parseInt(o.cid, 10).toString(16)).slice(6), ack: true })); // write
-            await queue.add(() => this.setState('settings.color.charging',            { val: '#' + ('000000' + parseInt(o.cch, 10).toString(16)).slice(6), ack: true })); // write
-            await queue.add(() => this.setState('settings.color.finish',              { val: '#' + ('000000' + parseInt(o.cfi, 10).toString(16)).slice(6), ack: true })); // write
-            await queue.add(() => this.setState('time_offset',                        { val: parseInt(o.tof, 10), ack: true})); // write
-            await queue.add(() => this.setState('time_daylight_saving',               { val: parseInt(o.tds, 10), ack: true })); // write
-            // RFID Badges
-            await queue.add(() => this.setState('rfid.badges.1.consumption',          { val: (o.eca / 10), ack: true })); // read
-            await queue.add(() => this.setState('rfid.badges.2.consumption',          { val: (o.ecr / 10), ack: true })); // read
-            await queue.add(() => this.setState('rfid.badges.3.consumption',          { val: (o.ecd / 10), ack: true })); // read
-            await queue.add(() => this.setState('rfid.badges.4.consumption',          { val: (o.ec4 / 10), ack: true })); // read
-            await queue.add(() => this.setState('rfid.badges.5.consumption',          { val: (o.ec5 / 10), ack: true })); // read
-            await queue.add(() => this.setState('rfid.badges.6.consumption',          { val: (o.ec6 / 10), ack: true })); // read
-            await queue.add(() => this.setState('rfid.badges.7.consumption',          { val: (o.ec7 / 10), ack: true })); // read
-            await queue.add(() => this.setState('rfid.badges.8.consumption',          { val: (o.ec8 / 10), ack: true })); // read
-            await queue.add(() => this.setState('rfid.badges.9.consumption',          { val: (o.ec9 / 10), ack: true })); // read
-            await queue.add(() => this.setState('rfid.badges.10.consumption',         { val: (o.ec1 / 10), ack: true })); // read
-            await queue.add(() => this.setState('rfid.badges.1.id',                   { val: o.rca, ack: true })); // read
-            await queue.add(() => this.setState('rfid.badges.2.id',                   { val: o.rcr, ack: true })); // read
-            await queue.add(() => this.setState('rfid.badges.3.id',                   { val: o.rcd, ack: true })); // read
-            await queue.add(() => this.setState('rfid.badges.4.id',                   { val: o.rc4, ack: true })); // read
-            await queue.add(() => this.setState('rfid.badges.5.id',                   { val: o.rc5, ack: true })); // read
-            await queue.add(() => this.setState('rfid.badges.6.id',                   { val: o.rc6, ack: true })); // read
-            await queue.add(() => this.setState('rfid.badges.7.id',                   { val: o.rc7, ack: true })); // read
-            await queue.add(() => this.setState('rfid.badges.8.id',                   { val: o.rc8, ack: true })); // read
-            await queue.add(() => this.setState('rfid.badges.9.id',                   { val: o.rc9, ack: true })); // read
-            await queue.add(() => this.setState('rfid.badges.10.id',                  { val: o.rc1, ack: true })); // read
-            // RFID Name
-            await queue.add(() => this.setState('rfid.badges.1.name',                 { val: o.rna, ack: true })); // write
-            await queue.add(() => this.setState('rfid.badges.2.name',                 { val: o.rnm, ack: true })); // write
-            await queue.add(() => this.setState('rfid.badges.3.name',                 { val: o.rne, ack: true })); // write
-            await queue.add(() => this.setState('rfid.badges.4.name',                 { val: o.rn4, ack: true })); // write
-            await queue.add(() => this.setState('rfid.badges.5.name',                 { val: o.rn5, ack: true })); // write
-            await queue.add(() => this.setState('rfid.badges.6.name',                 { val: o.rn6, ack: true })); // write
-            await queue.add(() => this.setState('rfid.badges.7.name',                 { val: o.rn7, ack: true })); // write
-            await queue.add(() => this.setState('rfid.badges.8.name',                 { val: o.rn8, ack: true })); // write
-            await queue.add(() => this.setState('rfid.badges.9.name',                 { val: o.rn9, ack: true })); // write
-            await queue.add(() => this.setState('rfid.badges.10.name',                { val: o.rn1, ack: true })); // write
-            // MQTT Block
-            if(o.mce != undefined) {
-                await queue.add(() => this.setState('mqtt.enabled',                       { val: parseInt(o.mce, 10), ack: true }));
-            }
-            await queue.add(() => this.setState('mqtt.server',                        { val: o.mcs, ack: true }));
-            if(o.mcp != undefined) {
-                await queue.add(() => this.setState('mqtt.port',                          { val: o.mcp, ack: true }));
-            }
-
-            await queue.add(() => this.setState('mqtt.user',                          { val: o.mcu, ack: true }));
-            await queue.add(() => this.setState('mqtt.key',                           { val: o.mck, ack: true }));
-            if(o.mcc != undefined) {
-                await queue.add(() => this.setState('mqtt.connection',                    { val: o.mcc, ack: true }));
-            }
-            if(o.tmp != undefined) {
-                await queue.add(() => this.setState('temperatures.maintemperature',      { val: parseInt(o.tmp, 10), ack: true })); // read
-            }
-            // if(this.config.writeTemperatureArray && o.tma !== undefined) {
-            //     await queue.add(() => this.setState("temperatures.temperatureArray",     { val: o.tma.toString(), ack: true }));
-            // }
-            try {
-                if(o.tma) {
-                    const tempArr = o.tma.toString().split(',');
-                    for(let i = 0; i<tempArr.length; i++) {
-                        const tmpObj = await this.getObjectAsync('temperatures.temperature' + (i+1));
-                        this.log.silly('temperatures.temperature' + (i+1) + ': ' + JSON.stringify(tmpObj));
-                        if ( tmpObj == null) {
-                            const obj = {
-                                name:       'temperatures.temperature' + (i+1),
-                                type:       'number',
-                                read:       true,
-                                write:      false,
-                                role:       'value.temperature',
-                                desc:       'Temperature Sensor'
-                            };
-                            this.log.info('Object not found, try to create: temperatures.temperature' + (i+1));
-                            // @ts-ignore
-                            this.createState('', 'temperatures', 'temperature' + (i+1), obj, {id: '', property: ''} , (e, o) => {
-                                this.log.debug('Callback with ' + JSON.stringify(o) + ' Error: ' + JSON.stringify(e));
-                            });
-                        } else {
-                            // this.log.silly("Object found, try to update: temperatures.temperature" + (i+1));
-                            await queue.add(() => this.setState('temperatures.temperature' + (i+1), { val: Number(tempArr[i]), ack: true}));
-                        }
-                    }
-                }
-            } catch (e) {
-                const errMsg = e instanceof Error ? e.message : JSON.stringify(e);
-                this.log.warn('Cloud not store temperature array to single values, because of error ' + errMsg);
-            }
-            await queue.add(() => this.setState('adapter_in',                         { val: parseInt(o.adi, 10), ack: true })); // read
-            await queue.add(() => this.setState('unlocked_by',                        { val: parseInt(o.uby, 10), ack: true })); // read
-            await queue.add(() => this.setState('settings.color.led_save_energy',     { val: parseInt(o.lse, 10), ack: true })); // write
-            await queue.add(() => this.setState('unlock_state',                       { val: parseInt(o.ust, 10), ack: true })); // write
-            await queue.add(() => this.setState('electricity_exchange.balance_time',  { val: parseInt(o.dto, 10), ack: true })); // write
-            await queue.add(() => this.setState('energy.norway_mode',                 { val: parseInt(o.nmo, 10), ack: true })); // write
-            await queue.add(() => this.setState('scheduler_settings',                 { val: o.sch, ack: true }));
-            await queue.add(() => this.setState('scheduler_double_press',             { val: parseInt(o.sdp, 10), ack: true })); //
-            // eslint-disable-next-line no-constant-condition
-            if(o.lon != undefined && false) {
-                await queue.add(() => this.setState('lon',                            { val: o.lon, ack: true })); // Lastmanagement: erwartete Anzahl von Ladestationen (derzeit nicht unterstützt)
-            }
         } catch(e) {
             const errMsg = e instanceof Error ? e.message : JSON.stringify(e);
             const errStack = e instanceof Error ? e.stack : '';
