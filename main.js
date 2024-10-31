@@ -860,6 +860,13 @@ class GoE extends utils.Adapter {
                     case 'sdp':
                         await queue.add(() => this.setState('scheduler_double_press',             { val: parseInt(o.sdp, 10), ack: true })); //
                         break;
+                    case 'lch':
+                    case 'loa':
+                    case 'lof':
+                    case 'log':
+                    case 'lop':
+                    case 'fsp':
+                        break;
                     default:
                         this.log.info('Not supported key: ' + key + ' Please inform https://github.com/MK-2001/ioBroker.go-e/issues/new/choose');
                 }
