@@ -866,6 +866,10 @@ class GoE extends utils.Adapter {
                     case 'log':
                     case 'lop':
                     case 'fsp':
+                    case 'lom':
+                    case 'lot':
+                    case 'loe':
+                        // These codes will not proceed yet.
                         break;
                     default:
                         this.log.info('Not supported key: ' + key + ' Please inform https://github.com/MK-2001/ioBroker.go-e/issues/new/choose');
