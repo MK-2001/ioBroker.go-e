@@ -565,7 +565,10 @@ class GoE extends utils.Adapter {
                         await queue.add(() => this.setState('access_state',                       { val: parseInt(o.ast, 10), ack: true })); // write
                         break;
                     case 'alw':
-                        await queue.add(() => this.setState('allow_charging',                     { val: parseInt(o.alw, 10), ack: true })); // write, V2
+                        if(typeof o.alw == 'boolean')
+                            await queue.add(() => this.setState('allow_charging',                     { val: + o.alw, ack: true })); // V2 (Convert to Integer by using +)
+                        else
+                            await queue.add(() => this.setState('allow_charging',                     { val: parseInt(o.alw, 10), ack: true })); // write, V2
                         break;
                     case 'stp':
                         await queue.add(() => this.setState('stop_state',                         { val: parseInt(o.stp, 10), ack: true })); // write
