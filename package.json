@@ -23,7 +23,7 @@
     "@iobroker/adapter-core": "^3.2.2",
     "axios": "^1.7.2",
     "joi": "^17.13.1",
-    "p-queue": "^6.6.2"
+    "p-queue": "^8.1.0"
   },
   "devDependencies": {
     "@iobroker/testing": "^4.1.3",
