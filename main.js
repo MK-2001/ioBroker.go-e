@@ -1159,7 +1159,7 @@ class GoE extends utils.Adapter {
                 this.log.info('Change Amperes: Current used ' + Math.round(usedWatts) +  ' Watts with ' + usedAmperes + ' Ampere (sum) by ' + usedPhases + ' Phases and adjusting this with  ' + changeWatts + ' watts by ' + (usedVolts / usedPhases) + ' Volts (avg) to new max of ' + maxAmp + ' Amperes per Phase; PhaseSwitchLevel: from ' + (phaseSwitchModeEnabled.val ? (phaseSwitchMode.val +  ' at ' + (phaseSwitchMode.val != 1 ? '<' + (Number(phaseSwitchWatts) - Number(phaseSwitchModeBuffer.val)) : '>' + (Number(phaseSwitchWatts) + Number(phaseSwitchModeBuffer.val)))): 'off'));
                 if((usedWatts + changeWatts) > Number(phaseSwitchWatts) + Number(phaseSwitchModeBuffer.val) && phaseSwitchMode.val != 2 && phaseSwitchModeEnabled.val == true) {
                     // initiate phase switch to 3-phases
-                    this.log.debug(`Current Watts ${usedWatts + changeWatts} require Mode 3-phases; current: ${phaseSwitchMode.val}; Change maxAmp from ${maxAmp} to ${Math.round(maxAmp / 3)}`);
+                    this.log.info(`Current Watts ${usedWatts + changeWatts} require Mode 3-phases; current: ${phaseSwitchMode.val}; Change maxAmp from ${maxAmp} to ${Math.round(maxAmp / 3)}`);
                     await axios.get('/api/set?psm=2')
                         .then(() => {
                             this.setState('phaseSwitchMode', {val: 2, ack: true});
@@ -1177,7 +1177,7 @@ class GoE extends utils.Adapter {
                         maxAmp = 6;
                     } else {
                         if(this.lastPhaseSwitchRequest + (this.config.timeToWait * 1000) < Date.now()) {
-                            this.log.debug(`Current Watts ${usedWatts + changeWatts} require Mode 1-phase; current: ${phaseSwitchMode.val}; Change maxAmp from ${maxAmp} to ${Math.round(maxAmp * 3)}`);
+                            this.log.info(`Current Watts ${usedWatts + changeWatts} require Mode 1-phase; current: ${phaseSwitchMode.val}; Change maxAmp from ${maxAmp} to ${Math.round(maxAmp * 3)}`);
                             await axios.get('/api/set?psm=1')
                                 .then(() => {
                                     this.setState('phaseSwitchMode', {val: 1, ack: true});
