@@ -1,5 +1,14 @@
 // This will be called by the admin adapter when the settings page loads
+
+const possibleAttributes = [
+    "alw",
+    "car",
+    "amp",
+    "tma"
+];
+
 function load(settings, onChange) {
+    console.log(settings);
 
     // example: select elements with id=key and class=value and insert value
     if (!settings) return;
@@ -21,13 +30,20 @@ function load(settings, onChange) {
     // reinitialize all the Materialize labels on the page if you are dynamically adding inputs:
     if (M) M.updateTextFields();
     // https://stackoverflow.com/questions/1187518/how-to-get-the-difference-between-two-arrays-in-javascript
-    const intersection = settings['possibleAttributes'].filter(x => settings['selectedAttributes'].includes(x));
-    $.each(settings['possibleAttributes'], function(key, value) {
+    // const intersection = possibleAttributes.filter(x => settings['selectedAttributes'].includes(x));
+    $.each(possibleAttributes, function(key, value) {
         $('#selectedAttributes')
             .append($('<option></option>')
                 .attr('value', value)
                 .text(value)
-                .attr('selected', settings['selectedAttributes'].includes(value)));
+                .attr('selected', settings['selectedAttributes'].includes(value)))
+            .on( "change",function(e) {
+                console.log(e);
+                const selectedValues = $('#selectedAttributes').val();
+                console.log(selectedValues)
+                settings['selectedAttributes'] = selectedValues;
+                onChange();
+            });
     });
 
     // Selection Box added from https://forum.iobroker.net/topic/10186/adapterentwicklung-object-id-baum/6
@@ -78,6 +94,7 @@ function save(callback) {
         } else {
             obj[$this.attr('id')] = $this.val();
         }
+        console.log(obj);
     });
     callback(obj);
 }
