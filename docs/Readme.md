@@ -194,7 +194,7 @@ Setup: phaseSwitchWatts = 4200; phaseSwitchModeBuffer = 500;
 |:--|:--:|:--:|:--|
 | 7000 | 3-phases | 3-phases | usual operation |
 | 4000 | 3-phases | 3-phases | ready to switch to 1-phase, but buffer not reached |
-| 4699 | 3-phases | 1-phase | switch reached |
+| 3699 | 3-phases | 1-phase | switch reached |
 | 2000 | 1-phase | 1-phase | usual operation |
 | 4201 | 1-phase | 1-phase | ready to switch, but buffer not reached |
 | 4701 | 1 phase | 3-phases | switch level reached |
