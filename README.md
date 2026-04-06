@@ -46,6 +46,9 @@ https://go-e.co/support/
 
 ## Changelog
 
+### **WORK IN PROGRESS**
+- (iobroker-bot) Adapter requires node.js >= 20 now.
+
 ### 1.0.42
 * Changed Adapter Core
 
