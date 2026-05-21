@@ -59,9 +59,20 @@
       "uk": "go-e запрошення на переміщення електрично. E-mobility - наш привід, де наша основна компетентність - технологія зарядки електромобілів. Від індивідуальної станції зарядки для електронних вагонів до фотоелектричних з'єднань для управління навантаженнями всіх будівель, ми є постачальниками системних рішень для всіх вимог сучасної рівноваги.",
       "zh-cn": "go-e是電動移動的邀請。 電動汽車是我們的動力，而我們的核心競爭力是電動汽車的充電技術。 從用於電動汽車的單個充電站到光伏連接，再到整個建築物的負載管理，我們都是滿足現代電動汽車所有要求的整體系統解決方案提供商。"
     },
-    "authors": ["MK-2001 <go-e@itinsi.de>"],
-    "keywords": ["wallbox", "ladestation", "go-eCharger", "go-e"],
-    "licenseInformation": { "license": "Apache-2.0", "type": "free", "link": "https://www.apache.org/licenses/LICENSE-2.0" },
+    "authors": [
+      "MK-2001 <go-e@itinsi.de>"
+    ],
+    "keywords": [
+      "wallbox",
+      "ladestation",
+      "go-eCharger",
+      "go-e"
+    ],
+    "licenseInformation": {
+      "license": "Apache-2.0",
+      "type": "free",
+      "link": "https://www.apache.org/licenses/LICENSE-2.0"
+    },
     "platform": "Javascript/Node.js",
     "icon": "go-echarger.png",
     "enabled": true,
@@ -76,7 +87,7 @@
     "materialize": true,
     "dependencies": [
       {
-        "js-controller": ">=5.0.19"
+        "js-controller": ">=6.0.11"
       }
     ],
     "adminUI": {
@@ -102,7 +113,11 @@
     "bufferToSolar": 100,
     "bufferToBattery": 0,
     "apiVersion": 1,
-    "selectedAttributes": ["alw", "car", "amp"],
+    "selectedAttributes": [
+      "alw",
+      "car",
+      "amp"
+    ],
     "maxAmp": 16,
     "phaseSwitchWatts": 4200,
     "calcMethod": "iob",
