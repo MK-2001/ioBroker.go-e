@@ -46,6 +46,10 @@ https://go-e.co/support/
 
 ## Changelog
 
+
+### **WORK IN PROGRESS**
+- (ioBroker-Bot) Adapter requires js-controller >= 6.0.11 now.
+
 ### 1.0.42
 * Changed Adapter Core
 
