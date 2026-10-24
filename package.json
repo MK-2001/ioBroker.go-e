@@ -51,9 +51,10 @@
     "test:package": "mocha test/package --exit",
     "test:unit": "mocha test/unit --exit",
     "test:integration": "mocha test/integration --exit",
-    "test": "npm run test:js && npm run test:package",
+    "test": "npm run test:js && npm run test:package && npm run test:status-order",
     "lint": "eslint",
-    "build": "npm pack"
+    "build": "npm pack",
+    "test:status-order": "node --test test/regression/status-response-order.test.cjs"
   },
   "bugs": {
     "url": "https://github.com/MK-2001/ioBroker.go-e/issues"

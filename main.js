@@ -13,6 +13,40 @@ const axios = require('axios').default;
 const {default: PQueue} = require('p-queue');
 const schema = require('./lib/schema.js').schema;
 
+// Changed 2026-10-24: order status publications by HTTP dispatch generation.
+// Device capture time is unavailable; this is not a physical freshness proof.
+class StatusResponseOrder {
+    constructor() {
+        this.generation = 0;
+        this.writes = new Map();
+        this.applied = new Map();
+        this.tails = new Map();
+    }
+
+    request(writeField) {
+        const generation = ++this.generation;
+        // A pre-command poll must not acknowledge the command's field.
+        if (writeField) this.writes.set(writeField, generation);
+        return generation;
+    }
+
+    publish(field, generation, write) {
+        const previous = this.tails.get(field) || Promise.resolve();
+        const pending = previous.catch(() => {}).then(() => {
+            if (generation < (this.writes.get(field) || 0)
+                || generation < (this.applied.get(field) || 0)) return;
+            this.applied.set(field, generation);
+            return write();
+        });
+        this.tails.set(field, pending);
+        const clear = () => {
+            if (this.tails.get(field) === pending) this.tails.delete(field);
+        };
+        pending.then(clear, clear);
+        return pending;
+    }
+}
+
 class GoE extends utils.Adapter {
     /**
      * @param {Partial<utils.AdapterOptions>} [options={}]
@@ -59,6 +93,7 @@ class GoE extends utils.Adapter {
 
         // Ack alignment object
         this.ackObj = {};
+        this.statusResponseOrder = new StatusResponseOrder();
     }
 
     /**
@@ -396,12 +431,14 @@ class GoE extends utils.Adapter {
             // apiEndpoint = "/api/status?filter=" + Object.keys(this.translationObjectV2).join(",");
             // Get additional parameters from API v2
             this.log.debug(`Starte V2 Abfrage an: http://${this.config.serverName}/api/status?filter=psm`);
+            const phaseGeneration = this.statusResponseOrder.request();
             axios.get('/api/status?filter=psm')
                 .then((o) => {
                     this.log.silly('Response: ' + o.status + ' - ' + o.statusText + ' with data as ' + typeof o.data);
                     // this.log.debug(JSON.stringify(o.data));
                     if(typeof o.data == 'object') {
-                        this.setState('phaseSwitchMode', { 'val': parseInt(o.data['psm']), ack: true });
+                        return this.statusResponseOrder.publish('psm', phaseGeneration, () =>
+                            this.setState('phaseSwitchMode', { 'val': parseInt(o.data['psm']), ack: true }));
                     } else {
                         this.log.warn(`Response of psm is ${typeof o.data}`);
                     }
@@ -413,11 +450,12 @@ class GoE extends utils.Adapter {
             const queryStr = this.config.selectedAttributes.join(',');
             this.log.debug(`http://${this.config.serverName}/api/status?filter=${queryStr}`);
             // todo abfrage erstellen.
+            const v2Generation = this.statusResponseOrder.request();
             axios.get(`/api/status?filter=${queryStr}`)
                 .then((o) => {
                     this.log.silly('Response: ' + o.status + ' - ' + o.statusText + ' with data as ' + typeof o.data);
                     this.log.debug(JSON.stringify(o.data));
-                    this.processStatusObject(o.data);
+                    return this.processStatusObject(o.data, v2Generation);
                 })
                 .catch((e) => {
                     this.log.error(e);
@@ -427,8 +465,9 @@ class GoE extends utils.Adapter {
         // Get all other attributes from API-V1
         // this.log.debug("Starte V1 Abfrage an: http://" + this.config.serverName + apiEndpoint);
         axios.defaults.baseURL = 'http://' + this.config.serverName;
+        const v1Generation = this.statusResponseOrder.request();
         await axios.get('/status')
-            .then((o) => {
+            .then(async (o) => {
                 this.log.silly('Response: ' + o.status + ' - ' + o.statusText + ' with data as ' + typeof o.data);
                 this.log.debug(JSON.stringify(o.data));
                 if(typeof o.data != 'object') {
@@ -444,7 +483,7 @@ class GoE extends utils.Adapter {
                             this.log.info(JSON.stringify(validation.error._original));
                         }
                     } else {
-                        this.processStatusObject(o.data);
+                        await this.processStatusObject(o.data, v1Generation);
                     }
                 }
                 this.setState('info.connection', true, true);
@@ -502,7 +541,7 @@ class GoE extends utils.Adapter {
      * Process a default status response as descibed in the api documentation of go-eCharger
      * @param {object} o
      */
-    async processStatusObject(o) {
+    async processStatusObject(o, generation = this.statusResponseOrder.request()) {
         try {
 
             // Const for variable pha
@@ -514,9 +553,11 @@ class GoE extends utils.Adapter {
             const preContactorPhase3 = 32;
 
             // Allows only 4 asnychronous calls others are queued
-            const queue = new PQueue({concurrency: 4});
+            const statusQueue = new PQueue({concurrency: 4});
 
             for (const [key, value] of Object.entries(o)) {
+                const queue = {add: write => statusQueue.add(() =>
+                    this.statusResponseOrder.publish(key, generation, write))};
                 //console.log(`${key}: ${value}`);
                 switch (key) {
                     case 'version':
@@ -893,10 +934,11 @@ class GoE extends utils.Adapter {
      */
     setValue(id, value) {
         this.log.info('Set value ' + value + ' of id ' + id);
-        axios.get('http://' + this.config.serverName + '/mqtt?payload=' + id + '=' + value)
+        const generation = this.statusResponseOrder.request(id);
+        return axios.get('http://' + this.config.serverName + '/mqtt?payload=' + id + '=' + value)
             .then(o => {
                 this.log.debug(o.status + ' with message: ' + o.statusText);
-                this.processStatusObject(o.data);
+                return this.processStatusObject(o.data, generation);
             })
             .catch(err => {
                 this.log.error(err.message + ' at ' + id + ' / ' + value);
@@ -915,6 +957,7 @@ class GoE extends utils.Adapter {
                 value = '"' + value + '"';
             }
             this.log.debug('call ' + 'http://' + this.config.serverName + '/api/set?' + id + '=' + value);
+            this.statusResponseOrder.request(id);
             return axios.get('http://' + this.config.serverName + '/api/set?' + id + '=' + value)
                 .then(o => {
                     this.log.debug(o.status + ' with message: ' + o.statusText);
@@ -1160,9 +1203,11 @@ class GoE extends utils.Adapter {
                 if((usedWatts + changeWatts) > Number(phaseSwitchWatts) + Number(phaseSwitchModeBuffer.val) && phaseSwitchMode.val != 2 && phaseSwitchModeEnabled.val == true) {
                     // initiate phase switch to 3-phases
                     this.log.info(`Current Watts ${usedWatts + changeWatts} require Mode 3-phases; current: ${phaseSwitchMode.val}; Change maxAmp from ${maxAmp} to ${Math.round(maxAmp / 3)}`);
+                    const phaseGeneration = this.statusResponseOrder.request('psm');
                     await axios.get('/api/set?psm=2')
                         .then(() => {
-                            this.setState('phaseSwitchMode', {val: 2, ack: true});
+                            void this.statusResponseOrder.publish('psm', phaseGeneration, () =>
+                                this.setState('phaseSwitchMode', {val: 2, ack: true})).catch(e => this.log.error(e));
                             maxAmp = Math.round(maxAmp / 3);
                         })
                         .catch((e) => {
@@ -1178,9 +1223,11 @@ class GoE extends utils.Adapter {
                     } else {
                         if(this.lastPhaseSwitchRequest + (this.config.timeToWait * 1000) < Date.now()) {
                             this.log.info(`Current Watts ${usedWatts + changeWatts} require Mode 1-phase; current: ${phaseSwitchMode.val}; Change maxAmp from ${maxAmp} to ${Math.round(maxAmp * 3)}`);
+                            const phaseGeneration = this.statusResponseOrder.request('psm');
                             await axios.get('/api/set?psm=1')
                                 .then(() => {
-                                    this.setState('phaseSwitchMode', {val: 1, ack: true});
+                                    void this.statusResponseOrder.publish('psm', phaseGeneration, () =>
+                                        this.setState('phaseSwitchMode', {val: 1, ack: true})).catch(e => this.log.error(e));
                                     maxAmp = maxAmp * 3;
                                     if(maxAmp < 6)
                                         maxAmp = 6;
